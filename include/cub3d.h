@@ -1,0 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
+/*   Updated: 2025/04/01 17:51:59 by pboucher         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUB3D_H
+# define CUB3D_H
+
+/*	Includes	*/
+#include <MLX42/MLX42.h>
+#include <../libft/libft.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/*	Colors	*/
+# define RST "\e[0m"
+# define RED "\e[0;31m"
+# define GRN "\e[0;32m"
+# define YEL "\e[0;33m"
+# define BLU "\e[0;34m"
+# define MAG "\e[0;35m"
+# define CYN "\e[0;36m"
+# define WHT "\e[0;37m"
+
+/*	Errors	*/
+# define PROG_NAME "cub3D"
+# define CORRECT_USAGE "%s : Correct usage: ./cub3D <map.cub>\n"
+# define INVALID_TERM "%s : %s: Invalid extension\n"
+# define MALLOC_ERROR "%s : Malloc failed\n"
+
+typedef struct s_map
+{
+    char            *content;
+    struct s_map    *next;
+}                    t_map;
+
+typedef struct s_game
+{
+	mlx_t	game;
+	t_map	*map;
+}	t_game;
+
+/*	Prototypes	*/
+//	output.c
+void	error_msg(char *str, char *detail);
+//	parsing.c
+bool	is_valid(char *path);
+
+#endif
