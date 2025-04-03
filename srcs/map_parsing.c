@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 17:18:16 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:28:19 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_map    *get_map_as_list(char *argv)
             ft_lstadd_back(&map, ft_lstnew(tmp));
     }
     free(tmp);
+	ft_lstprint(map);
     close(fd);
     return (map);
 }
