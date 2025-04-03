@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:20:17 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:27:46 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define INVALID_TERM "%s : %s: Invalid extension\n"
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
+# define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 
 typedef struct s_game
 {
