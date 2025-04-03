@@ -28,7 +28,7 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-char	*free_all(char *buffer, char *line)
+char	*free_str(char *buffer, char *line)
 {
 	free(buffer);
 	free(line);

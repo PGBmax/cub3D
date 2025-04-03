@@ -75,7 +75,7 @@ char	*get_until_newline(char *buffer, int fd)
 	{
 		i = read(fd, line, BUFFER_SIZE);
 		if (i == -1)
-			return (free_all(buffer, line));
+			return (free_str(buffer, line));
 		line[i] = 0;
 		buffer = ft_strjoin_gnl(buffer, line);
 		if (!buffer)

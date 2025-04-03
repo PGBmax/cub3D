@@ -3,23 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstprint.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 13:06:46 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/01/24 14:05:44 by scraeyme         ###   ########.fr       */
+/*   Created: 2025/01/09 11:37:19 by maregnie          #+#    #+#             */
+/*   Updated: 2025/01/14 10:46:10 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstprint(t_list *lst, int endl)
+void	ft_lstprint(t_map *lst)
 {
-	while (lst)
+	int		i;
+	t_map	*tmp;
+
+	tmp = lst;
+	i = 0;
+	if (!lst)
+		return ;
+	while (tmp)
 	{
-		if (endl)
-			ft_putendl_fd(lst->str, 1);
-		else
-			ft_putstr_fd(lst->str, 1);
-		lst = lst->next;
+		ft_printf("%s", (char *)tmp->content);
+		tmp = tmp->next;
+		i++;
 	}
 }

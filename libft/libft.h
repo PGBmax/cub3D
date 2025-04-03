@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:21:22 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/03/08 00:42:20 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:02:55 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include "ft_printf/includes/ft_printf.h"
+# include "get_next_line/get_next_line.h"
 
-typedef struct s_list
+typedef struct s_map
 {
-	char			*str;
-	char			**sptstr;
-	struct s_list	*next;
-}					t_list;
+	char			*content;
+	struct s_map	*next;
+}					t_map;
 
 int			ft_atoi(const char *nptr);
 long long	ft_atol(const char *nptr);
@@ -88,13 +88,13 @@ void		ft_tabfree(char **tab, int size);
 void		ft_tabprint(char **tab, int endl);
 int			ft_tabhasemptystr(char **tab);
 char		**ft_tabdup(char **tab, int size);
-void		ft_lstprint(t_list *lst, int endl);
-t_list		*ft_lstnew(char *new );
-void		ft_lstadd_front(t_list **lst, t_list *new);
-int			ft_lstsize(t_list *lst);
-t_list		*ft_lstlast(t_list *lst);
-void		ft_lstadd_back(t_list **lst, t_list *new);
-void		ft_lstdelone(t_list *lst);
-void		ft_lstclear(t_list **lst);
+void		ft_lstprint(t_map *lst);
+t_map		*ft_lstnew(void *content);
+void		ft_lstadd_front(t_map **lst, t_map *new);
+int			ft_lstsize(t_map *lst);
+t_map		*ft_lstlast(t_map *lst);
+void		ft_lstadd_back(t_map **lst, t_map *new);
+void		ft_lstdelone(t_map *lst, void (*del)(void *));
+void		ft_lstclear(t_map **lst, void (*del)(void *));
 char		**ft_splitfirst(char *str, char c);
 #endif

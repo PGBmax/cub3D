@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:56:14 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/01/24 14:05:56 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:54:41 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+t_map	*ft_lstlast(t_map *map)
 {
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
+	while (map && map->next)
+		map = map->next;
+	return (map);
 }

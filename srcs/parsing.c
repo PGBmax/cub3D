@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:26:07 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/01 18:24:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:19:14 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,34 @@ bool	is_valid(char *path)
 		return (false);
 	if (ft_strcmp(&path[i - 4], ".cub"))
 		return (false);
-	if (!open(path))
+	if (!open(path, O_RDONLY))
 		return (false);
 	return (true);
+}
+int	is_map_valid(char **map)
+{
+	int i;
+	int j;
+	
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j] && map[i][j] != 12)
+		{
+			while (map[i][j] == 32 || (map[i][j]) == 9)
+				j++;
+			ft_printf("%c", map[i][j]);
+			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'N'
+				&& map[i][j] != 'S' && map[i][j] != 'W' && map[i][j] != 'E'
+				&& map[i][j] != ' ' && map[i][j] != 10)
+			{
+				ft_printf("%c", map[i][j]);
+				return (0);
+			}	
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }

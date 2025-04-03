@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/01 17:54:25 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:18:16 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ char    **get_map_as_tab(t_map *lstmap)
     }
     while (lstmap)
     {
-        map[i++] = ft_strdup(lstmap->content);
+        map[i] = ft_strdup(lstmap->content);
         lstmap = lstmap->next;
+		i++;
     }
     map[i] = 0;
     ft_lstclear(&tmp, free);

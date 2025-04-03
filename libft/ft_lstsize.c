@@ -3,26 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 14:50:33 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/01/24 14:05:30 by scraeyme         ###   ########.fr       */
+/*   Created: 2024/10/15 09:11:30 by maregnie          #+#    #+#             */
+/*   Updated: 2025/04/03 14:55:16 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_lstsize(t_map *lst)
 {
-	int	count;
+	int		i;
+	t_map	*tmp;
 
+	tmp = lst;
+	i = 0;
 	if (!lst)
 		return (0);
-	count = 1;
-	while (lst->next)
+	while (tmp)
 	{
-		lst = lst->next;
-		count++;
+		tmp = tmp->next;
+		i++;
 	}
-	return (count);
+	return (i);
 }

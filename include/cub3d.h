@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/01 17:51:59 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:14:00 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define CUB3D_H
 
 /*	Includes	*/
-#include <MLX42/MLX42.h>
+#include "../MLX42/include/MLX42/MLX42.h"
 #include <../libft/libft.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <fcntl.h>
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -36,16 +37,11 @@
 # define INVALID_TERM "%s : %s: Invalid extension\n"
 # define MALLOC_ERROR "%s : Malloc failed\n"
 
-typedef struct s_map
-{
-    char            *content;
-    struct s_map    *next;
-}                    t_map;
-
 typedef struct s_game
 {
 	mlx_t	game;
 	t_map	*map;
+	char	**tab;
 }	t_game;
 
 /*	Prototypes	*/
@@ -53,5 +49,8 @@ typedef struct s_game
 void	error_msg(char *str, char *detail);
 //	parsing.c
 bool	is_valid(char *path);
+t_map	*get_map_as_list(char *argv);
+char	**get_map_as_tab(t_map *lstmap);
+int		is_map_valid(char **map);
 
 #endif

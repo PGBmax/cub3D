@@ -28,6 +28,6 @@ char	*transform_buffer(char *buffer);
 size_t	ft_strlen_gnl(char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
-char	*free_all(char *buffer, char *line);
+char	*free_str(char *buffer, char *line);
 
 #endif
