@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 15:14:00 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:20:17 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define CORRECT_USAGE "%s : Correct usage: ./cub3D <map.cub>\n"
 # define INVALID_TERM "%s : %s: Invalid extension\n"
 # define MALLOC_ERROR "%s : Malloc failed\n"
+# define INVALID_NAME "%s : Invalid Map Name\n"
 
 typedef struct s_game
 {
@@ -52,5 +53,7 @@ bool	is_valid(char *path);
 t_map	*get_map_as_list(char *argv);
 char	**get_map_as_tab(t_map *lstmap);
 int		is_map_valid(char **map);
+int		line_length(char *str);
+char	*void_changer(char *str);
 
 #endif

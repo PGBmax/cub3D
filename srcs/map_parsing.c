@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 17:28:19 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:26:27 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_map    *get_map_as_list(char *argv)
 
     fd = open(argv, O_RDONLY);
     if (fd < 0)
-        return (NULL);
+    {    
+		error_msg(INVALID_NAME, argv);
+		return (NULL);
+	}
     map = NULL;
     while (!map || tmp)
     {
@@ -33,7 +36,6 @@ t_map    *get_map_as_list(char *argv)
             ft_lstadd_back(&map, ft_lstnew(tmp));
     }
     free(tmp);
-	ft_lstprint(map);
     close(fd);
     return (map);
 }
@@ -55,10 +57,11 @@ char    **get_map_as_tab(t_map *lstmap)
     while (lstmap)
     {
         map[i] = ft_strdup(lstmap->content);
+		map[i] = void_changer(map[i]);
         lstmap = lstmap->next;
 		i++;
     }
-    map[i] = 0;
+	map[i] = 0;
     ft_lstclear(&tmp, free);
     return (map);
 }
