@@ -6,11 +6,10 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 11:36:08 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:50:08 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
 # define CUB3D_H
 
 /*	Includes	*/
@@ -37,6 +36,7 @@
 # define INVALID_TERM "%s : %s: Invalid extension\n"
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
+# define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 
 /*  Structs  */
 
