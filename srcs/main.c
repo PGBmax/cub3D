@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:43:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:27:21 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:49:24 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ int main(int ac, char **av)
 	
 	
 	
-	
 	if (is_map_valid(game->tab))
 		ft_printf("valid map\n");
 	else
 		ft_printf("invalid map\n");
+	ft_tabfree(game->tab, ft_tablen(game->tab));
+	free(game);
 }

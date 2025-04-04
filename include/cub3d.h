@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:20:17 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:36:08 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,31 @@
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
 
+/*  Structs  */
+
+typedef struct s_textures
+{
+	mlx_texture_t	*ground;
+	mlx_texture_t	*wall;
+	mlx_texture_t	*sky;
+	mlx_texture_t	*npc;
+}					t_textures;
+
+typedef struct s_sprite
+{
+	mlx_image_t	*ground;
+	mlx_image_t	*wall;
+	mlx_image_t	*sky;
+	mlx_image_t	*npc;
+}				t_sprite;
+
 typedef struct s_game
 {
-	mlx_t	game;
-	t_map	*map;
-	char	**tab;
+	t_map			*map;
+	char			**tab;
+	t_textures	*textures;
+	t_sprite	*sprite;
+	mlx_t		*mlx;
 }	t_game;
 
 /*	Prototypes	*/

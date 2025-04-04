@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:26:07 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:26:08 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:40:03 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool	is_valid(char *path)
 		return (false);
 	return (true);
 }
+
 int	is_map_valid(char **map)
 {
 	int i;
