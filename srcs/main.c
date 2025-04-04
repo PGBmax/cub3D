@@ -6,9 +6,11 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:43:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 12:46:44 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:48:55 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "cub3d.h"
 
 int main(int ac, char **av)
 {

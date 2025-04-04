@@ -6,10 +6,11 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 12:50:08 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:51:15 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+# ifndef CUB3D_H
 # define CUB3D_H
 
 /*	Includes	*/
