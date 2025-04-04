@@ -6,7 +6,11 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:43:57 by pboucher          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/04 14:27:48 by pboucher         ###   ########.fr       */
+=======
+/*   Updated: 2025/04/04 13:47:37 by maregnie         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/Mario-Kart-Master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +53,8 @@ int main(int ac, char **av)
 	if (open(av[1], O_RDONLY) == -1)
 		error_msg(CANNOT_OPEN, av[1]);
 	game = ft_calloc(sizeof(t_game), 1);
+	if (!game)
+		error_msg(MALLOC_ERROR, NULL);
 	game->map = get_map_as_list(av[1]);
 	game->tab = get_map_as_tab(game->map);
 	if (!parse_tab(game->tab, 1, ft_strlen(game->tab[0]), 0))

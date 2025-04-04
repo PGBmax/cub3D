@@ -6,7 +6,11 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/04 14:24:48 by pboucher         ###   ########.fr       */
+=======
+/*   Updated: 2025/04/04 13:55:13 by maregnie         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/Mario-Kart-Master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +56,7 @@ char    **get_map_as_tab(t_map *lstmap)
     if (!map)
     {
         ft_lstclear(&tmp, free);
-        return (NULL);
+        error_msg(MALLOC_ERROR, NULL);
     }
     while (lstmap)
     {
