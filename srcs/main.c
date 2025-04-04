@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:43:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 12:48:55 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 13:47:37 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int main(int ac, char **av)
 	if (open(av[1], O_RDONLY) == -1)
 		error_msg(CANNOT_OPEN, av[1]);
 	game = ft_calloc(sizeof(t_game), 1);
+	if (!game)
+		error_msg(MALLOC_ERROR, NULL);
 	game->map = get_map_as_list(av[1]);
 	game->tab = get_map_as_tab(game->map);
 	ft_tabprint(game->tab, 0);

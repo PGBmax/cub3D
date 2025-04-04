@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:33:33 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 13:55:13 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char    **get_map_as_tab(t_map *lstmap)
     if (!map)
     {
         ft_lstclear(&tmp, free);
-        return (NULL);
+        error_msg(MALLOC_ERROR, NULL);
     }
     while (lstmap)
     {
