@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/03 18:33:33 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:24:48 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char    **get_map_as_tab(t_map *lstmap)
     while (lstmap)
     {
         map[i] = ft_strdup(lstmap->content);
-		map[i] = void_changer(map[i]);
         lstmap = lstmap->next;
 		i++;
     }

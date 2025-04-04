@@ -5,3 +5,4 @@ libft/*.o
 libft/ft_printf/*.o
 libft/get_next_line/*.o
 *.cub
+cub3D

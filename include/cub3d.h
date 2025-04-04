@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 12:51:15 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:32:41 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 
 /*	Colors	*/
 # define RST "\e[0m"
-# define RED "\e[0;31m"
-# define GRN "\e[0;32m"
-# define YEL "\e[0;33m"
-# define BLU "\e[0;34m"
-# define MAG "\e[0;35m"
-# define CYN "\e[0;36m"
-# define WHT "\e[0;37m"
+# define RED "\e[1;91m"
+# define GRN "\e[1;92m"
+# define YEL "\e[1;93m"
+# define BLU "\e[1;94m"
+# define MAG "\e[1;95m"
+# define CYN "\e[1;96m"
+# define WHT "\e[1;97m"
 
 /*	Errors	*/
 # define PROG_NAME "cub3D"
@@ -38,6 +38,7 @@
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
+# define NOT_CLOSE "%s : %s : Map has a hole inside\n"
 
 /*  Structs  */
 
