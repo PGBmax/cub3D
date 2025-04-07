@@ -6,11 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/04 14:24:48 by pboucher         ###   ########.fr       */
-=======
-/*   Updated: 2025/04/04 13:55:13 by maregnie         ###   ########.fr       */
->>>>>>> refs/remotes/origin/Mario-Kart-Master
+/*   Updated: 2025/04/07 15:03:24 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +14,9 @@
 
 t_map    *get_map_as_list(char *argv)
 {
-    t_map    *map;
-    char    *tmp;
-    int        fd;
+    t_map		*map;
+    char		*tmp;
+    int			fd;
 
     fd = open(argv, O_RDONLY);
     if (fd < 0)
@@ -46,9 +42,9 @@ t_map    *get_map_as_list(char *argv)
 
 char    **get_map_as_tab(t_map *lstmap)
 {
-    t_map    *tmp;
-    int        i;
-    char    **map;
+    t_map	*tmp;
+    int		i;
+    char	**map;
 
     tmp = lstmap;
     i = 0;

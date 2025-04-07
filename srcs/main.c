@@ -5,21 +5,74 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 13:43:57 by pboucher          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/04 14:27:48 by pboucher         ###   ########.fr       */
-=======
-/*   Updated: 2025/04/04 13:47:37 by maregnie         ###   ########.fr       */
->>>>>>> refs/remotes/origin/Mario-Kart-Master
+/*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
+/*   Updated: 2025/04/07 15:55:13 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int	edge_parsing(char **tab)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (tab[i])
+	{
+		j = 0;
+		while (tab[i][j] == ' ' || tab[i][j] == '\t')
+			j++;
+		if (tab[i][j] != '1' || tab[i][ft_strlen(tab[i]) - 2] != '1')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	first_line_parsing(char **tab)
+{
+	size_t	i = 1;
+	size_t	j;
+	size_t	check;
+	while (tab[0][check] == ' ' || tab[0][check] == '\t')
+		check++;
+	while (tab[i])
+	{
+		j = 0;
+		ft_printf("%s", tab[i]);
+		while (tab[0][j] == ' ' || tab[0][j] == '\t')
+			j++;
+		if (j > check)
+		{
+			while(j > check)
+			{
+				if (tab[i][check] != '1')
+					return (0);
+				check++;
+			}
+			check = j;
+		}
+		if (j > check)
+		{
+			while(j > check)
+			{
+				if (tab[i][check] != '1')
+					return (0);
+				check++;
+			}
+		}
+	}
+}
+
+
 int parse_tab(char **tab, size_t i, size_t len, size_t check)
 {
-	// if (!edge_parsing(tab))
-	// 	return (0);
+	if (!edge_parsing(tab))
+		return (0);
+	if (!first_line_parsing(tab))
+		retunr (0);
+	ft_printf("\n\n\n");
 	while (tab[++i])
 	{
 		ft_printf("%s", tab[i]);
@@ -45,6 +98,7 @@ int parse_tab(char **tab, size_t i, size_t len, size_t check)
 int main(int ac, char **av)
 {
 	t_game	*game;
+	size_t	temp;
 	
 	if (ac != 2)
 		error_msg(CORRECT_USAGE, NULL);
@@ -57,7 +111,8 @@ int main(int ac, char **av)
 		error_msg(MALLOC_ERROR, NULL);
 	game->map = get_map_as_list(av[1]);
 	game->tab = get_map_as_tab(game->map);
-	if (!parse_tab(game->tab, 1, ft_strlen(game->tab[0]), 0))
+	temp = ft_strlen(game->tab[0]);
+	if (!parse_tab(game->tab, 0, temp, 0))
 		error_msg(NOT_CLOSE, av[1]);
 	ft_printf("\n\n\n");
 	ft_tabprint(game->tab, 0);
