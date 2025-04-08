@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 16:33:03 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:21:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <fcntl.h>
+
+/*	Macros	*/
+# define WIDTH 800
+# define HEIGHT 600
+
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -39,6 +44,7 @@
 # define INVALID_NAME "%s : Invalid Map Name\n"
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 # define NOT_CLOSE "%s : %s : Map has a hole inside\n"
+# define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
 
 /*  Structs  */
 
@@ -80,14 +86,21 @@ typedef struct s_game
 }	t_game;
 
 /*	Prototypes	*/
+//	get_game.c
+void	set_tgame(t_game *info);
+t_game	*get_tgame(void);
 //	output.c
 void	error_msg(char *str, char *detail);
 //	parsing.c
 bool	is_valid(char *path);
-t_map	*get_map_as_list(char *argv);
-char	**get_map_as_tab(t_map *lstmap);
 int		is_map_valid(char **map);
 int		line_length(char *str);
 char	*void_changer(char *str);
+//	map_parsing.h
+t_map	*get_map_as_list(char *argv);
+char	**get_map_as_tab(t_map *lstmap);
+int		check_hole(char **tab, int i, int j);
+int		edge_parsing(char **tab);
+int		parse_tab(char **tab);
 
 #endif
