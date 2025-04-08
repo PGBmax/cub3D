@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/04 14:32:41 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:33:03 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,21 @@ typedef struct s_sprite
 	mlx_image_t	*npc;
 }				t_sprite;
 
+
+typedef struct s_info
+{
+	char	*north;
+	char	*south;
+	char	*east;
+	char	*west;
+	char	*floor;
+	char	*ceiling;
+}	t_info;
+
 typedef struct s_game
 {
 	t_map			*map;
+	t_info			*info;
 	char			**tab;
 	t_textures	*textures;
 	t_sprite	*sprite;
