@@ -6,91 +6,83 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/07 15:55:13 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:18:13 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	edge_parsing(char **tab)
+int check_hole(char **tab, int i, int j)
 {
-	size_t	i;
-	size_t	j;
+	int len_tab;
+	int len_str;
 
-	i = 0;
-	while (tab[i])
-	{
-		j = 0;
-		while (tab[i][j] == ' ' || tab[i][j] == '\t')
-			j++;
-		if (tab[i][j] != '1' || tab[i][ft_strlen(tab[i]) - 2] != '1')
+	len_tab = ft_tablen(tab) - 1;
+	len_str = ft_strlen(tab[i]) - 1;
+	if (i != 0)
+		if (!tab[i - 1][j] || tab[i - 1][j] == ' ' || tab[i - 1][j] == '\t'
+			|| tab[i - 1][j] == '\n' || tab[i - 1][j] == '\0')
 			return (0);
-		i++;
-	}
+	if (i != len_tab)
+		if (!tab[i + 1][j] || tab[i + 1][j] == ' ' || tab[i + 1][j] == '\t'
+			|| tab[i + 1][j] == '\n' || tab[i + 1][j] == '\0')
+			return (0);
+	if (j != 0)
+		if (!tab[i][j - 1] || tab[i][j - 1] == ' ' || tab[i][j - 1] == '\t'
+			|| tab[i][j - 1] == '\n' || tab[i][j - 1] == '\0')
+			return (0);
+	if (j != len_str)
+		if (!tab[i][j - 1] || tab[i][j + 1] == ' ' || tab[i][j + 1] == '\t'
+			|| tab[i][j + 1] == '\n' || tab[i][j + 1] == '\0')
+				return (0);
 	return (1);
 }
 
-int	first_line_parsing(char **tab)
+int edge_parsing(char **tab)
 {
-	size_t	i = 1;
-	size_t	j;
-	size_t	check;
-	while (tab[0][check] == ' ' || tab[0][check] == '\t')
-		check++;
+	int	j;
+
+	j = -1;
+	while (tab[0][++j])
+		if (tab[0][j] != '1'
+			&& tab[0][j] != ' '
+			&& tab[0][j] != '\t'
+			&& tab[0][j] != '\n'
+			&& tab[0][j] != '\0')
+			return (0);
+	j = -1;
+	while (tab[ft_tablen(tab) - 1][++j])
+		if (tab[ft_tablen(tab) - 1][j] != '1'
+			&& tab[ft_tablen(tab) - 1][j] != ' '
+			&& tab[ft_tablen(tab) - 1][j] != '\t'
+			&& tab[ft_tablen(tab) - 1][j] != '\n'
+			&& tab[ft_tablen(tab) - 1][j] != '\0')
+			return (0);
+	return (1);
+}
+
+int parse_tab(char **tab)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	if (!edge_parsing(tab))
+		return (0);
 	while (tab[i])
 	{
 		j = 0;
-		ft_printf("%s", tab[i]);
-		while (tab[0][j] == ' ' || tab[0][j] == '\t')
+		// ft_printf("%s", tab[i]);
+		while (tab[i][j])
+		{
+			// ft_printf(RED"i : %d, j : %d, tab[i][j] : %c\n"RST, i, j, tab[i][j]);
+			if (tab[i][j] != '1' && tab[i][j] != ' ' && tab[i][j] != '\t'
+				&& tab[i][j] != '\n' && tab[i][j] != '\0')
+				if (!check_hole(tab, i, j))
+					return (0);
 			j++;
-		if (j > check)
-		{
-			while(j > check)
-			{
-				if (tab[i][check] != '1')
-					return (0);
-				check++;
-			}
-			check = j;
 		}
-		if (j > check)
-		{
-			while(j > check)
-			{
-				if (tab[i][check] != '1')
-					return (0);
-				check++;
-			}
-		}
-	}
-}
-
-
-int parse_tab(char **tab, size_t i, size_t len, size_t check)
-{
-	if (!edge_parsing(tab))
-		return (0);
-	if (!first_line_parsing(tab))
-		retunr (0);
-	ft_printf("\n\n\n");
-	while (tab[++i])
-	{
-		ft_printf("%s", tab[i]);
-		if (ft_strlen(tab[i]) > len)
-		{
-			check = len - 2;
-			while (tab[i][++check] && tab[i][check] != '\n')
-				if (tab[i][check] != '1')
-					return (0);
-		}
-		else if (ft_strlen(tab[i]) < len)
-		{
-			check = ft_strlen(tab[i]) - 2;
-			while (tab[i - 1][++check] && tab[i - 1][check] != '\n')
-				if (tab[i - 1][check] != '1')
-					return (0);
-		}
-		len = ft_strlen(tab[i]);
+		i++;
 	}
 	return (1);
 }
@@ -112,7 +104,7 @@ int main(int ac, char **av)
 	game->map = get_map_as_list(av[1]);
 	game->tab = get_map_as_tab(game->map);
 	temp = ft_strlen(game->tab[0]);
-	if (!parse_tab(game->tab, 0, temp, 0))
+	if (!parse_tab(game->tab))
 		error_msg(NOT_CLOSE, av[1]);
 	ft_printf("\n\n\n");
 	ft_tabprint(game->tab, 0);
