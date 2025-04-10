@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 13:57:21 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:05:51 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int main(int ac, char **av)
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
 		error_msg(MALLOC_ERROR, NULL);
+	set_tgame(game);
 	game->map = get_map_as_list(av[1]);
 	if (!get_map_info(game, 0))
 		error_msg("map info not properly set", NULL);

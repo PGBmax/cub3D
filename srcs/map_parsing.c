@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 13:35:00 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:05:14 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,77 @@ char    **get_map_as_tab(t_map *lstmap, int index)
 	map[i] = 0;
     ft_lstclear(&tmp, free);
     return (map);
+}
+
+int check_hole(char **tab, int i, int j)
+{
+	int len_tab;
+	int len_str;
+
+	len_tab = ft_tablen(tab) - 1;
+	len_str = ft_strlen(tab[i]) - 1;
+	if (i != 0)
+		if (!tab[i - 1][j] || tab[i - 1][j] == ' ' || tab[i - 1][j] == '\t'
+			|| tab[i - 1][j] == '\n' || tab[i - 1][j] == '\0')
+			return (0);
+	if (i != len_tab)
+		if (!tab[i + 1][j] || tab[i + 1][j] == ' ' || tab[i + 1][j] == '\t'
+			|| tab[i + 1][j] == '\n' || tab[i + 1][j] == '\0')
+			return (0);
+	if (j != 0)
+		if (!tab[i][j - 1] || tab[i][j - 1] == ' ' || tab[i][j - 1] == '\t'
+			|| tab[i][j - 1] == '\n' || tab[i][j - 1] == '\0')
+			return (0);
+	if (j != len_str)
+		if (!tab[i][j - 1] || tab[i][j + 1] == ' ' || tab[i][j + 1] == '\t'
+			|| tab[i][j + 1] == '\n' || tab[i][j + 1] == '\0')
+				return (0);
+	return (1);
+}
+
+int edge_parsing(char **tab)
+{
+	int	j;
+
+	j = -1;
+	while (tab[0][++j])
+		if (tab[0][j] != '1'
+			&& tab[0][j] != ' '
+			&& tab[0][j] != '\t'
+			&& tab[0][j] != '\n'
+			&& tab[0][j] != '\0')
+			return (0);
+	j = -1;
+	while (tab[ft_tablen(tab) - 1][++j])
+		if (tab[ft_tablen(tab) - 1][j] != '1'
+			&& tab[ft_tablen(tab) - 1][j] != ' '
+			&& tab[ft_tablen(tab) - 1][j] != '\t'
+			&& tab[ft_tablen(tab) - 1][j] != '\n'
+			&& tab[ft_tablen(tab) - 1][j] != '\0')
+			return (0);
+	return (1);
+}
+
+int parse_tab(char **tab)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	if (!edge_parsing(tab))
+		return (0);
+	while (tab[i])
+	{
+		j = 0;
+		while (tab[i][j])
+		{
+			if (tab[i][j] != '1' && tab[i][j] != ' ' && tab[i][j] != '\t'
+				&& tab[i][j] != '\n' && tab[i][j] != '\0')
+				if (!check_hole(tab, i, j))
+					return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }

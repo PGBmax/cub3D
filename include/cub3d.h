@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 13:33:04 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:04:24 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <fcntl.h>
+
+/*	Macros	*/
+# define WIDTH 800
+# define HEIGHT 600
+
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -39,6 +44,7 @@
 # define INVALID_NAME "%s : Invalid Map Name\n"
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 # define NOT_CLOSE "%s : %s : Map has a hole inside\n"
+# define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
 
 /*  Structs  */
 
@@ -82,6 +88,9 @@ typedef struct s_game
 }	t_game;
 
 /*	Prototypes	*/
+//	get_game.c
+void	set_tgame(t_game *info);
+t_game	*get_tgame(void);
 //	output.c
 void	error_msg(char *str, char *detail);
 //	parsing.c

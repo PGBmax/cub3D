@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output.c                                           :+:      :+:    :+:   */
+/*   get_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 17:02:53 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 17:24:51 by pboucher         ###   ########.fr       */
+/*   Created: 2025/04/08 17:15:32 by pboucher          #+#    #+#             */
+/*   Updated: 2025/04/08 17:16:39 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	error_msg(char *str, char *detail)
+static t_game	*tgame(t_game *info)
 {
-	t_game *game;
+	static t_game	*data = NULL;
 
-	game = get_tgame();
-	ft_printf(RED"ERROR!\n"GRN);
-	if (!detail)
-		ft_printf(str, PROG_NAME);
-	else
-		ft_printf(str, PROG_NAME, detail);
-	ft_printf(RST);
-	ft_tabfree(game->tab, ft_tablen(game->tab));
-	exit(EXIT_FAILURE);
+	if (info)
+		data = info;
+	return (data);
+}
+
+void	set_tgame(t_game *info)
+{
+	tgame(info);
+}
+
+t_game	*get_tgame(void)
+{
+	return (tgame(NULL));
 }
