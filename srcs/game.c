@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 16:53:50 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:01:16 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,4 @@ void	ft_game(t_game *game)
 	mlx_image_to_window(game->mlx, game->sprite.fc, 0, 0);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
-	free(game);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 16:46:13 by maregnie          #+#    #+#             */
-/*   Updated: 2025/04/10 16:29:14 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:57:45 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ int	get_map_info(t_game *game, int i)
 		i++;
 	}
 	game->info->start_index = i;
-	ft_printf("no : %s\nso : %s\nwe : %s\nea : %s\nf : %s\nc : %s", game->info->north, game->info->south, game->info->west, game->info->east, game->info->floor, game->info->ceiling);
+	// ft_printf("no : %s\nso : %s\nwe : %s\nea : %s\nf : %s\nc : %s", game->info->north, game->info->south, game->info->west, game->info->east, game->info->floor, game->info->ceiling);
 	return (1);
 }

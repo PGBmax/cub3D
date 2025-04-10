@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 16:53:14 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:59:20 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int main(int ac, char **av)
 		free(game->info);
 		error_msg(NOT_CLOSE, av[1]);
 	}
+	ft_game(game);
 	free(game->info);
 	ft_tabfree(game->tab, ft_tablen(game->tab));
 	free(game);
-	ft_game(game);
 }
