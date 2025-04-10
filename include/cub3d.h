@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 16:33:03 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:33:04 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,13 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
+	int 	start_index;
 }	t_info;
 
 typedef struct s_game
 {
 	t_map			*map;
+	
 	t_info			*info;
 	char			**tab;
 	t_textures	*textures;
@@ -85,9 +87,10 @@ void	error_msg(char *str, char *detail);
 //	parsing.c
 bool	is_valid(char *path);
 t_map	*get_map_as_list(char *argv);
-char	**get_map_as_tab(t_map *lstmap);
+char	**get_map_as_tab(t_map *lstmap, int index);
 int		is_map_valid(char **map);
 int		line_length(char *str);
 char	*void_changer(char *str);
+int		get_map_info(t_game *game, int i);
 
 #endif

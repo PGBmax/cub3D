@@ -12,7 +12,8 @@ NAME				=	cub3D
 SRCS				= 	srcs/main.c \
 						srcs/output.c \
 						srcs/parsing.c \
-						srcs/map_parsing.c
+						srcs/map_parsing.c \
+						srcs/map_info.c
 
 OBJ_FOLDER			=	objs
 LIB           		=	libft/libft.a

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 16:18:13 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:57:21 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ int check_hole(char **tab, int i, int j)
 	return (1);
 }
 
-int edge_parsing(char **tab)
+int edge_parsing(char **tab, int index)
 {
 	int	j;
 
 	j = -1;
-	while (tab[0][++j])
-		if (tab[0][j] != '1'
-			&& tab[0][j] != ' '
-			&& tab[0][j] != '\t'
-			&& tab[0][j] != '\n'
-			&& tab[0][j] != '\0')
+	while (tab[index][++j])
+		if (tab[index][j] != '1'
+			&& tab[index][j] != ' '
+			&& tab[index][j] != '\t'
+			&& tab[index][j] != '\n'
+			&& tab[index][j] != '\0')
 			return (0);
 	j = -1;
 	while (tab[ft_tablen(tab) - 1][++j])
@@ -61,13 +61,11 @@ int edge_parsing(char **tab)
 	return (1);
 }
 
-int parse_tab(char **tab)
+int parse_tab(char **tab, int i)
 {
-	int	i;
 	int j;
 
-	i = 0;
-	if (!edge_parsing(tab))
+	if (!edge_parsing(tab, i))
 		return (0);
 	while (tab[i])
 	{
@@ -90,7 +88,6 @@ int parse_tab(char **tab)
 int main(int ac, char **av)
 {
 	t_game	*game;
-	size_t	temp;
 	
 	if (ac != 2)
 		error_msg(CORRECT_USAGE, NULL);
@@ -102,11 +99,13 @@ int main(int ac, char **av)
 	if (!game)
 		error_msg(MALLOC_ERROR, NULL);
 	game->map = get_map_as_list(av[1]);
-	game->tab = get_map_as_tab(game->map);
-	temp = ft_strlen(game->tab[0]);
-	if (!parse_tab(game->tab))
+	if (!get_map_info(game, 0))
+		error_msg("map info not properly set", NULL);
+	ft_printf("%d\n", game->info->start_index);
+	game->tab = get_map_as_tab(game->map, game->info->start_index);
+	if (!parse_tab(game->tab, 0))
 		error_msg(NOT_CLOSE, av[1]);
-	ft_printf("\n\n\n");
+	// ft_printf("\n\n\n");
 	ft_tabprint(game->tab, 0);
 	// if (is_map_valid(game->tab))
 	// 	ft_printf("valid map\n");
