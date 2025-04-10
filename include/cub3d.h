@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/10 13:56:14 by pboucher         ###   ########.fr       */
+=======
+/*   Updated: 2025/04/10 14:04:24 by maregnie         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/Mario-Kart-Master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +75,19 @@ typedef struct s_info
 	char	*south;
 	char	*east;
 	char	*west;
+<<<<<<< HEAD
 	char	*fc;
+=======
+	char	*floor;
+	char	*ceiling;
+	int 	start_index;
+>>>>>>> refs/remotes/origin/Mario-Kart-Master
 }	t_info;
 
 typedef struct s_game
 {
 	t_map			*map;
+	
 	t_info			*info;
 	char			**tab;
 	t_textures	*textures;
@@ -92,14 +103,11 @@ t_game	*get_tgame(void);
 void	error_msg(char *str, char *detail);
 //	parsing.c
 bool	is_valid(char *path);
+t_map	*get_map_as_list(char *argv);
+char	**get_map_as_tab(t_map *lstmap, int index);
 int		is_map_valid(char **map);
 int		line_length(char *str);
 char	*void_changer(char *str);
-//	map_parsing.h
-t_map	*get_map_as_list(char *argv);
-char	**get_map_as_tab(t_map *lstmap);
-int		check_hole(char **tab, int i, int j);
-int		edge_parsing(char **tab);
-int		parse_tab(char **tab);
+int		get_map_info(t_game *game, int i);
 
 #endif

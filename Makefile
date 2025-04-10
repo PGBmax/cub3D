@@ -13,7 +13,8 @@ SRCS				= 	srcs/main.c \
 						srcs/output.c \
 						srcs/get_game.c \
 						srcs/parsing.c \
-						srcs/map_parsing.c
+						srcs/map_parsing.c \
+						srcs/map_info.c
 
 OBJ_FOLDER			=	objs
 LIB           		=	libft/libft.a
