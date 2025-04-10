@@ -6,11 +6,11 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 17:21:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:56:14 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef CUB3D_H
+#ifndef CUB3D_H
 # define CUB3D_H
 
 /*	Includes	*/
@@ -20,10 +20,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <math.h>
 
 /*	Macros	*/
 # define WIDTH 800
 # define HEIGHT 600
+# define SIZE 64
+# define FOV 90
 
 
 /*	Colors	*/
@@ -45,23 +48,20 @@
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 # define NOT_CLOSE "%s : %s : Map has a hole inside\n"
 # define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
+# define FAIL_LOAD "%S : MLX has failed to load png\n"
 
 /*  Structs  */
 
 typedef struct s_textures
 {
-	mlx_texture_t	*ground;
-	mlx_texture_t	*wall;
-	mlx_texture_t	*sky;
-	mlx_texture_t	*npc;
+	mlx_texture_t	*fc;
+	mlx_texture_t	*wall[4];
 }					t_textures;
 
 typedef struct s_sprite
 {
-	mlx_image_t	*ground;
-	mlx_image_t	*wall;
-	mlx_image_t	*sky;
-	mlx_image_t	*npc;
+	mlx_image_t	*fc;
+	mlx_image_t	*wall[4];
 }				t_sprite;
 
 
@@ -71,8 +71,7 @@ typedef struct s_info
 	char	*south;
 	char	*east;
 	char	*west;
-	char	*floor;
-	char	*ceiling;
+	char	*fc;
 }	t_info;
 
 typedef struct s_game

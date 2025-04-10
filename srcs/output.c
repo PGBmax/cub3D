@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:02:53 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 17:24:51 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:39:45 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ void	error_msg(char *str, char *detail)
 	t_game *game;
 
 	game = get_tgame();
-	ft_printf(RED"ERROR!\n"GRN);
+	ft_printf(RED "ERROR!\n" GRN);
 	if (!detail)
 		ft_printf(str, PROG_NAME);
 	else
 		ft_printf(str, PROG_NAME, detail);
 	ft_printf(RST);
-	ft_tabfree(game->tab, ft_tablen(game->tab));
+	if (game)
+	{
+		ft_tabfree(game->tab, ft_tablen(game->tab));
+		free(game);
+	}
 	exit(EXIT_FAILURE);
 }
