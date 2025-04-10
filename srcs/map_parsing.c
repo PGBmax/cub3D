@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 15:26:12 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:32:35 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char    **get_map_as_tab(t_map *lstmap, int index)
 		i++;
     }
 	map[i] = 0;
-    ft_lstclear(&tmp, free);
     return (map);
 }
 

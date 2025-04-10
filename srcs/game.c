@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 17:01:16 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:33:02 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 void	ft_game(t_game *game)
 {
+	ft_printf("F: %s\nC: %s\n", game->info->floor, game->info->ceiling);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	if (!game->mlx)

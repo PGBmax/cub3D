@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:02:53 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 16:28:42 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:31:54 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	error_msg(char *str, char *detail)
 	{
 		if (game->tab)
 			ft_tabfree(game->tab, ft_tablen(game->tab));
+		if (game->map)
+			ft_lstclear(&game->map, free);
 		free(game);
 	}
 	exit(EXIT_FAILURE);
