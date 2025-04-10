@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 10:03:53 by maregnie          #+#    #+#             */
-/*   Updated: 2025/04/07 15:02:53 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:14:49 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	get_textures(t_game *game)
 	texture->sky = mlx_load_png("./textures/sky.png");
 	texture->npc = mlx_load_png("./textures/npc.png");
 	game->textures = texture;
-	if (!texture->wall || !texture->ground)
+	if (!texture->wall)
 		return (0);
 	return (1);
 }

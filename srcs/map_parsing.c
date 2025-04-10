@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 14:05:14 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:19:05 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,16 @@ char    **get_map_as_tab(t_map *lstmap, int index)
     char	**map;
 
     tmp = lstmap;
-    i = 0;
-	while (i <= index)
-	{
-		i++;
+    i = -1;
+	while (++i <= index)
 		lstmap = lstmap->next;
-	}
-	i = 0;
     map = malloc(sizeof(char *) * (ft_lstsize(lstmap) + 1));
     if (!map)
     {
         ft_lstclear(&tmp, free);
         error_msg(MALLOC_ERROR, NULL);
     }
+	i = 0;
     while (lstmap)
     {
         map[i] = ft_strdup(lstmap->content);
@@ -73,12 +70,14 @@ char    **get_map_as_tab(t_map *lstmap, int index)
 
 int check_hole(char **tab, int i, int j)
 {
+	t_game *game;
 	int len_tab;
 	int len_str;
 
+	game = get_tgame();
 	len_tab = ft_tablen(tab) - 1;
 	len_str = ft_strlen(tab[i]) - 1;
-	if (i != 0)
+	if (i != game->info->start_index)
 		if (!tab[i - 1][j] || tab[i - 1][j] == ' ' || tab[i - 1][j] == '\t'
 			|| tab[i - 1][j] == '\n' || tab[i - 1][j] == '\0')
 			return (0);
@@ -97,17 +96,17 @@ int check_hole(char **tab, int i, int j)
 	return (1);
 }
 
-int edge_parsing(char **tab)
+int edge_parsing(char **tab, int i)
 {
 	int	j;
 
 	j = -1;
-	while (tab[0][++j])
-		if (tab[0][j] != '1'
-			&& tab[0][j] != ' '
-			&& tab[0][j] != '\t'
-			&& tab[0][j] != '\n'
-			&& tab[0][j] != '\0')
+	while (tab[i][++j])
+		if (tab[i][j] != '1'
+			&& tab[i][j] != ' '
+			&& tab[i][j] != '\t'
+			&& tab[i][j] != '\n'
+			&& tab[i][j] != '\0')
 			return (0);
 	j = -1;
 	while (tab[ft_tablen(tab) - 1][++j])
@@ -120,19 +119,19 @@ int edge_parsing(char **tab)
 	return (1);
 }
 
-int parse_tab(char **tab)
+int parse_tab(char **tab, int i)
 {
-	int	i;
 	int j;
 
-	i = 0;
-	if (!edge_parsing(tab))
+	if (!edge_parsing(tab, i))
 		return (0);
 	while (tab[i])
 	{
 		j = 0;
+		// ft_printf("%s", tab[i]);
 		while (tab[i][j])
 		{
+			// ft_printf(RED"i : %d, j : %d, tab[i][j] : %c\n"RST, i, j, tab[i][j]);
 			if (tab[i][j] != '1' && tab[i][j] != ' ' && tab[i][j] != '\t'
 				&& tab[i][j] != '\n' && tab[i][j] != '\0')
 				if (!check_hole(tab, i, j))

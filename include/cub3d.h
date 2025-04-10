@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 13:42:54 by pboucher          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/10 13:56:14 by pboucher         ###   ########.fr       */
-=======
-/*   Updated: 2025/04/10 14:04:24 by maregnie         ###   ########.fr       */
->>>>>>> refs/remotes/origin/Mario-Kart-Master
+/*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
+/*   Updated: 2025/04/10 14:19:47 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +48,8 @@
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
 # define NOT_CLOSE "%s : %s : Map has a hole inside\n"
 # define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
-# define FAIL_LOAD "%S : MLX has failed to load png\n"
+# define FAIL_LOAD "%s : MLX has failed to load png\n"
+# define MAP_INFO_FAIL "%s : %s : Map info not properly set\n"
 
 /*  Structs  */
 
@@ -75,13 +72,9 @@ typedef struct s_info
 	char	*south;
 	char	*east;
 	char	*west;
-<<<<<<< HEAD
-	char	*fc;
-=======
 	char	*floor;
 	char	*ceiling;
 	int 	start_index;
->>>>>>> refs/remotes/origin/Mario-Kart-Master
 }	t_info;
 
 typedef struct s_game
@@ -108,6 +101,7 @@ char	**get_map_as_tab(t_map *lstmap, int index);
 int		is_map_valid(char **map);
 int		line_length(char *str);
 char	*void_changer(char *str);
+int		parse_tab(char **tab, int i);
 int		get_map_info(t_game *game, int i);
 
 #endif

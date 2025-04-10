@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 17:49:08 by maregnie          #+#    #+#             */
-/*   Updated: 2025/04/04 11:29:34 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:11:59 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,12 @@ void	free_texture(mlx_texture_t *texture)
 
 void	free_textures(t_game *game)
 {
-	free_texture(game->textures->sky);
-	free_texture(game->textures->npc);
-	free_texture(game->textures->ground);
 	free_texture(game->textures->wall);
+	free_texture(game->textures->fc);
 	if (game->sprite)
 	{
-		free_sprite(game->sprite->ground, game);
 		free_sprite(game->sprite->wall, game);
-		free_sprite(game->sprite->sky, game);
-		free_sprite(game->sprite->npc, game);
+		free_sprite(game->sprite->fc, game);
 		free(game->sprite);
 	}
 	if (game->textures)
