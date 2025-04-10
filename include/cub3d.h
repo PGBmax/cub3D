@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 14:19:47 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:28:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
-# define NOT_CLOSE "%s : %s : Map has a hole inside\n"
+# define NOT_CLOSE "%s : %s : The Map is not hermetic\n"
 # define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
 # define FAIL_LOAD "%s : MLX has failed to load png\n"
 # define MAP_INFO_FAIL "%s : %s : Map info not properly set\n"
@@ -74,21 +74,23 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
+	int		fc[6];
 	int 	start_index;
 }	t_info;
 
 typedef struct s_game
 {
-	t_map			*map;
-	
-	t_info			*info;
-	char			**tab;
-	t_textures	*textures;
-	t_sprite	*sprite;
+	t_map		*map;
+	t_info		*info;
+	char		**tab;
+	t_textures	textures;
+	t_sprite	sprite;
 	mlx_t		*mlx;
 }	t_game;
 
 /*	Prototypes	*/
+//	game.c
+void	ft_game(t_game *game);
 //	get_game.c
 void	set_tgame(t_game *info);
 t_game	*get_tgame(void);
@@ -101,7 +103,7 @@ char	**get_map_as_tab(t_map *lstmap, int index);
 int		is_map_valid(char **map);
 int		line_length(char *str);
 char	*void_changer(char *str);
-int		parse_tab(char **tab, int i);
+int		parse_tab(char **tab);
 int		get_map_info(t_game *game, int i);
 
 #endif

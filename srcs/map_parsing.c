@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 14:19:05 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:26:12 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,12 @@ char    **get_map_as_tab(t_map *lstmap, int index)
 
 int check_hole(char **tab, int i, int j)
 {
-	t_game *game;
 	int len_tab;
 	int len_str;
 
-	game = get_tgame();
 	len_tab = ft_tablen(tab) - 1;
 	len_str = ft_strlen(tab[i]) - 1;
-	if (i != game->info->start_index)
+	if (i != 0)
 		if (!tab[i - 1][j] || tab[i - 1][j] == ' ' || tab[i - 1][j] == '\t'
 			|| tab[i - 1][j] == '\n' || tab[i - 1][j] == '\0')
 			return (0);
@@ -96,42 +94,44 @@ int check_hole(char **tab, int i, int j)
 	return (1);
 }
 
-int edge_parsing(char **tab, int i)
+int edge_parsing(char **tab)
 {
-	int	j;
+	int	i;
 
-	j = -1;
-	while (tab[i][++j])
-		if (tab[i][j] != '1'
-			&& tab[i][j] != ' '
-			&& tab[i][j] != '\t'
-			&& tab[i][j] != '\n'
-			&& tab[i][j] != '\0')
+	i = -1;
+	while (tab[0][++i])
+		if (tab[0][i] != '1'
+			&& tab[0][i] != ' '
+			&& tab[0][i] != '\t'
+			&& tab[0][i] != '\n'
+			&& tab[0][i] != '\0')
 			return (0);
-	j = -1;
-	while (tab[ft_tablen(tab) - 1][++j])
-		if (tab[ft_tablen(tab) - 1][j] != '1'
-			&& tab[ft_tablen(tab) - 1][j] != ' '
-			&& tab[ft_tablen(tab) - 1][j] != '\t'
-			&& tab[ft_tablen(tab) - 1][j] != '\n'
-			&& tab[ft_tablen(tab) - 1][j] != '\0')
+	i = -1;
+	while (tab[ft_tablen(tab) - 1][++i])
+		if (tab[ft_tablen(tab) - 1][i] != '1'
+			&& tab[ft_tablen(tab) - 1][i] != ' '
+			&& tab[ft_tablen(tab) - 1][i] != '\t'
+			&& tab[ft_tablen(tab) - 1][i] != '\n'
+			&& tab[ft_tablen(tab) - 1][i] != '\0')
 			return (0);
 	return (1);
 }
 
-int parse_tab(char **tab, int i)
+int parse_tab(char **tab)
 {
+	int i;
 	int j;
 
-	if (!edge_parsing(tab, i))
+	if (!edge_parsing(tab))
 		return (0);
+	i = 0;
 	while (tab[i])
 	{
 		j = 0;
-		// ft_printf("%s", tab[i]);
+		// ft_printf("%s\n", tab[i]);
 		while (tab[i][j])
 		{
-			// ft_printf(RED"i : %d, j : %d, tab[i][j] : %c\n"RST, i, j, tab[i][j]);
+			// ft_printf(RED "i : %d, j : %d, tab[i][j] : %c\n" RST, i, j, tab[i][j]);
 			if (tab[i][j] != '1' && tab[i][j] != ' ' && tab[i][j] != '\t'
 				&& tab[i][j] != '\n' && tab[i][j] != '\0')
 				if (!check_hole(tab, i, j))

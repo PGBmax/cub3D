@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 16:46:13 by maregnie          #+#    #+#             */
-/*   Updated: 2025/04/10 13:54:39 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:29:14 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	get_map_info(t_game *game, int i)
 	t_map	*tmp;
 
 	tmp = game->map;
-	game->info = malloc(sizeof(t_info));
+	game->info = ft_calloc(sizeof(t_info), 1);
 	if (!game->info)
 		return (0);
 	while (tmp)
@@ -40,7 +40,7 @@ int	get_map_info(t_game *game, int i)
 		else if (!ft_strncmp(tmp->content, "WE ", 3) && !game->info->west)
 			game->info->west = tmp->content;
 		else if (!ft_strncmp(tmp->content, "EA ", 3) && !game->info->east)
-			game->info->east = tmp->content;	
+			game->info->east = tmp->content;
 		else if (!ft_strncmp(tmp->content, "F ", 2) && !game->info->floor)
 			game->info->floor = tmp->content;
 		else if (!ft_strncmp(tmp->content, "C ", 2) && !game->info->ceiling)
@@ -52,6 +52,11 @@ int	get_map_info(t_game *game, int i)
 	}
 	if (!check_info(game))
 		return (0);
+	while (tmp->content[0] != '1' && tmp->content[0] != ' ')
+	{
+		tmp = tmp->next;
+		i++;
+	}
 	game->info->start_index = i;
 	ft_printf("no : %s\nso : %s\nwe : %s\nea : %s\nf : %s\nc : %s", game->info->north, game->info->south, game->info->west, game->info->east, game->info->floor, game->info->ceiling);
 	return (1);

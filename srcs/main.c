@@ -6,30 +6,11 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 14:15:43 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:53:14 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_game(t_game *game)
-{
-	mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
-	if (!game->mlx)
-		error_msg(MLX_CANNOT_CREATE, NULL);
-	game->textures->fc = mlx_load_png("./fc.png");
-	if (!game->textures->fc)
-		error_msg(FAIL_LOAD, NULL);
-	game->sprite->fc = mlx_texture_to_image(game->mlx, game->textures->fc);
-	mlx_resize_image(game->sprite->fc, WIDTH, HEIGHT);
-	mlx_image_to_window(game->mlx, game->sprite->fc, 0, 0);
-	mlx_loop(game->mlx);
-	mlx_terminate(game->mlx);
-	ft_tabfree(game->tab, ft_tablen(game->tab));
-	free(game);
-}
-
 
 int main(int ac, char **av)
 {
@@ -47,10 +28,22 @@ int main(int ac, char **av)
 	set_tgame(game);
 	game->map = get_map_as_list(av[1]);
 	if (!get_map_info(game, 0))
+	{
+		if (game->info)
+			free(game->info);
+		ft_lstclear(&game->map, free);
 		error_msg(MAP_INFO_FAIL, av[1]);
+	}
 	ft_printf("%d\n", game->info->start_index);
-	game->tab = get_map_as_tab(game->map, game->info->start_index);
-	if (!parse_tab(game->tab, 0))
+	game->tab = get_map_as_tab(game->map, game->info->start_index - 1);
+	ft_tabprint(game->tab, 0);
+	if (!parse_tab(game->tab))
+	{
+		free(game->info);
 		error_msg(NOT_CLOSE, av[1]);
+	}
+	free(game->info);
+	ft_tabfree(game->tab, ft_tablen(game->tab));
+	free(game);
 	ft_game(game);
 }

@@ -11,6 +11,7 @@ NAME				=	cub3D
 # Sources & Includes
 SRCS				= 	srcs/main.c \
 						srcs/output.c \
+						srcs/game.c \
 						srcs/get_game.c \
 						srcs/parsing.c \
 						srcs/map_parsing.c \
