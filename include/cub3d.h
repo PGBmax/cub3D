@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 15:28:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:47:35 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 #include <math.h>
 
 /*	Macros	*/
+# define PI 3.141592653589793238
 # define WIDTH 800
 # define HEIGHT 600
 # define SIZE 64
 # define FOV 90
-
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -55,14 +55,14 @@
 
 typedef struct s_textures
 {
-	mlx_texture_t	*fc;
 	mlx_texture_t	*wall[4];
 }					t_textures;
 
 typedef struct s_sprite
 {
 	mlx_image_t	*fc;
-	mlx_image_t	*wall[4];
+	mlx_image_t	*wall;
+	mlx_image_t	*ground;
 }				t_sprite;
 
 
@@ -78,8 +78,18 @@ typedef struct s_info
 	int 	start_index;
 }	t_info;
 
+typedef	struct s_player
+{
+	double	x;
+	double	y;
+	double dx;
+	double dy;
+	double a;
+}	t_player;
+
 typedef struct s_game
 {
+	t_player	*player;
 	t_map		*map;
 	t_info		*info;
 	char		**tab;
@@ -87,6 +97,18 @@ typedef struct s_game
 	t_sprite	sprite;
 	mlx_t		*mlx;
 }	t_game;
+
+typedef enum input
+{
+	UP1 = MLX_KEY_W,
+	DOWN1 = MLX_KEY_S,
+	LEFT1 = MLX_KEY_A,
+	RIGHT1 = MLX_KEY_D,
+	UP2 = MLX_KEY_UP,
+	DOWN2 = MLX_KEY_DOWN,
+	LEFT2 = MLX_KEY_LEFT,
+	RIGHT2 = MLX_KEY_RIGHT
+}	t_input;
 
 /*	Prototypes	*/
 //	game.c
