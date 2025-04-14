@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/12 19:47:35 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:59:19 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 #include <math.h>
 
 /*	Macros	*/
-# define PI 3.141592653589793238
-# define WIDTH 800
-# define HEIGHT 600
+# define PI M_PI
+# define WIDTH 512
+# define HEIGHT 512
 # define SIZE 64
 # define FOV 90
 
@@ -60,10 +60,26 @@ typedef struct s_textures
 
 typedef struct s_sprite
 {
-	mlx_image_t	*fc;
+	mlx_image_t	*player;
 	mlx_image_t	*wall;
 	mlx_image_t	*ground;
 }				t_sprite;
+
+typedef struct s_ray
+{
+	double	DirX;
+	double	DirY;
+	int		mapX;
+	int		mapY;
+	double	deltaDistX;
+	double	deltaDistY;
+	int		stepX;
+	int		stepY;
+	double	sideDistX;
+	double	sideDistY;
+	double	hitX;
+	double	hitY;
+}	t_ray;
 
 
 typedef struct s_info
@@ -93,7 +109,7 @@ typedef struct s_game
 	t_map		*map;
 	t_info		*info;
 	char		**tab;
-	t_textures	textures;
+	mlx_image_t	*screen;
 	t_sprite	sprite;
 	mlx_t		*mlx;
 }	t_game;
