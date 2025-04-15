@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/14 18:59:19 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:05:53 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@
 
 /*	Macros	*/
 # define PI M_PI
-# define WIDTH 512
-# define HEIGHT 512
-# define SIZE 64
-# define FOV 90
+# define WIDTH 1024
+# define HEIGHT 1024
+# define SIZE 128
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -67,18 +69,18 @@ typedef struct s_sprite
 
 typedef struct s_ray
 {
-	double	DirX;
-	double	DirY;
+	float	DirX;
+	float	DirY;
 	int		mapX;
 	int		mapY;
-	double	deltaDistX;
-	double	deltaDistY;
+	float	deltaDistX;
+	float	deltaDistY;
 	int		stepX;
 	int		stepY;
-	double	sideDistX;
-	double	sideDistY;
-	double	hitX;
-	double	hitY;
+	float	sideDistX;
+	float	sideDistY;
+	float	hitX;
+	float	hitY;
 }	t_ray;
 
 
@@ -96,11 +98,11 @@ typedef struct s_info
 
 typedef	struct s_player
 {
-	double	x;
-	double	y;
-	double dx;
-	double dy;
-	double a;
+	float	x;
+	float	y;
+	float dx;
+	float dy;
+	float a;
 }	t_player;
 
 typedef struct s_game
