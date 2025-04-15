@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/15 17:05:53 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:40:01 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,24 @@
 
 /*	Macros	*/
 # define PI M_PI
+# define RADIANS 0.0174533f
 # define WIDTH 1024
 # define HEIGHT 1024
 # define SIZE 128
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
+
+
+# define UP1 MLX_KEY_W
+# define DOWN1 MLX_KEY_S
+# define LEFT1 MLX_KEY_A
+# define RIGHT1 MLX_KEY_D
+# define UP2 MLX_KEY_UP
+# define DOWN2 MLX_KEY_DOWN
+# define LEFT2 MLX_KEY_LEFT
+# define RIGHT2 MLX_KEY_RIGHT
+
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -115,18 +127,6 @@ typedef struct s_game
 	t_sprite	sprite;
 	mlx_t		*mlx;
 }	t_game;
-
-typedef enum input
-{
-	UP1 = MLX_KEY_W,
-	DOWN1 = MLX_KEY_S,
-	LEFT1 = MLX_KEY_A,
-	RIGHT1 = MLX_KEY_D,
-	UP2 = MLX_KEY_UP,
-	DOWN2 = MLX_KEY_DOWN,
-	LEFT2 = MLX_KEY_LEFT,
-	RIGHT2 = MLX_KEY_RIGHT
-}	t_input;
 
 /*	Prototypes	*/
 //	game.c

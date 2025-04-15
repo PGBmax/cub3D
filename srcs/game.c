@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/15 17:24:38 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:43:23 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,15 @@ void	draw_line(t_game *game, float start_x, int i)
 	}
 	if (!DEBUG)
 	{
+		// dist = distance(ray.DirX - game->player->x, ray.DirY - game->player->y);
 		dist = fixed_dist(game, &ray);
 		height = (SIZE / dist) * (WIDTH / 2.f);
 		start_y = (HEIGHT - height) / 2.f;
 		end = start_y + height;
 		while (start_y < end)
 		{
-			mlx_put_pixel(game->screen, i, start_y, 0x5C4E4DFF);
+			if (start_y >= 0)
+				mlx_put_pixel(game->screen, i, start_y, 0x999999FF);
 			start_y++;
 		}
 	}
@@ -89,7 +91,6 @@ void	draw_ray(t_game *game)
 	i = 0;
 	frac = PI / 3.f / WIDTH;
 	start_x = game->player->a - PI / 6.f;
-	printf("i = %d\n", i);
 	while (i < WIDTH)
 	{
 		draw_line(game, start_x, i);
@@ -153,34 +154,41 @@ void	draw_map(t_game *game, int check)
 	}
 }
 
-void	key_hook(mlx_key_data_t key_data, t_game *game)
+void	key_hook(t_game *game)
 {
-	if (key_data.action != MLX_PRESS && key_data.action != MLX_REPEAT
-		&& key_data.key != MLX_KEY_ESCAPE)
-		return ;
-	if (key_data.key == UP1 || key_data.key == UP2)
+	if (mlx_is_key_down(game->mlx, UP1) || mlx_is_key_down(game->mlx, UP2))
 	{
 		game->player->x += game->player->dx;
 		game->player->y += game->player->dy;
 	}
-	if (key_data.key == DOWN1 || key_data.key == DOWN2)
+	if (mlx_is_key_down(game->mlx, DOWN1) || mlx_is_key_down(game->mlx, DOWN2))
 	{
 		game->player->x -= game->player->dx;
 		game->player->y -= game->player->dy;
 	}
-	if (key_data.key == LEFT1 || key_data.key == LEFT2)
+	if (mlx_is_key_down(game->mlx, LEFT1))
 	{
-		game->player->a -= 0.01f;
+		game->player->x += game->player->dy;
+		game->player->y -= game->player->dx;
+	}
+	if (mlx_is_key_down(game->mlx, RIGHT1))
+	{
+		game->player->x -= game->player->dy;
+		game->player->y += game->player->dx;
+	}
+	if (mlx_is_key_down(game->mlx, LEFT2))
+	{
+		game->player->a -= RADIANS;
 		if (game->player->a < 0)
-			game->player->a += 2.f*PI;
+			game->player->a += 2.f * PI;
 		game->player->dx = cos(game->player->a)*4.f;
 		game->player->dy = sin(game->player->a)*4.f;
 	}
-	if (key_data.key == RIGHT1 || key_data.key == RIGHT2)
+	if (mlx_is_key_down(game->mlx, RIGHT2))
 	{
-		game->player->a += 0.01f;
-		if (game->player->a > 2.f*PI)
-			game->player->a -= 2.f*PI;
+		game->player->a += RADIANS;
+		if (game->player->a > 2.f * PI)
+			game->player->a -= 2.f * PI;
 		game->player->dx = cos(game->player->a)*4.f;
 		game->player->dy = sin(game->player->a)*4.f;
 	}
@@ -209,19 +217,20 @@ void	ft_game(t_game *game)
 		mlx_put_pixel(game->sprite.player, 0, 0, 0x00FF00FF);
 	}
 	background = mlx_new_image(game->mlx, 1, 2);
-	mlx_put_pixel(background, 0, 0, 0xAABBCCFF);
-	mlx_put_pixel(background, 0, 1, 0xCCBBAAFF);
+	mlx_put_pixel(background, 0, 0, 0xFFFFFFFF);
+	mlx_put_pixel(background, 0, 1, 0x000000FF);
 	mlx_resize_image(background, WIDTH, HEIGHT);
 	mlx_image_to_window(game->mlx, background, 0 , 0);
 	game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(game->mlx, game->screen, 0, 0);
 	draw_map(game, 1);
+	draw_ray(game);
 	if (DEBUG)
 	{
 		mlx_resize_image(game->sprite.player, 8, 8);
 		mlx_image_to_window(game->mlx, game->sprite.player, game->player->x, game->player->y);
 	}
-	mlx_key_hook(game->mlx, (void (*))key_hook, (void *)game);
+	mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
 }
