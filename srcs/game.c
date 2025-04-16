@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/16 15:24:22 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:41:33 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ float fixed_dist(t_game *game, t_ray *ray)
 	delta_x = ray->DirX - game->player->x;
 	delta_y = ray->DirY - game->player->y;
 	angle = atan2(delta_y, delta_x) - game->player->a;
-	fixed_dist = distance(delta_x, delta_y) * cos(angle);
+	fixed_dist = distance(delta_x, delta_y) * cos(angle) * 0.55f;
+	printf("%f\n", fixed_dist);
 	return (fixed_dist);
 	
 }
@@ -65,28 +66,18 @@ void	draw_line(t_game *game, float start_x, int i)
 	sin_angle = sin(start_x);
 	while (!touch(ray.DirX, ray.DirY, game))
 	{
-		if (DEBUG)
-			mlx_put_pixel(game->screen, ray.DirX, ray.DirY, 0x0000FFFF);
 		ray.DirX += cos_angle;
 		ray.DirY += sin_angle;
-		// printf("1 : %f = ray.dirx   %f = ray.diry\n", ray.DirX, ray.DirY);
-		// ray.DirX = ((int)(ray.DirX) % game->mapsize[0] * SIZE) + (ray.DirX - (int)ray.DirX);
-		// ray.DirY = ((int)(ray.DirY) % game->mapsize[1] * SIZE) + (ray.DirY - (int)ray.DirY);
-		// printf("2 : %f = ray.dirx   %f = ray.diry\n", ray.DirX, ray.DirY);
 	}
-	if (!DEBUG)
+	dist = fixed_dist(game, &ray);
+	height = (SIZE / dist) * (WIDTH / 2.f);
+	start_y = (HEIGHT - height) / 2.f;
+	end = start_y + height;
+	while (start_y < end && start_y < HEIGHT)
 	{
-		// dist = distance(ray.DirX - game->player->x, ray.DirY - game->player->y);
-		dist = fixed_dist(game, &ray);
-		height = (SIZE / dist) * (WIDTH / 2.f);
-		start_y = (HEIGHT - height) / 2.f;
-		end = start_y + height;
-		while (start_y < end && start_y < HEIGHT)
-		{
-			if (start_y >= 0)
-				mlx_put_pixel(game->screen, i, start_y, 0x999999FF);
-			start_y++;
-		}
+		if (start_y >= 0)
+			mlx_put_pixel(game->screen, i, start_y, 0x999999FF);
+		start_y++;
 	}
 }
 
@@ -98,36 +89,11 @@ void	draw_ray(t_game *game)
 
 	i = 0;
 	frac = PI / 3.f / WIDTH;
-	start_x = game->player->a - PI / 6.f;
+	start_x = game->player->a - PI / (2.f*PI);
 	while (i < WIDTH)
 	{
 		draw_line(game, start_x, i);
 		start_x += frac;
-		i++;
-	}
-}
-
-void	draw_square(t_game *game, int x, int y, uint32_t color)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < SIZE)
-	{
-		j = 0;
-		while (j < SIZE)
-		{
-			mlx_put_pixel(game->screen, x + j, y + i, color);
-			if (DEBUG)
-			{
-				if (i == 0 || i == SIZE - 1 || j == 0 || j == SIZE - 1)
-					mlx_put_pixel(game->screen, x + j, y + i, 0x444444FF);
-				else
-					mlx_put_pixel(game->screen, x + j, y + i, color);
-			}
-			j++;
-		}
 		i++;
 	}
 }
@@ -146,13 +112,6 @@ void	draw_map(t_game *game, int check)
 		x = 0;
 		while (game->tab[y][x + 1])
 		{
-			if (DEBUG)
-			{
-				if (game->tab[y][x] == '1')
-					draw_square(game, x * SIZE, y * SIZE, 0xFFFFFFFF);
-				else if (game->tab[y][x] == '0' || game->tab[y][x] == 'N')
-					draw_square(game, x * SIZE, y * SIZE, 0x000000FF);
-			}
 			if (game->tab[y][x] == 'N' && check == 1)
 			{
 				game->player->x = x * SIZE + SIZE / 2.f;
@@ -165,28 +124,38 @@ void	draw_map(t_game *game, int check)
 	}
 }
 
+void	make_move(t_game *game, double dx, double dy)
+{
+	if ((mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT)
+		|| mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
+		&& (!mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL)
+		&& (!mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))))
+	{
+		dx *= 1.5f;
+		dy *= 1.5f;
+	}
+	if ((mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL)
+		|| mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
+		&& (!mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT)
+		&& (!mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))))
+	{
+		dx *= 0.5f;
+		dy *= 0.5f;
+	}
+	game->player->x += dx;
+	game->player->y += dy;
+}
+
 void	key_hook(t_game *game)
 {
 	if (mlx_is_key_down(game->mlx, UP1) || mlx_is_key_down(game->mlx, UP2))
-	{
-		game->player->x += game->player->dx;
-		game->player->y += game->player->dy;
-	}
+		make_move(game, game->player->dx, game->player->dy);
 	if (mlx_is_key_down(game->mlx, DOWN1) || mlx_is_key_down(game->mlx, DOWN2))
-	{
-		game->player->x -= game->player->dx;
-		game->player->y -= game->player->dy;
-	}
+		make_move(game, -1.f * game->player->dx, -1.f * game->player->dy);
 	if (mlx_is_key_down(game->mlx, LEFT1))
-	{
-		game->player->x += game->player->dy;
-		game->player->y -= game->player->dx;
-	}
+		make_move(game, game->player->dy, -1.f * game->player->dx);
 	if (mlx_is_key_down(game->mlx, RIGHT1))
-	{
-		game->player->x -= game->player->dy;
-		game->player->y += game->player->dx;
-	}
+		make_move(game, -1.f * game->player->dy, game->player->dx);
 	if (mlx_is_key_down(game->mlx, LEFT2))
 	{
 		game->player->a -= RADIANS;
@@ -212,6 +181,11 @@ void	key_hook(t_game *game)
 	draw_ray(game);
 }
 
+uint32_t rgb_to_hex32(int *rgb)
+{
+    return ((uint32_t)rgb[0] << 24) | ((uint32_t)rgb[1] << 16) | ((uint32_t)rgb[2] << 8) | 255;
+}
+
 void	ft_game(t_game *game)
 {
 	mlx_image_t *background;
@@ -232,8 +206,8 @@ void	ft_game(t_game *game)
 		mlx_put_pixel(game->sprite.player, 0, 0, 0x00FF00FF);
 	}
 	background = mlx_new_image(game->mlx, 1, 2);
-	mlx_put_pixel(background, 0, 0, 0xFFFFFFFF);
-	mlx_put_pixel(background, 0, 1, 0x000000FF);
+	mlx_put_pixel(background, 0, 0, rgb_to_hex32(game->info->info[1]));
+	mlx_put_pixel(background, 0, 1, rgb_to_hex32(game->info->info[0]));
 	mlx_resize_image(background, WIDTH, HEIGHT);
 	mlx_image_to_window(game->mlx, background, 0 , 0);
 	game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);

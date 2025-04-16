@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/16 14:06:51 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:22:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1024
-# define HEIGHT 1024
-# define SIZE 128
+# define WIDTH 1600
+# define HEIGHT 900
+# define SIZE 50
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
@@ -104,7 +104,7 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
-	int		fc[6];
+	int		info[2][3];
 	int 	start_index;
 }	t_info;
 
