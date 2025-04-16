@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/15 18:40:01 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:06:51 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_game
 	mlx_image_t	*screen;
 	t_sprite	sprite;
 	mlx_t		*mlx;
+	int			mapsize[2];
 }	t_game;
 
 /*	Prototypes	*/

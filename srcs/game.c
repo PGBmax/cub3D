@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/15 18:43:23 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:24:22 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 int touch(float px, float py, t_game *game)
 {
-	int x;
-	int y;
+	int x1;
+	int y1;
+	int x2;
+	int y2;
 
-	x = px / SIZE;
-	y = py / SIZE;
-	if (game->tab[y][x] == '1')
+	x1 = px / SIZE;
+	y1 = py / SIZE;
+	x2 = game->player->x / SIZE;
+	y2 = game->player->y / SIZE;
+	if (y1 < 0 || y1 >= game->mapsize[1] || x1 < 0 || x1 >= game->mapsize[0] || game->tab[y1][x1] != game->tab[y2][x2])
 		return (1);
 	return (0);
 }
@@ -65,6 +69,10 @@ void	draw_line(t_game *game, float start_x, int i)
 			mlx_put_pixel(game->screen, ray.DirX, ray.DirY, 0x0000FFFF);
 		ray.DirX += cos_angle;
 		ray.DirY += sin_angle;
+		// printf("1 : %f = ray.dirx   %f = ray.diry\n", ray.DirX, ray.DirY);
+		// ray.DirX = ((int)(ray.DirX) % game->mapsize[0] * SIZE) + (ray.DirX - (int)ray.DirX);
+		// ray.DirY = ((int)(ray.DirY) % game->mapsize[1] * SIZE) + (ray.DirY - (int)ray.DirY);
+		// printf("2 : %f = ray.dirx   %f = ray.diry\n", ray.DirX, ray.DirY);
 	}
 	if (!DEBUG)
 	{
@@ -73,7 +81,7 @@ void	draw_line(t_game *game, float start_x, int i)
 		height = (SIZE / dist) * (WIDTH / 2.f);
 		start_y = (HEIGHT - height) / 2.f;
 		end = start_y + height;
-		while (start_y < end)
+		while (start_y < end && start_y < HEIGHT)
 		{
 			if (start_y >= 0)
 				mlx_put_pixel(game->screen, i, start_y, 0x999999FF);
@@ -130,12 +138,14 @@ void	draw_map(t_game *game, int check)
 	int x;
 
 	y = 0;
+	mlx_resize_image(game->screen, 1, 1);
+	mlx_put_pixel(game->screen, 0, 0, 0x00000000);
+	mlx_resize_image(game->screen, WIDTH, HEIGHT);
 	while(game->tab[y])
 	{
 		x = 0;
-		while (game->tab[y][x])
+		while (game->tab[y][x + 1])
 		{
-			draw_square(game, x * SIZE, y * SIZE, 0x00000000);
 			if (DEBUG)
 			{
 				if (game->tab[y][x] == '1')
@@ -147,6 +157,7 @@ void	draw_map(t_game *game, int check)
 			{
 				game->player->x = x * SIZE + SIZE / 2.f;
 				game->player->y = y * SIZE + SIZE / 2.f;
+				game->tab[y][x] = '0';
 			}
 			x++;
 		}
@@ -204,9 +215,13 @@ void	key_hook(t_game *game)
 void	ft_game(t_game *game)
 {
 	mlx_image_t *background;
+
+	game->mapsize[1] = ft_tablen(game->tab);
+	game->mapsize[0] = ft_strlen(game->tab[0]);
 	game->player = ft_calloc(sizeof(t_player), 1);
-	game->player->dx = 1;
-	game->player->dy = 1;
+	game->player->a = 300;
+	game->player->dx = cos(game->player->a)*4.f;
+	game->player->dy = sin(game->player->a)*4.f;
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	if (!game->mlx)
@@ -233,4 +248,4 @@ void	ft_game(t_game *game)
 	mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
-}
+} 
