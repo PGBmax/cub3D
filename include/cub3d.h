@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/16 18:22:32 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:46:04 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1600
-# define HEIGHT 900
-# define SIZE 50
+# define WIDTH 1024
+# define HEIGHT 1024
+# define SIZE 128
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
@@ -69,7 +69,7 @@
 
 typedef struct s_textures
 {
-	mlx_texture_t	*wall[4];
+	mlx_texture_t	*wall;
 }					t_textures;
 
 typedef struct s_sprite
@@ -104,8 +104,9 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
-	int		info[2][3];
+	int		fc[6];
 	int 	start_index;
+	int		info[2][3];
 }	t_info;
 
 typedef	struct s_player
@@ -124,7 +125,8 @@ typedef struct s_game
 	t_info		*info;
 	char		**tab;
 	mlx_image_t	*screen;
-	t_sprite	sprite;
+	t_sprite	*sprite;
+	t_textures	*textures;
 	mlx_t		*mlx;
 	int			mapsize[2];
 }	t_game;
@@ -146,5 +148,7 @@ int		line_length(char *str);
 char	*void_changer(char *str);
 int		parse_tab(char **tab);
 int		get_map_info(t_game *game, int i);
+int		place_textures(t_game *game);
+int		convert_textures(t_game *game);
 
 #endif

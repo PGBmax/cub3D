@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/16 18:41:33 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:57:28 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	draw_line(t_game *game, float start_x, int i)
 	while (start_y < end && start_y < HEIGHT)
 	{
 		if (start_y >= 0)
-			mlx_put_pixel(game->screen, i, start_y, 0x999999FF);
+			mlx_put_pixel(game->screen, i, start_y, 0x111111FF);
 		start_y++;
 	}
 }
@@ -174,8 +174,8 @@ void	key_hook(t_game *game)
 	}
 	if (DEBUG)
 	{
-		game->sprite.player->instances->x = game->player->x;
-		game->sprite.player->instances->y = game->player->y;
+		game->sprite->player->instances->x = game->player->x;
+		game->sprite->player->instances->y = game->player->y;
 	}
 	draw_map(game, 0);
 	draw_ray(game);
@@ -200,25 +200,17 @@ void	ft_game(t_game *game)
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	if (!game->mlx)
 		error_msg(MLX_CANNOT_CREATE, NULL);
-	if (DEBUG)
-	{
-		game->sprite.player = mlx_new_image(game->mlx, 1, 1);
-		mlx_put_pixel(game->sprite.player, 0, 0, 0x00FF00FF);
-	}
 	background = mlx_new_image(game->mlx, 1, 2);
 	mlx_put_pixel(background, 0, 0, rgb_to_hex32(game->info->info[1]));
 	mlx_put_pixel(background, 0, 1, rgb_to_hex32(game->info->info[0]));
 	mlx_resize_image(background, WIDTH, HEIGHT);
 	mlx_image_to_window(game->mlx, background, 0 , 0);
 	game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	convert_textures(game);
+	mlx_image_to_window(game->mlx, game->sprite->wall, (int)roundf(game->player->x), (int)roundf(game->player->y));
 	mlx_image_to_window(game->mlx, game->screen, 0, 0);
 	draw_map(game, 1);
 	draw_ray(game);
-	if (DEBUG)
-	{
-		mlx_resize_image(game->sprite.player, 8, 8);
-		mlx_image_to_window(game->mlx, game->sprite.player, game->player->x, game->player->y);
-	}
 	mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
