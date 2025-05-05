@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/18 16:57:28 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:13:36 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <stdio.h>
+
 
 // Vérifie si une position donnée (px, py) touche un mur ou sort des limites de la carte
 int touch(float px, float py, t_game *game)
@@ -58,7 +59,7 @@ float fixed_dist(t_game *game, t_ray *ray)
     fixed_dist = distance(delta_x, delta_y) * cos(angle) * 0.55f;
 
     // Affiche la distance corrigée pour le débogage
-    printf("%f\n", fixed_dist);
+    //printf("%f\n", fixed_dist);
     return (fixed_dist);
 }
 
@@ -71,7 +72,10 @@ void draw_line(t_game *game, float start_x, int i)
     float dist;
     float height;
     float start_y;
+    float ty;
+    float c = 0.f;
     float end;
+    static float temp = 300.f;
 
     // Initialise la position du rayon à celle du joueur
     ray.DirX = game->player->x;
@@ -86,9 +90,12 @@ void draw_line(t_game *game, float start_x, int i)
     {
         ray.DirX += cos_angle;
         ray.DirY += sin_angle;
+        if (fixed_dist(game, &ray) > 2 * SIZE)
+            break;
     }
 
     // Calcule la distance corrigée et la hauteur du mur
+    // dist = distance(ray.DirX - game->player->x, ray.DirY - game->player->y);
     dist = fixed_dist(game, &ray);
     height = (SIZE / dist) * (WIDTH / 2.f);
 
@@ -96,12 +103,29 @@ void draw_line(t_game *game, float start_x, int i)
     start_y = (HEIGHT - height) / 2.f;
     end = start_y + height;
 
+    ty = 0;
+    float ty_step = 32.f / (float)HEIGHT;
     // Dessine la ligne verticale pixel par pixel
     while (start_y < end && start_y < HEIGHT)
     {
-        if (start_y >= 0)
-            mlx_put_pixel(game->screen, i, start_y, 0x111111FF); // Couleur du mur
+        c = all_textures[(int)ty];
+        if (start_y >= 0 && dist < 2 * SIZE)
+        {
+            if (c == 0)
+                mlx_put_pixel(game->screen, i, start_y, 0x000000FF);
+            else
+                mlx_put_pixel(game->screen, i, start_y, 0xFFFFFFFF);
+        }
+        else if (!(dist < 2 * SIZE))
+            mlx_put_pixel(game->screen, i, start_y, 0xFF0000FF);
+    // Couleur du mur
         start_y++;
+        ty = ty + ty_step;
+        if (game->player->a != temp)
+        {
+            printf("%f\n", game->player->a);
+            temp = game->player->a;
+        }
     }
 }
 
@@ -246,7 +270,9 @@ uint32_t rgb_to_hex32(int *rgb)
 // Initialise le jeu et lance la boucle principale
 void ft_game(t_game *game)
 {
-    mlx_image_t *background;
+    mlx_image_t     *background;
+    mlx_texture_t   *temp;
+    mlx_image_t     *temp_img;
 
     // Initialise la taille de la carte
     game->mapsize[1] = ft_tablen(game->tab);
@@ -254,7 +280,7 @@ void ft_game(t_game *game)
 
     // Initialise le joueur
     game->player = ft_calloc(sizeof(t_player), 1);
-    game->player->a = 300;
+    game->player->a = 270*RADIANS;
     game->player->dx = cos(game->player->a) * 4.f;
     game->player->dy = sin(game->player->a) * 4.f;
 
@@ -278,8 +304,9 @@ void ft_game(t_game *game)
     convert_textures(game);
 
     // Affiche les textures et l'écran
-    mlx_image_to_window(game->mlx, game->sprite->wall, (int)roundf(game->player->x), (int)roundf(game->player->y));
     mlx_image_to_window(game->mlx, game->screen, 0, 0);
+    temp = mlx_load_png("textures/wall.png");
+    temp_img = mlx_texture_to_image(game->mlx, temp);
 
     // Dessine la carte et les rayons
     draw_map(game, 1);
