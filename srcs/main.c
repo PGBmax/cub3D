@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/18 16:09:36 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:09:17 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int ac, char **av)
 	ft_printf("%d\n", game->info->start_index);
 	game->tab = get_map_as_tab(game->map, game->info->start_index - 1);
 	ft_tabprint(game->tab, 0);
-	if (!parse_tab(game->tab))
+	if (!parse_tab(game, 0, 0, 0))
 	{
 		free(game->info);
 		error_msg(NOT_CLOSE, av[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/05 18:13:36 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:28:31 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void draw_line(t_game *game, float start_x, int i)
     // Dessine la ligne verticale pixel par pixel
     while (start_y < end && start_y < HEIGHT)
     {
-        c = all_textures[(int)ty];
         if (start_y >= 0 && dist < 2 * SIZE)
         {
             if (c == 0)
@@ -157,7 +156,6 @@ void draw_map(t_game *game, int check)
     int x;
 
     y = 0;
-
     // Réinitialise l'image de la carte
     mlx_resize_image(game->screen, 1, 1);
     mlx_put_pixel(game->screen, 0, 0, 0x00000000);
@@ -170,12 +168,12 @@ void draw_map(t_game *game, int check)
         while (game->tab[y][x + 1])
         {
             // Place le joueur si un 'N' est trouvé et que check est activé
-            if (game->tab[y][x] == 'N' && check == 1)
-            {
-                game->player->x = x * SIZE + SIZE / 2.f;
-                game->player->y = y * SIZE + SIZE / 2.f;
-                game->tab[y][x] = '0'; // Remplace 'N' par '0'
-            }
+			if (game->tab[y][x] == game->info->pos && check == 1)
+			{
+				game->player->x = x * SIZE + SIZE / 2.f;
+				game->player->y = y * SIZE + SIZE / 2.f;
+				game->tab[y][x] = '0'; // Remplace 'N' par '0'
+			}
             x++;
         }
         y++;
@@ -280,7 +278,14 @@ void ft_game(t_game *game)
 
     // Initialise le joueur
     game->player = ft_calloc(sizeof(t_player), 1);
-    game->player->a = 270*RADIANS;
+    if (game->info->pos == 'E')
+		game->player->a = 0*RADIANS;
+	if (game->info->pos == 'N')
+		game->player->a = 270*RADIANS;
+	if (game->info->pos == 'W')
+		game->player->a = 180*RADIANS;
+	if (game->info->pos == 'S')
+		game->player->a = 90*RADIANS;
     game->player->dx = cos(game->player->a) * 4.f;
     game->player->dy = sin(game->player->a) * 4.f;
 

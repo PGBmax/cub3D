@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/10 17:32:35 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:12:30 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,25 +116,27 @@ int edge_parsing(char **tab)
 	return (1);
 }
 
-int parse_tab(char **tab)
+int parse_tab(t_game *game, int i, int j, int _bool)
 {
-	int i;
-	int j;
-
-	if (!edge_parsing(tab))
+	if (!edge_parsing(game->tab))
 		return (0);
-	i = 0;
-	while (tab[i])
+	while (game->tab[i])
 	{
 		j = 0;
-		// ft_printf("%s\n", tab[i]);
-		while (tab[i][j])
+		while (game->tab[i][j])
 		{
-			// ft_printf(RED "i : %d, j : %d, tab[i][j] : %c\n" RST, i, j, tab[i][j]);
-			if (tab[i][j] != '1' && tab[i][j] != ' ' && tab[i][j] != '\t'
-				&& tab[i][j] != '\n' && tab[i][j] != '\0')
-				if (!check_hole(tab, i, j))
+			if (game->tab[i][j] != '1' && game->tab[i][j] != ' ' && game->tab[i][j] != '\t'
+				&& game->tab[i][j] != '\n' && game->tab[i][j] != '\0')
+			if (!check_hole(game->tab, i, j))
+				return (0);
+			if (game->tab[i][j] == 'S' || game->tab[i][j] == 'W' 
+				|| game->tab[i][j] == 'N' || game->tab[i][j] == 'E')
+			{
+				if (_bool == 1)
 					return (0);
+				_bool = 1;
+				game->info->pos = game->tab[i][j];
+			}
 			j++;
 		}
 		i++;
