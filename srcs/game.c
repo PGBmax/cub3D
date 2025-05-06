@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/06 14:28:31 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:05:33 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <stdio.h>
 
+uint32_t rgb_to_hex32(int *rgb)
+{
+    return ((uint32_t)rgb[0] << 24) | ((uint32_t)rgb[1] << 16) | ((uint32_t)rgb[2] << 8) | 255;
+}
 
 // Vérifie si une position donnée (px, py) touche un mur ou sort des limites de la carte
 int touch(float px, float py, t_game *game)
@@ -73,9 +77,8 @@ void draw_line(t_game *game, float start_x, int i)
     float height;
     float start_y;
     float ty;
-    float c = 0.f;
     float end;
-    static float temp = 300.f;
+    float temp;
 
     // Initialise la position du rayon à celle du joueur
     ray.DirX = game->player->x;
@@ -90,12 +93,9 @@ void draw_line(t_game *game, float start_x, int i)
     {
         ray.DirX += cos_angle;
         ray.DirY += sin_angle;
-        if (fixed_dist(game, &ray) > 2 * SIZE)
-            break;
     }
 
     // Calcule la distance corrigée et la hauteur du mur
-    // dist = distance(ray.DirX - game->player->x, ray.DirY - game->player->y);
     dist = fixed_dist(game, &ray);
     height = (SIZE / dist) * (WIDTH / 2.f);
 
@@ -104,19 +104,12 @@ void draw_line(t_game *game, float start_x, int i)
     end = start_y + height;
 
     ty = 0;
-    float ty_step = 32.f / (float)HEIGHT;
+    float ty_step = SIZE / (float)HEIGHT;
     // Dessine la ligne verticale pixel par pixel
     while (start_y < end && start_y < HEIGHT)
     {
-        if (start_y >= 0 && dist < 2 * SIZE)
-        {
-            if (c == 0)
-                mlx_put_pixel(game->screen, i, start_y, 0x000000FF);
-            else
-                mlx_put_pixel(game->screen, i, start_y, 0xFFFFFFFF);
-        }
-        else if (!(dist < 2 * SIZE))
-            mlx_put_pixel(game->screen, i, start_y, 0xFF0000FF);
+        if (start_y >= 0)
+            mlx_put_pixel(game->screen, i, start_y, 0x000000FF);
     // Couleur du mur
         start_y++;
         ty = ty + ty_step;
@@ -202,10 +195,22 @@ void make_move(t_game *game, double dx, double dy)
         dx *= 0.5f;
         dy *= 0.5f;
     }
-
+    
+    // Fix le mouvement en diagonal
+    if (((mlx_is_key_down(game->mlx, UP1) || mlx_is_key_down(game->mlx, UP2))
+        && (!mlx_is_key_down(game->mlx, DOWN1) || !mlx_is_key_down(game->mlx, DOWN2)))
+        || ((mlx_is_key_down(game->mlx, DOWN1) || mlx_is_key_down(game->mlx, DOWN2))
+        && (!mlx_is_key_down(game->mlx, UP1) || !mlx_is_key_down(game->mlx, UP2)))
+        || ((mlx_is_key_down(game->mlx, LEFT1) && mlx_is_key_down(game->mlx, !RIGHT1)))
+        || ((mlx_is_key_down(game->mlx, RIGHT1) && mlx_is_key_down(game->mlx, !LEFT1))))
+    {
+        dx *= 0.707106781f;
+        dy *= 0.707106781f;
+    }
+    
     // Met à jour la position du joueur
-    game->player->x += dx;
-    game->player->y += dy;
+    game->player->x += dx * 1.2f;
+    game->player->y += dy * 1.2f;
 }
 
 // Gère les entrées clavier pour déplacer le joueur et tourner la caméra
@@ -260,17 +265,11 @@ void key_hook(t_game *game)
 }
 
 // Convertit une couleur RGB en format hexadécimal 32 bits
-uint32_t rgb_to_hex32(int *rgb)
-{
-    return ((uint32_t)rgb[0] << 24) | ((uint32_t)rgb[1] << 16) | ((uint32_t)rgb[2] << 8) | 255;
-}
 
 // Initialise le jeu et lance la boucle principale
 void ft_game(t_game *game)
 {
     mlx_image_t     *background;
-    mlx_texture_t   *temp;
-    mlx_image_t     *temp_img;
 
     // Initialise la taille de la carte
     game->mapsize[1] = ft_tablen(game->tab);
@@ -310,8 +309,9 @@ void ft_game(t_game *game)
 
     // Affiche les textures et l'écran
     mlx_image_to_window(game->mlx, game->screen, 0, 0);
-    temp = mlx_load_png("textures/wall.png");
-    temp_img = mlx_texture_to_image(game->mlx, temp);
+    game->textures->wall = mlx_load_png("textures/wall.png");
+    game->sprite->wall = mlx_texture_to_image(game->mlx, game->textures->wall);
+    mlx_resize_image(game->sprite->wall, SIZE, SIZE);
 
     // Dessine la carte et les rayons
     draw_map(game, 1);
