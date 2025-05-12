@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/06 14:12:30 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:54:52 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_map    *get_map_as_list(char *argv)
         else
             ft_lstadd_back(&map, ft_lstnew(tmp));
     }
+	ft_printf("\n");
     free(tmp);
     close(fd);
     return (map);

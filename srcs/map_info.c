@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_info.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/07 16:41:33 by pboucher          #+#    #+#             */
+/*   Updated: 2025/05/07 16:52:25 by pboucher         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int check_info(t_game *game)
@@ -29,6 +41,13 @@ int check_info(t_game *game)
 
 }
 
+char	*dup_cutendl(char *str)
+{
+	char *dup;
+	dup = ft_strdup(str);
+	dup[ft_strlen(dup) - 1] = '\0';
+	return (dup);
+}
 
 int	get_map_info(t_game *game, int i)
 {
@@ -41,13 +60,13 @@ int	get_map_info(t_game *game, int i)
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->content, "NO ", 3) && !game->info->north)
-			game->info->north = &tmp->content[2];
+			game->info->north = dup_cutendl(&tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "SO ", 3) && !game->info->south)
-			game->info->south = &tmp->content[2];
+			game->info->south = dup_cutendl(&tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "WE ", 3) && !game->info->west)
-			game->info->west = &tmp->content[2];
+			game->info->west = dup_cutendl(&tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "EA ", 3) && !game->info->east)
-			game->info->east = &tmp->content[2];
+			game->info->east = dup_cutendl(&tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "F ", 2) && !game->info->floor)
 			game->info->floor = &tmp->content[2];
 		else if (!ft_strncmp(tmp->content, "C ", 2) && !game->info->ceiling)

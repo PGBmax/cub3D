@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/06 14:12:18 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:39:44 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1024
-# define HEIGHT 1024
-# define SIZE 160
+# define WIDTH 1600
+# define HEIGHT 900
+# define SIZE 200
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
@@ -69,14 +69,19 @@
 
 typedef struct s_textures
 {
-	mlx_texture_t	*wall;
+	mlx_texture_t	*north;
+	mlx_texture_t	*south;
+	mlx_texture_t	*west;
+	mlx_texture_t	*east;
 }					t_textures;
 
 typedef struct s_sprite
 {
-	mlx_image_t	*player;
-	mlx_image_t	*wall;
-	mlx_image_t	*ground;
+	mlx_image_t *player;
+	mlx_image_t	*north;
+	mlx_image_t	*south;
+	mlx_image_t	*west;
+	mlx_image_t	*east;
 }				t_sprite;
 
 typedef struct s_ray
