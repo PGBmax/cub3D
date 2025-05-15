@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/12 14:39:44 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:41:22 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,18 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1600
-# define HEIGHT 900
-# define SIZE 200
-# ifndef DEBUG
-#  define DEBUG 0
-# endif
+# define WIDTH 1280
+# define HEIGHT 960
+
+# define MOVESPD 0.05f
 
 
-# define UP1 MLX_KEY_W
-# define DOWN1 MLX_KEY_S
-# define LEFT1 MLX_KEY_A
-# define RIGHT1 MLX_KEY_D
-# define UP2 MLX_KEY_UP
-# define DOWN2 MLX_KEY_DOWN
-# define LEFT2 MLX_KEY_LEFT
-# define RIGHT2 MLX_KEY_RIGHT
+# define UP MLX_KEY_W
+# define DOWN MLX_KEY_S
+# define LEFT MLX_KEY_A
+# define RIGHT MLX_KEY_D
+# define LEFT_R MLX_KEY_LEFT
+# define RIGHT_R MLX_KEY_RIGHT
 
 
 /*	Colors	*/
@@ -73,6 +69,7 @@ typedef struct s_textures
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
+	mlx_texture_t	*icon;
 }					t_textures;
 
 typedef struct s_sprite
@@ -86,18 +83,42 @@ typedef struct s_sprite
 
 typedef struct s_ray
 {
-	float	DirX;
-	float	DirY;
-	int		mapX;
-	int		mapY;
-	float	deltaDistX;
-	float	deltaDistY;
-	int		stepX;
-	int		stepY;
-	float	sideDistX;
-	float	sideDistY;
-	float	hitX;
-	float	hitY;
+	float posX;
+	float posY;
+	float dirX;
+	float dirY;
+	float planeX;
+	float planeY;
+
+	float cameraX;
+	float rayDirX;
+	float rayDirY;
+
+	int mapX;
+	int mapY;
+
+	float sideDistX;
+	float sideDistY;
+
+	float deltaDistX;
+	float deltaDistY;
+	float perpWallDist;
+
+	int stepX;
+	int stepY;
+
+	int hit;
+	int side;
+
+	int lineHeight;
+	int drawStart;
+	int drawEnd;
+
+	float oldDirX;
+	float oldPlaneX;
+	
+	uint32_t color;
+
 }	t_ray;
 
 
@@ -121,6 +142,10 @@ typedef	struct s_player
 	float	y;
 	float 	dx;
 	float 	dy;
+	float	px;
+	float	py;
+	float	time;
+	float	oldtime;
 	float 	a;
 }	t_player;
 
@@ -133,6 +158,7 @@ typedef struct s_game
 	mlx_image_t	*screen;
 	t_sprite	*sprite;
 	t_textures	*textures;
+	t_ray		*r;
 	mlx_t		*mlx;
 	int			mapsize[2];
 }	t_game;
