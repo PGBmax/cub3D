@@ -25,10 +25,11 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1280
-# define HEIGHT 960
+# define WIDTH 640
+# define HEIGHT 480
 
 # define MOVESPD 0.05f
+# define ROTSPD 0.9f
 
 
 # define UP MLX_KEY_W
@@ -116,6 +117,13 @@ typedef struct s_ray
 
 	float oldDirX;
 	float oldPlaneX;
+
+	float time;
+	float oldTime;
+	float frameTime;
+	
+	float moveSpeed;
+	float rotSpeed;
 	
 	uint32_t color;
 
