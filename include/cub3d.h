@@ -25,11 +25,11 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 1600
+# define HEIGHT 900
 
 # define MOVESPD 0.05f
-# define ROTSPD 0.9f
+# define ROTSPD 0.00005f
 
 
 # define UP MLX_KEY_W

@@ -153,37 +153,23 @@ void    key_hook(t_game *game)
         if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * MOVESPD)] == '0')
             game->r->posY -= game->r->dirY * MOVESPD;
     }
-    if (mlx_is_key_down(game->mlx, RIGHT))
-    {
-        if (game->tab[(int)(game->r->posX - game->r->dirX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX -= game->r->dirX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->dirY * MOVESPD)] == '0')
-            game->r->posY += game->r->dirY * MOVESPD;
-    }
-    if (mlx_is_key_down(game->mlx, LEFT))
-    {
-        if (game->tab[(int)(game->r->posX + game->r->dirX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX += game->r->dirX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * MOVESPD)] == '0')
-            game->r->posY -= game->r->dirY * MOVESPD;
-    }
     if (mlx_is_key_down(game->mlx, RIGHT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(-ROTSPD) - game->r->dirY * sinf(-ROTSPD);
-        game->r->dirY = game->r->oldDirX * sinf(-ROTSPD) + game->r->dirY + cosf(-ROTSPD);
+        game->r->dirX = game->r->dirX * cos(-ROTSPD) - game->r->dirY * sin(-ROTSPD);
+        game->r->dirY = game->r->oldDirX * sin(-ROTSPD) + game->r->dirY * cos(-ROTSPD);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(-ROTSPD) - game->r->planeY * sinf(-ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sinf(-ROTSPD) + game->r->planeY * cosf(-ROTSPD);
+        game->r->planeX = game->r->planeX * cos(-ROTSPD) - game->r->planeY * sin(-ROTSPD);
+        game->r->planeY = game->r->oldPlaneX * sin(-ROTSPD) + game->r->planeY * cos(-ROTSPD);
     }
     if (mlx_is_key_down(game->mlx, LEFT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(ROTSPD) - game->r->dirY * sinf(ROTSPD);
-        game->r->dirY = game->r->oldDirX * sinf(ROTSPD) + game->r->dirY + cosf(ROTSPD);
+        game->r->dirX = game->r->dirX * cos(ROTSPD) - game->r->dirY * sin(ROTSPD);
+        game->r->dirY = game->r->oldDirX * sin(ROTSPD) + game->r->dirY * cos(ROTSPD);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(ROTSPD) - game->r->planeY * sinf(ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sinf(ROTSPD) + game->r->planeY * cosf(ROTSPD);
+        game->r->planeX = game->r->planeX * cos(ROTSPD) - game->r->planeY * sin(ROTSPD);
+        game->r->planeY = game->r->oldPlaneX * sin(ROTSPD) + game->r->planeY * cos(ROTSPD);
     }
 }
 
