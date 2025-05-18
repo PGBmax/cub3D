@@ -51,13 +51,16 @@ void    draw_line(t_game *game, t_ray *r, int x)
     
     i = -1;
     while (++i < r->drawStart)
-        mlx_put_pixel(game->screen, x, i, rgb_to_hex32(game->info->info[1]));
-    // r->drawStart -= 1;
+        if (i % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, i, rgb_to_hex32(game->info->info[1]));
+    r->drawStart -= 1;
     while (++r->drawStart <= r->drawEnd)
-        mlx_put_pixel(game->screen, x, r->drawStart, r->color);
-    // r->drawStart -= 1;
+        if (r->drawStart % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, r->drawStart, r->color);
+    r->drawStart -= 1;
     while (++r->drawStart < HEIGHT)
-        mlx_put_pixel(game->screen, x, r->drawStart, rgb_to_hex32(game->info->info[0]));
+        if (r->drawStart % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, r->drawStart, rgb_to_hex32(game->info->info[0]));
 }
 
 void    draw_ray(t_game *game)
@@ -129,7 +132,8 @@ void    draw_ray(t_game *game)
         game->r->color = 0x00FF00FF;
         if (game->r->side == 1)
             game->r->color = game->r->color / 1.5f;
-        draw_line(game, game->r, x);
+        if (x % DENSITY == 0)
+            draw_line(game, game->r, x);
     }
 }
 
@@ -153,23 +157,73 @@ void    key_hook(t_game *game)
         if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * MOVESPD)] == '0')
             game->r->posY -= game->r->dirY * MOVESPD;
     }
+    if (mlx_is_key_down(game->mlx, RIGHT))
+    {
+        if (game->tab[(int)(game->r->posX + game->r->planeX * MOVESPD)][(int)game->r->posY] == '0')
+            game->r->posX += game->r->planeX * MOVESPD;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->planeY * MOVESPD)] == '0')
+            game->r->posY += game->r->planeY * MOVESPD;
+    }
+    if (mlx_is_key_down(game->mlx, LEFT))
+    {
+        if (game->tab[(int)(game->r->posX - game->r->planeX * MOVESPD)][(int)game->r->posY] == '0')
+            game->r->posX -= game->r->planeX * MOVESPD;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->planeY * MOVESPD)] == '0')
+            game->r->posY -= game->r->planeY * MOVESPD;
+    }
     if (mlx_is_key_down(game->mlx, RIGHT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cos(-ROTSPD) - game->r->dirY * sin(-ROTSPD);
-        game->r->dirY = game->r->oldDirX * sin(-ROTSPD) + game->r->dirY * cos(-ROTSPD);
+        game->r->dirX = game->r->dirX * cosf(-ROTSPD) - game->r->dirY * sinf(-ROTSPD);
+        game->r->dirY = game->r->oldDirX * sinf(-ROTSPD) + game->r->dirY * cosf(-ROTSPD);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cos(-ROTSPD) - game->r->planeY * sin(-ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sin(-ROTSPD) + game->r->planeY * cos(-ROTSPD);
+        game->r->planeX = game->r->planeX * cosf(-ROTSPD) - game->r->planeY * sinf(-ROTSPD);
+        game->r->planeY = game->r->oldPlaneX * sinf(-ROTSPD) + game->r->planeY * cosf(-ROTSPD);
     }
     if (mlx_is_key_down(game->mlx, LEFT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cos(ROTSPD) - game->r->dirY * sin(ROTSPD);
-        game->r->dirY = game->r->oldDirX * sin(ROTSPD) + game->r->dirY * cos(ROTSPD);
+        game->r->dirX = game->r->dirX * cosf(ROTSPD) - game->r->dirY * sinf(ROTSPD);
+        game->r->dirY = game->r->oldDirX * sinf(ROTSPD) + game->r->dirY * cosf(ROTSPD);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cos(ROTSPD) - game->r->planeY * sin(ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sin(ROTSPD) + game->r->planeY * cos(ROTSPD);
+        game->r->planeX = game->r->planeX * cosf(ROTSPD) - game->r->planeY * sinf(ROTSPD);
+        game->r->planeY = game->r->oldPlaneX * sinf(ROTSPD) + game->r->planeY * cosf(ROTSPD);
+    }
+}
+
+void game_init(t_game *game)
+{
+    game->r = ft_calloc(sizeof(t_ray), 1);
+    game->r->posX = game->player->y + 0.5f;
+    game->r->posY = game->player->x + 0.5f;
+    if (game->info->pos == 'N')
+    {
+        game->r->dirX = -1.f;
+        game->r->dirY = 0.f;
+        game->r->planeX = 0.f;
+        game->r->planeY = 0.66f;
+    }
+    if (game->info->pos == 'W')
+    {
+        game->r->dirX = 0.f;
+        game->r->dirY = -1.f;
+        game->r->planeX = -0.66f;
+        game->r->planeY = 0.f;
+    }
+    if (game->info->pos == 'S')
+    {
+        game->r->dirX = 1.f;
+        game->r->dirY = 0.f;
+        game->r->planeX = 0.f;
+        game->r->planeY = -0.66f;
+    }
+
+    if (game->info->pos == 'E')
+    {
+        game->r->dirX = 0.f;
+        game->r->dirY = 1.f;
+        game->r->planeX = 0.66f;
+        game->r->planeY = 0.f;
     }
 }
 
@@ -189,9 +243,9 @@ void ft_game(t_game *game)
     
     // Crée un fond d'écran avec les couleurs du plafond et du sol
     background = mlx_new_image(game->mlx, 1, 1);
-    // mlx_put_pixel(background, 0, 0, 0x000000FF); // Couleur du plafond
-    // mlx_resize_image(background, WIDTH, HEIGHT);
-    // mlx_image_to_window(game->mlx, background, 0 , 0);
+    mlx_put_pixel(background, 0, 0, 0x000000FF); // Couleur du plafond
+    mlx_resize_image(background, WIDTH, HEIGHT);
+    mlx_image_to_window(game->mlx, background, 0 , 0);
     
     // Crée une image pour l'écran
     game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);
@@ -200,15 +254,7 @@ void ft_game(t_game *game)
     mlx_image_to_window(game->mlx, game->screen, 0, 0);
     game->player = ft_calloc(sizeof(t_player), 1);
     draw_map(game);
-    
-    game->r = ft_calloc(sizeof(t_ray), 1);
-    game->r->posX = game->player->y + 0.5f;
-    game->r->posY = game->player->x + 0.5f;
-    game->r->dirX = -1.f;
-    game->r->dirY = 0.f;
-    game->r->planeX = 0.f;
-    game->r->planeY = 0.66f;
-    game->r->time = game->mlx->delta_time;
+    game_init(game);
     // Dessine la carte et les rayons
     
     // Configure la boucle principale
