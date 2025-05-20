@@ -12,4 +12,6 @@ void	free_game(t_game *game)
 	if (game->info->west)
 		free(game->info->west);
 	free(game->info);
+	if (game->r)
+		free(game->r);
 }

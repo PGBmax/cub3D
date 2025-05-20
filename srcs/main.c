@@ -15,18 +15,21 @@
 int main(int ac, char **av)
 {
 	t_game	*game;
-	
+	int 	fd;
+
 	if (ac != 2)
 		error_msg(CORRECT_USAGE, NULL);
 	if (!is_valid(av[1]))
 		error_msg(INVALID_TERM, av[1]);
-	if (open(av[1], O_RDONLY) == -1)
+	fd = open(av[1], O_RDONLY) == -1;
+	if (fd == 1)
 		error_msg(CANNOT_OPEN, av[1]);
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
 		error_msg(MALLOC_ERROR, NULL);
 	set_tgame(game);
 	game->map = get_map_as_list(av[1]);
+	close(fd);
 	if (!get_map_info(game, 0))
 	{
 		if (game->info)
@@ -48,4 +51,5 @@ int main(int ac, char **av)
 	ft_lstclear(&game->map, free);
 	ft_tabfree(game->tab, ft_tablen(game->tab));
 	free(game);
+	close(fd);
 }

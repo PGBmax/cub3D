@@ -22,18 +22,18 @@ int check_info(t_game *game)
 	if (game->info->north && game->info->south && game->info->west
 		&& game->info->east && game->info->floor && game->info->ceiling)
 		{
-			tab1 = malloc(ft_strlen(game->info->floor));
-			tab2 = malloc(ft_strlen(game->info->ceiling));
+			tab1 = malloc(ft_strlen(game->info->floor) - 1);
+			tab2 = malloc(ft_strlen(game->info->ceiling) - 1);
 			while (i < 3)
 			{
 				tab1 = ft_split(game->info->floor, ',');
 				tab2 = ft_split(game->info->ceiling, ',');
 				game->info->info[0][i] = ft_atoi(tab1[i]);
 				game->info->info[1][i] = ft_atoi(tab2[i]);
+				ft_tabfree(tab1, 3);
+				ft_tabfree(tab2, 3);
 				i++;
 			}
-			ft_tabfree(tab1, 4);
-			ft_tabfree(tab2, 4);
 			return (1);
 		}
 	else
@@ -46,7 +46,6 @@ char	*dup_cutendl(char *str)
 	char *dup;
 	dup = ft_strdup(str);
 	dup[ft_strlen(dup) - 1] = '\0';
-	// free(str);
 	return (dup);
 }
 

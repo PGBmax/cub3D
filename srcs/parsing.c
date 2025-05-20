@@ -15,14 +15,17 @@
 bool	is_valid(char *path)
 {
 	int	i;
+	int fd;
 
 	i = ft_strlen(path);
 	if (i < 4)
 		return (false);
 	if (ft_strcmp(&path[i - 4], ".cub"))
 		return (false);
-	if (!open(path, O_RDONLY))
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
 		return (false);
+	close (fd);	
 	return (true);
 }
 
