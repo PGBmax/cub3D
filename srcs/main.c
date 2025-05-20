@@ -43,7 +43,8 @@ int main(int ac, char **av)
 		error_msg(NOT_CLOSE, av[1]);
 	}
 	ft_game(game);
-	free(game->info);
+	free_game(game);
+	free(game->player);
 	ft_lstclear(&game->map, free);
 	ft_tabfree(game->tab, ft_tablen(game->tab));
 	free(game);

@@ -32,8 +32,8 @@ int check_info(t_game *game)
 				game->info->info[1][i] = ft_atoi(tab2[i]);
 				i++;
 			}
-			ft_tabfree(tab1, 3);
-			ft_tabfree(tab2, 3);
+			ft_tabfree(tab1, 4);
+			ft_tabfree(tab2, 4);
 			return (1);
 		}
 	else
@@ -46,6 +46,7 @@ char	*dup_cutendl(char *str)
 	char *dup;
 	dup = ft_strdup(str);
 	dup[ft_strlen(dup) - 1] = '\0';
+	// free(str);
 	return (dup);
 }
 

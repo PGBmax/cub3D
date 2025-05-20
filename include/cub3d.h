@@ -187,5 +187,6 @@ int		parse_tab(t_game *game, int i, int j, int _bool);
 int		get_map_info(t_game *game, int i);
 int		place_textures(t_game *game);
 int		convert_textures(t_game *game);
+void	free_game(t_game *game);
 
 #endif

@@ -207,14 +207,35 @@ void    key_hook(t_game *game)
     }
 }
 
+
+void    cursor_hook(t_game *game)
+{
+    static int x = {WIDTH / 2};
+    static int y = {HEIGHT / 2};
+    // int oldx;
+    float rot;
+
+    rot = ROTSPD;
+    mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
+    rot = rot * (x - game->mlx->width / 2) * 0.015;
+    mlx_get_mouse_pos(game->mlx, &x, &y);
+    game->r->oldDirX = game->r->dirX;
+    game->r->dirX = game->r->dirX * cos(-rot) - game->r->dirY * sin(-rot);
+    game->r->dirY = game->r->oldDirX * sin(-rot) + game->r->dirY * cos(-rot);
+    game->r->oldPlaneX = game->r->planeX;
+    game->r->planeX = game->r->planeX * cos(-rot) - game->r->planeY * sin(-rot);
+    game->r->planeY = game->r->oldPlaneX * sin(-rot) + game->r->planeY * cos(-rot);
+    mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
+}
+
 void game_init(t_game *game)
 {
     game->r = ft_calloc(sizeof(t_ray), 1);
     game->r->posX = game->player->y + 0.5f;
     game->r->posY = game->player->x + 0.5f;
-    game->textures->north = mlx_load_png(game->info->north);
-    game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
-    mlx_resize_image(game->sprite->north, 64, 64);
+    // game->textures->north = mlx_load_png(game->info->north);
+    // game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
+    // mlx_resize_image(game->sprite->north, 64, 64);
     if (game->info->pos == 'N')
     {
         game->r->dirX = -1.f;
@@ -277,6 +298,7 @@ void ft_game(t_game *game)
     
     // Configure la boucle principale
     mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
+    mlx_cursor_hook(game->mlx, (void (*)) cursor_hook, (void *)game);
     mlx_loop(game->mlx);
 
     // Termine MLX42
