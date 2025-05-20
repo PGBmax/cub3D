@@ -142,52 +142,68 @@ void    key_hook(t_game *game)
     mlx_resize_image(game->screen, 1, 1);
     mlx_put_pixel(game->screen, 0, 0, 0x00000000);
     mlx_resize_image(game->screen, WIDTH, HEIGHT);
+    game->r->moveSpeed = MOVESPD;
+    game->r->rotSpeed = ROTSPD;
     draw_ray(game);
+    if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+        mlx_close_window(game->mlx);
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
+    {
+        game->r->moveSpeed *= 1.5f;
+        game->r->rotSpeed *= 1.5f;
+    }
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
+    {
+        game->r->moveSpeed *= 0.66f;
+        game->r->rotSpeed *= 0.66f;
+    }
     if (mlx_is_key_down(game->mlx, UP))
     {
-        if (game->tab[(int)(game->r->posX + game->r->dirX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX += game->r->dirX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->dirY * MOVESPD)] == '0')
-            game->r->posY += game->r->dirY * MOVESPD;
+        if (game->tab[(int)(game->r->posX + game->r->dirX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+            game->r->posX += game->r->dirX * game->r->moveSpeed;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->dirY * game->r->moveSpeed)] == '0')
+            game->r->posY += game->r->dirY * game->r->moveSpeed;
     }
     if (mlx_is_key_down(game->mlx, DOWN))
     {
-        if (game->tab[(int)(game->r->posX - game->r->dirX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX -= game->r->dirX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * MOVESPD)] == '0')
-            game->r->posY -= game->r->dirY * MOVESPD;
+        if (game->tab[(int)(game->r->posX - game->r->dirX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+            game->r->posX -= game->r->dirX * game->r->moveSpeed;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * game->r->moveSpeed)] == '0')
+            game->r->posY -= game->r->dirY * game->r->moveSpeed;
     }
     if (mlx_is_key_down(game->mlx, RIGHT))
     {
-        if (game->tab[(int)(game->r->posX + game->r->planeX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX += game->r->planeX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->planeY * MOVESPD)] == '0')
-            game->r->posY += game->r->planeY * MOVESPD;
+        if (game->tab[(int)(game->r->posX + game->r->planeX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+            game->r->posX += game->r->planeX * game->r->moveSpeed;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->planeY * game->r->moveSpeed)] == '0')
+            game->r->posY += game->r->planeY * game->r->moveSpeed;
     }
     if (mlx_is_key_down(game->mlx, LEFT))
     {
-        if (game->tab[(int)(game->r->posX - game->r->planeX * MOVESPD)][(int)game->r->posY] == '0')
-            game->r->posX -= game->r->planeX * MOVESPD;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->planeY * MOVESPD)] == '0')
-            game->r->posY -= game->r->planeY * MOVESPD;
+        if (game->tab[(int)(game->r->posX - game->r->planeX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+            game->r->posX -= game->r->planeX * game->r->moveSpeed;
+        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->planeY * game->r->moveSpeed)] == '0')
+            game->r->posY -= game->r->planeY * game->r->moveSpeed;
     }
     if (mlx_is_key_down(game->mlx, RIGHT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(-ROTSPD) - game->r->dirY * sinf(-ROTSPD);
-        game->r->dirY = game->r->oldDirX * sinf(-ROTSPD) + game->r->dirY * cosf(-ROTSPD);
+        game->r->dirX = game->r->dirX * cosf(-game->r->rotSpeed) - game->r->dirY * sinf(-game->r->rotSpeed);
+        game->r->dirY = game->r->oldDirX * sinf(-game->r->rotSpeed) + game->r->dirY * cosf(-game->r->rotSpeed);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(-ROTSPD) - game->r->planeY * sinf(-ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sinf(-ROTSPD) + game->r->planeY * cosf(-ROTSPD);
+        game->r->planeX = game->r->planeX * cosf(-game->r->rotSpeed) - game->r->planeY * sinf(-game->r->rotSpeed);
+        game->r->planeY = game->r->oldPlaneX * sinf(-game->r->rotSpeed) + game->r->planeY * cosf(-game->r->rotSpeed);
     }
     if (mlx_is_key_down(game->mlx, LEFT_R))
     {
         game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(ROTSPD) - game->r->dirY * sinf(ROTSPD);
-        game->r->dirY = game->r->oldDirX * sinf(ROTSPD) + game->r->dirY * cosf(ROTSPD);
+        game->r->dirX = game->r->dirX * cosf(game->r->rotSpeed) - game->r->dirY * sinf(game->r->rotSpeed);
+        game->r->dirY = game->r->oldDirX * sinf(game->r->rotSpeed) + game->r->dirY * cosf(game->r->rotSpeed);
         game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(ROTSPD) - game->r->planeY * sinf(ROTSPD);
-        game->r->planeY = game->r->oldPlaneX * sinf(ROTSPD) + game->r->planeY * cosf(ROTSPD);
+        game->r->planeX = game->r->planeX * cosf(game->r->rotSpeed) - game->r->planeY * sinf(game->r->rotSpeed);
+        game->r->planeY = game->r->oldPlaneX * sinf(game->r->rotSpeed) + game->r->planeY * cosf(game->r->rotSpeed);
     }
 }
 
@@ -196,18 +212,21 @@ void game_init(t_game *game)
     game->r = ft_calloc(sizeof(t_ray), 1);
     game->r->posX = game->player->y + 0.5f;
     game->r->posY = game->player->x + 0.5f;
+    game->textures->north = mlx_load_png(game->info->north);
+    game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
+    mlx_resize_image(game->sprite->north, 64, 64);
     if (game->info->pos == 'N')
     {
         game->r->dirX = -1.f;
         game->r->dirY = 0.f;
         game->r->planeX = 0.f;
-        game->r->planeY = 0.66f;
+        game->r->planeY = FOV;
     }
     if (game->info->pos == 'W')
     {
         game->r->dirX = 0.f;
         game->r->dirY = -1.f;
-        game->r->planeX = -0.66f;
+        game->r->planeX = -FOV;
         game->r->planeY = 0.f;
     }
     if (game->info->pos == 'S')
@@ -215,14 +234,13 @@ void game_init(t_game *game)
         game->r->dirX = 1.f;
         game->r->dirY = 0.f;
         game->r->planeX = 0.f;
-        game->r->planeY = -0.66f;
+        game->r->planeY = -FOV;
     }
-
     if (game->info->pos == 'E')
     {
         game->r->dirX = 0.f;
         game->r->dirY = 1.f;
-        game->r->planeX = 0.66f;
+        game->r->planeX = FOV;
         game->r->planeY = 0.f;
     }
 }

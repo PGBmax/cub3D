@@ -26,8 +26,9 @@
 # define PI M_PI
 # define RADIANS 0.0174533f
 # define WIDTH 1280
-# define HEIGHT 960
+# define HEIGHT 720
 # define DENSITY 1
+# define FOV 0.9f
 
 # define MOVESPD 0.05f
 # define ROTSPD 0.025f
@@ -118,10 +119,6 @@ typedef struct s_ray
 
 	float oldDirX;
 	float oldPlaneX;
-
-	float time;
-	float oldTime;
-	float frameTime;
 	
 	float moveSpeed;
 	float rotSpeed;

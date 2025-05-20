@@ -1,6 +1,6 @@
 # Compilation
 CC					=	cc
-CFLAGS				=	-Wall -Wextra -Werror -g -I $(INCLUDES)
+CFLAGS				=	-MP -MMD -Wall -Wextra -Werror -g -I $(INCLUDES)
 
 LIBMLX = ./MLX42
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
@@ -23,6 +23,7 @@ INCLUDES 			= 	-Iinclude/ -I$(LIBMLX)/include
 
 # Objects
 OBJS				=	$(patsubst srcs/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.o))
+DEPS				=	$(patsubst srcs/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.d))
 
 # Custom Makefile Flags
 MAKEFLAGS			+=	--no-print-directory --silent
@@ -39,17 +40,7 @@ ALL_FCLEAN			=	@echo "🧹$(LIGHT_GREEN) Project's objects & Executables cleaned
 
 # Rules
 
-all : check_relink
-
-check_relink:
-	@if [ ! -d $(OBJ_FOLDER) ]; then \
-		mkdir $(OBJ_FOLDER); \
-	fi
-	@if [ -f $(NAME) ]; then \
-		echo '✅$(LIGHT_GREEN) Nothing to be done for "all"! ✅$(RESET)\n'; \
-	else \
-		$(MAKE) mlx $(NAME); \
-	fi
+all : mlx libft $(NAME)
 
 mlx :
 	@if ls | grep -q "MLX42"; then \
@@ -61,7 +52,7 @@ mlx :
 		make --directory ./MLX42/build; \
 	fi
 
-$(NAME): libft $(OBJS)
+$(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIB) $(LIBS) -o $(NAME)
 	$(EXE_DONE)
 
@@ -87,6 +78,6 @@ fclean :
 
 re : fclean all
 
-f : $(NAME)
+.PHONY: all clean fclean re libft
 
-.PHONY: all clean fclean re libft f
+-include $(DEPS)
