@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/13 16:38:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:10:39 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,41 @@ void draw_map(t_game *game)
     }
 }
 
-void    draw_line(t_game *game, t_ray *r, int x)
+void    draw_line(t_game *game, int x)
 {
-    int i;
-    
-    i = -1;
-    while (++i < r->drawStart)
-        if (i % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, i, rgb_to_hex32(game->info->info[1]));
-    r->drawStart -= 1;
-    while (++r->drawStart <= r->drawEnd)
-        if (r->drawStart % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, r->drawStart, r->color);
-    r->drawStart -= 1;
-    while (++r->drawStart < HEIGHT)
-        if (r->drawStart % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, r->drawStart, rgb_to_hex32(game->info->info[0]));
+    float wallX;
+
+    if (game->r->side == 0)
+        wallX = game->r->posY + game->r->perpWallDist * game->r->rayDirY;
+    else
+        wallX = game->r->posX + game->r->perpWallDist * game->r->rayDirX;
+    wallX -= floor(wallX);
+    int texX = (int)(wallX * (float)S_WIDTH);
+    if ((game->r->side == 0 && game->r->rayDirX > 0) ||
+    (game->r->side == 1 && game->r->rayDirY < 0))
+        texX = S_WIDTH - texX - 1;
+    float step = 1.0f * S_HEIGHT / game->r->lineHeight;
+    float texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineHeight / 2) * step;
+    int y;
+    y = -1;
+    while (++y < game->r->drawStart)
+        if (y % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, y , rgb_to_hex32(game->info->info[1]));
+    y -= 1;
+    while (++y < game->r->drawEnd)
+    {
+        // int texY = (int)texPos & (S_HEIGHT - 1);
+        texPos += step;
+        uint32_t color = 0xFF0000FF;
+        if (game->r->side == 1)
+            color = color / 1.5;
+        if (y % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, y, color);
+    }
+    y -= 1; 
+    while (++y < HEIGHT)
+        if (y % DENSITY == 0)
+            mlx_put_pixel(game->screen, x, y , rgb_to_hex32(game->info->info[0]));
 }
 
 void    draw_ray(t_game *game)
@@ -129,84 +148,70 @@ void    draw_ray(t_game *game)
         game->r->drawEnd = game->r->lineHeight / 2 + HEIGHT / 2;
         if (game->r->drawEnd >= HEIGHT)
             game->r->drawEnd = HEIGHT - 1;
-        game->r->color = 0x00FF00FF;
-        if (game->r->side == 1)
-            game->r->color = game->r->color / 1.5f;
         if (x % DENSITY == 0)
-            draw_line(game, game->r, x);
+            draw_line(game, x);
     }
 }
 
-void    key_hook(t_game *game)
+void refresh(t_game *game)
 {
     mlx_resize_image(game->screen, 1, 1);
     mlx_put_pixel(game->screen, 0, 0, 0x00000000);
     mlx_resize_image(game->screen, WIDTH, HEIGHT);
+    draw_ray(game);
     game->r->moveSpeed = MOVESPD;
     game->r->rotSpeed = ROTSPD;
-    draw_ray(game);
+}
+
+void    move_player(t_game *game, float compX, float compY)
+{
+    refresh(game);
+    // if (game->tab[(int)(game->r->posX + compX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+    game->r->posX += compX * game->r->moveSpeed;
+    // if (game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)] == '0')
+    game->r->posY += compY * game->r->moveSpeed;
+}
+
+void    rotate_cam(t_game *game, float rotSpeed)
+{
+    refresh(game);
+    game->r->oldDirX = game->r->dirX;
+    game->r->dirX = game->r->dirX * cosf(rotSpeed) - game->r->dirY * sinf(rotSpeed);
+    game->r->dirY = game->r->oldDirX * sinf(rotSpeed) + game->r->dirY * cosf(rotSpeed);
+    game->r->oldPlaneX = game->r->planeX;
+    game->r->planeX = game->r->planeX * cosf(rotSpeed) - game->r->planeY * sinf(rotSpeed);
+    game->r->planeY = game->r->oldPlaneX * sinf(rotSpeed) + game->r->planeY * cosf(rotSpeed);
+}
+
+void    change_speed(t_game *game, float move, float rotate)
+{
+    game->r->moveSpeed *= move;
+    game->r->rotSpeed *= rotate;
+}
+
+void    key_hook(t_game *game)
+{
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT) ||
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
-    {
-        game->r->moveSpeed *= 1.5f;
-        game->r->rotSpeed *= 1.5f;
-    }
+        change_speed(game, 1.5f, 1.5f);
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
-    {
-        game->r->moveSpeed *= 0.66f;
-        game->r->rotSpeed *= 0.66f;
-    }
+        change_speed(game, 0.66f, 0.66f);
     if (mlx_is_key_down(game->mlx, UP))
-    {
-        if (game->tab[(int)(game->r->posX + game->r->dirX * game->r->moveSpeed)][(int)game->r->posY] == '0')
-            game->r->posX += game->r->dirX * game->r->moveSpeed;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->dirY * game->r->moveSpeed)] == '0')
-            game->r->posY += game->r->dirY * game->r->moveSpeed;
-    }
+        move_player(game, game->r->dirX, game->r->dirY);
     if (mlx_is_key_down(game->mlx, DOWN))
-    {
-        if (game->tab[(int)(game->r->posX - game->r->dirX * game->r->moveSpeed)][(int)game->r->posY] == '0')
-            game->r->posX -= game->r->dirX * game->r->moveSpeed;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->dirY * game->r->moveSpeed)] == '0')
-            game->r->posY -= game->r->dirY * game->r->moveSpeed;
-    }
+        move_player(game, -game->r->dirX, -game->r->dirY);
     if (mlx_is_key_down(game->mlx, RIGHT))
-    {
-        if (game->tab[(int)(game->r->posX + game->r->planeX * game->r->moveSpeed)][(int)game->r->posY] == '0')
-            game->r->posX += game->r->planeX * game->r->moveSpeed;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY + game->r->planeY * game->r->moveSpeed)] == '0')
-            game->r->posY += game->r->planeY * game->r->moveSpeed;
-    }
+        move_player(game, game->r->planeX, game->r->planeY);
     if (mlx_is_key_down(game->mlx, LEFT))
-    {
-        if (game->tab[(int)(game->r->posX - game->r->planeX * game->r->moveSpeed)][(int)game->r->posY] == '0')
-            game->r->posX -= game->r->planeX * game->r->moveSpeed;
-        if (game->tab[(int)game->r->posX][(int)(game->r->posY - game->r->planeY * game->r->moveSpeed)] == '0')
-            game->r->posY -= game->r->planeY * game->r->moveSpeed;
-    }
+        move_player(game, -game->r->planeX, -game->r->planeY);
     if (mlx_is_key_down(game->mlx, RIGHT_R))
-    {
-        game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(-game->r->rotSpeed) - game->r->dirY * sinf(-game->r->rotSpeed);
-        game->r->dirY = game->r->oldDirX * sinf(-game->r->rotSpeed) + game->r->dirY * cosf(-game->r->rotSpeed);
-        game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(-game->r->rotSpeed) - game->r->planeY * sinf(-game->r->rotSpeed);
-        game->r->planeY = game->r->oldPlaneX * sinf(-game->r->rotSpeed) + game->r->planeY * cosf(-game->r->rotSpeed);
-    }
+        rotate_cam(game, -game->r->rotSpeed);
     if (mlx_is_key_down(game->mlx, LEFT_R))
-    {
-        game->r->oldDirX = game->r->dirX;
-        game->r->dirX = game->r->dirX * cosf(game->r->rotSpeed) - game->r->dirY * sinf(game->r->rotSpeed);
-        game->r->dirY = game->r->oldDirX * sinf(game->r->rotSpeed) + game->r->dirY * cosf(game->r->rotSpeed);
-        game->r->oldPlaneX = game->r->planeX;
-        game->r->planeX = game->r->planeX * cosf(game->r->rotSpeed) - game->r->planeY * sinf(game->r->rotSpeed);
-        game->r->planeY = game->r->oldPlaneX * sinf(game->r->rotSpeed) + game->r->planeY * cosf(game->r->rotSpeed);
-    }
+        rotate_cam(game, game->r->rotSpeed);
 }
-
 
 void    cursor_hook(t_game *game)
 {
@@ -219,12 +224,7 @@ void    cursor_hook(t_game *game)
     mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
     rot = rot * (x - game->mlx->width / 2) * 0.015;
     mlx_get_mouse_pos(game->mlx, &x, &y);
-    game->r->oldDirX = game->r->dirX;
-    game->r->dirX = game->r->dirX * cos(-rot) - game->r->dirY * sin(-rot);
-    game->r->dirY = game->r->oldDirX * sin(-rot) + game->r->dirY * cos(-rot);
-    game->r->oldPlaneX = game->r->planeX;
-    game->r->planeX = game->r->planeX * cos(-rot) - game->r->planeY * sin(-rot);
-    game->r->planeY = game->r->oldPlaneX * sin(-rot) + game->r->planeY * cos(-rot);
+    rotate_cam(game, -rot);
     mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
 }
 

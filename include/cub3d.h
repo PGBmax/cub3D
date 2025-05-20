@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/13 12:41:22 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:56:53 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define RADIANS 0.0174533f
 # define WIDTH 1280
 # define HEIGHT 720
+# define S_WIDTH 64
+# define S_HEIGHT 64
 # define DENSITY 1
 # define FOV 0.9f
 
