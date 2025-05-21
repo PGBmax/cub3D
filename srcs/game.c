@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 15:29:56 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:44:04 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,13 +224,6 @@ void    key_hook(t_game *game)
 {
     if (!game->paused)
 		refresh(game);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_P))
-	{
-		if (game->paused)
-			game->paused = 0;
-		else if (!game->paused)
-			game->paused = 1;
-	}	
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
     if (!game->paused && mlx_is_key_down(game->mlx, UP))
@@ -278,6 +271,9 @@ void game_init(t_game *game)
 	game->paused = 0;
     mlx_resize_image(game->sprite->north, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->south, S_WIDTH, S_HEIGHT);
+    game->textures->pause = mlx_load_png("./textures/pause_screen.png");
+    game->sprite->pause = mlx_texture_to_image(game->mlx, game->textures->pause);
+    mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
     if (game->info->pos == 'N')
     {
         game->r->dirX = -1.f;
@@ -308,6 +304,25 @@ void game_init(t_game *game)
     }
 }
 
+void	game_pause(mlx_key_data_t key_data, t_game *game)
+{
+	if ((key_data.action != MLX_PRESS) && key_data.key != MLX_KEY_ESCAPE)
+		return ;
+	if (key_data.key == MLX_KEY_P)
+    {
+        if (game->paused)
+        {
+            game->sprite->pause->enabled = false;
+            game->paused = 0;
+        } 
+        else if (!game->paused)
+        {
+            game->sprite->pause->enabled = true;
+            game->paused = 1;
+        } 
+	}	
+}
+
 // Initialise le jeu et lance la boucle principale
 void ft_game(t_game *game)
 {
@@ -336,10 +351,14 @@ void ft_game(t_game *game)
     game->player = ft_calloc(sizeof(t_player), 1);
     draw_map(game);
     game_init(game);
-    refresh(game);  
+    refresh(game);
+    mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
+    game->sprite->pause->enabled = false;
+    
     // Dessine la carte et les rayons
     
     // Configure la boucle principale
+    mlx_key_hook(game->mlx, (void (*))game_pause, (void *)game);
     mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
     mlx_cursor_hook(game->mlx, (void (*)) cursor_hook, (void *)game);
     mlx_loop(game->mlx);

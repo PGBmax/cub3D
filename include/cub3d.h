@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 15:16:56 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:42:26 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,16 @@ typedef struct s_textures
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
-	mlx_texture_t	*icon;
+	mlx_texture_t	*pause;
 }					t_textures;
 
 typedef struct s_sprite
 {
-	mlx_image_t *player;
 	mlx_image_t	*north;
 	mlx_image_t	*south;
 	mlx_image_t	*west;
 	mlx_image_t	*east;
+	mlx_image_t	*pause;
 }				t_sprite;
 
 typedef struct s_ray
