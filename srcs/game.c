@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 16:44:04 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:09:49 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,19 +207,6 @@ void    rotate_cam(t_game *game, float rotSpeed)
     game->r->planeY = game->r->oldPlaneX * sinf(rotSpeed) + game->r->planeY * cosf(rotSpeed);
 }
 
-
-bool    need_refresh(t_game *game)
-{
-    if (mlx_is_key_down(game->mlx, UP) ||
-        mlx_is_key_down(game->mlx, DOWN) || 
-        mlx_is_key_down(game->mlx, RIGHT) || 
-        mlx_is_key_down(game->mlx, LEFT) || 
-        mlx_is_key_down(game->mlx, RIGHT_R) || 
-        mlx_is_key_down(game->mlx, LEFT_R))
-        return (true);
-    return (false);
-}
-
 void    key_hook(t_game *game)
 {
     if (!game->paused)
@@ -255,6 +242,8 @@ void    cursor_hook(t_game *game)
 		rotate_cam(game, -rot);
 		mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
 	}
+	else if (game->paused)
+		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 }
 
 void game_init(t_game *game)

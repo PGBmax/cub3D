@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:41:33 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/07 16:52:25 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:26:12 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@ int check_info(t_game *game)
 	if (game->info->north && game->info->south && game->info->west
 		&& game->info->east && game->info->floor && game->info->ceiling)
 		{
-			tab1 = malloc(ft_strlen(game->info->floor) - 1);
-			tab2 = malloc(ft_strlen(game->info->ceiling) - 1);
-			while (i < 3)
+			tab1 = ft_split(game->info->floor, ',');
+			tab2 = ft_split(game->info->ceiling, ',');
+			
+			while (i < RGBLEN)
 			{
-				tab1 = ft_split(game->info->floor, ',');
-				tab2 = ft_split(game->info->ceiling, ',');
 				game->info->info[0][i] = ft_atoi(tab1[i]);
 				game->info->info[1][i] = ft_atoi(tab2[i]);
-				ft_tabfree(tab1, 3);
-				ft_tabfree(tab2, 3);
 				i++;
 			}
+			ft_freesplit(tab1);
+			ft_freesplit(tab2);
 			return (1);
 		}
 	else

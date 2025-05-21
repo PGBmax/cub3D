@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"cmath": "c"
+		"cmath": "c",
+		"cub3d.h": "c"
 	}
 }

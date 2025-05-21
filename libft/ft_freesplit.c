@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tabfree.c                                       :+:      :+:    :+:   */
+/*   ft_freesplit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 10:37:03 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/05/21 18:17:24 by maregnie         ###   ########.fr       */
+/*   Created: 2025/05/21 18:18:24 by maregnie          #+#    #+#             */
+/*   Updated: 2025/05/21 18:19:11 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_tabfree(char **tab, int size)
+void	ft_freesplit(char **tab)
 {
 	int	i;
 
 	i = 0;
-	while (i < size)
+	while (tab[i] != NULL)
 	{
 		free(tab[i]);
 		i++;

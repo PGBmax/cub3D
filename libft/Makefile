@@ -67,6 +67,7 @@ SRCS =	ft_atoi.c \
 		ft_tablen.c \
 		ft_tabfree.c \
 		ft_tabprint.c \
+		ft_freesplit.c \
 		ft_tabhasemptystr.c \
 		ft_tabdup.c \
 		ft_lstnew.c \
@@ -85,7 +86,8 @@ SRCS =	ft_atoi.c \
 		ft_printf/srcs/ft_printf_utils.c \
 		ft_printf/srcs/ft_putchar.c \
 		ft_printf/srcs/ft_putnbr.c \
-		ft_printf/srcs/ft_putstr.c 
+		ft_printf/srcs/ft_putstr.c
+
 
 OBJS = $(SRCS:.c=.o)
 

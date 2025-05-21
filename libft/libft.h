@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:21:22 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/04/03 15:02:55 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:19:38 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,5 @@ void		ft_lstadd_back(t_map **lst, t_map *new);
 void		ft_lstdelone(t_map *lst, void (*del)(void *));
 void		ft_lstclear(t_map **lst, void (*del)(void *));
 char		**ft_splitfirst(char *str, char c);
+void		ft_freesplit(char **tab);
 #endif
