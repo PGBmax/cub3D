@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/20 18:56:53 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:27:40 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define RADIANS 0.0174533f
 # define WIDTH 1280
 # define HEIGHT 720
-# define S_WIDTH 64
-# define S_HEIGHT 64
+# define S_WIDTH 512
+# define S_HEIGHT 512
 # define DENSITY 1
 # define FOV 0.9f
 

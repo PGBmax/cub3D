@@ -6,14 +6,14 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/20 19:10:39 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:46:08 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <stdio.h>
 
-uint32_t rgb_to_hex32(int *rgb)
+uint32_t    rgb_to_hex32(int *rgb)
 {
     return ((uint32_t)((rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255));
 }
@@ -68,11 +68,13 @@ void    draw_line(t_game *game, int x)
     y -= 1;
     while (++y < game->r->drawEnd)
     {
-        // int texY = (int)texPos & (S_HEIGHT - 1);
+        int texY = (int)texPos & (S_HEIGHT - 1);
         texPos += step;
-        uint32_t color = 0xFF0000FF;
+        uint32_t color = 0;
         if (game->r->side == 1)
-            color = color / 1.5;
+            color = ((uint32_t *)game->sprite->north->pixels)[texY * S_WIDTH + texX];
+        else
+            color = ((uint32_t *)game->sprite->south->pixels)[texY * S_WIDTH + texX];
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y, color);
     }
@@ -96,8 +98,8 @@ void    draw_ray(t_game *game)
         game->r->mapX = (int)game->r->posX;
         game->r->mapY = (int)game->r->posY;
         
-        game->r->deltaDistX = (game->r->rayDirX == 0) ? 1e20 : fabs(1.0f / game->r->rayDirX);
-        game->r->deltaDistY = (game->r->rayDirY == 0) ? 1e20 : fabs(1.0f / game->r->rayDirY);
+        game->r->deltaDistX = (game->r->rayDirX == 0) ? 1e30 : fabs(1.0f / game->r->rayDirX);
+        game->r->deltaDistY = (game->r->rayDirY == 0) ? 1e30 : fabs(1.0f / game->r->rayDirY);
         
         game->r->hit = 0;
         if (game->r->rayDirX < 0)
@@ -165,16 +167,14 @@ void refresh(t_game *game)
 
 void    move_player(t_game *game, float compX, float compY)
 {
-    refresh(game);
-    // if (game->tab[(int)(game->r->posX + compX * game->r->moveSpeed)][(int)game->r->posY] == '0')
-    game->r->posX += compX * game->r->moveSpeed;
-    // if (game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)] == '0')
-    game->r->posY += compY * game->r->moveSpeed;
+    if (game->tab[(int)(game->r->posX + compX * game->r->moveSpeed)][(int)game->r->posY] == '0')
+        game->r->posX += compX * game->r->moveSpeed;
+    if (game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)] == '0')
+        game->r->posY += compY * game->r->moveSpeed;
 }
 
 void    rotate_cam(t_game *game, float rotSpeed)
 {
-    refresh(game);
     game->r->oldDirX = game->r->dirX;
     game->r->dirX = game->r->dirX * cosf(rotSpeed) - game->r->dirY * sinf(rotSpeed);
     game->r->dirY = game->r->oldDirX * sinf(rotSpeed) + game->r->dirY * cosf(rotSpeed);
@@ -187,6 +187,18 @@ void    change_speed(t_game *game, float move, float rotate)
 {
     game->r->moveSpeed *= move;
     game->r->rotSpeed *= rotate;
+}
+
+bool    need_refresh(t_game *game)
+{
+    if (mlx_is_key_down(game->mlx, UP) ||
+        mlx_is_key_down(game->mlx, DOWN) || 
+        mlx_is_key_down(game->mlx, RIGHT) || 
+        mlx_is_key_down(game->mlx, LEFT) || 
+        mlx_is_key_down(game->mlx, RIGHT_R) || 
+        mlx_is_key_down(game->mlx, LEFT_R))
+        return (true);
+    return (false);
 }
 
 void    key_hook(t_game *game)
@@ -211,6 +223,8 @@ void    key_hook(t_game *game)
         rotate_cam(game, -game->r->rotSpeed);
     if (mlx_is_key_down(game->mlx, LEFT_R))
         rotate_cam(game, game->r->rotSpeed);
+    if (need_refresh(game))
+        refresh(game);
 }
 
 void    cursor_hook(t_game *game)
@@ -231,11 +245,16 @@ void    cursor_hook(t_game *game)
 void game_init(t_game *game)
 {
     game->r = ft_calloc(sizeof(t_ray), 1);
+    game->textures = ft_calloc(sizeof(t_textures), 1);
+    game->sprite = ft_calloc(sizeof(t_sprite), 1);
     game->r->posX = game->player->y + 0.5f;
     game->r->posY = game->player->x + 0.5f;
-    // game->textures->north = mlx_load_png(game->info->north);
-    // game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
-    // mlx_resize_image(game->sprite->north, 64, 64);
+    game->textures->north = mlx_load_png(game->info->north);
+    game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
+    game->textures->south = mlx_load_png(game->info->south);
+    game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
+    mlx_resize_image(game->sprite->north, S_WIDTH, S_HEIGHT);
+    mlx_resize_image(game->sprite->south, S_WIDTH, S_HEIGHT);
     if (game->info->pos == 'N')
     {
         game->r->dirX = -1.f;
@@ -294,6 +313,7 @@ void ft_game(t_game *game)
     game->player = ft_calloc(sizeof(t_player), 1);
     draw_map(game);
     game_init(game);
+    refresh(game);  
     // Dessine la carte et les rayons
     
     // Configure la boucle principale
