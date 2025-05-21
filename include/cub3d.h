@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 13:27:40 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:09:31 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 /*	Macros	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1600
+# define HEIGHT 900
 # define S_WIDTH 512
 # define S_HEIGHT 512
 # define DENSITY 1

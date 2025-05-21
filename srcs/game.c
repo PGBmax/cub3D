@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 13:46:08 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:06:53 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ void draw_map(t_game *game)
     }
 }
 
+uint32_t get_color(mlx_image_t *img, int x, int y)
+{
+    return ((uint32_t)((img->pixels[(y * S_WIDTH + x) * 4] << 24) |
+        ((img->pixels[(y * S_WIDTH + x) * 4 + 1]) << 16) |
+        ((img->pixels[(y * S_WIDTH + x) * 4 + 2]) << 8) |
+        (img->pixels[(y * S_WIDTH + x) * 4 + 3])));
+}
+
 void    draw_line(t_game *game, int x)
 {
     float wallX;
@@ -72,9 +80,9 @@ void    draw_line(t_game *game, int x)
         texPos += step;
         uint32_t color = 0;
         if (game->r->side == 1)
-            color = ((uint32_t *)game->sprite->north->pixels)[texY * S_WIDTH + texX];
+            color = get_color(game->sprite->north, texX, texY);
         else
-            color = ((uint32_t *)game->sprite->south->pixels)[texY * S_WIDTH + texX];
+            color = get_color(game->sprite->south, texX, texY);
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y, color);
     }
@@ -157,16 +165,25 @@ void    draw_ray(t_game *game)
 
 void refresh(t_game *game)
 {
-    mlx_resize_image(game->screen, 1, 1);
-    mlx_put_pixel(game->screen, 0, 0, 0x00000000);
-    mlx_resize_image(game->screen, WIDTH, HEIGHT);
     draw_ray(game);
     game->r->moveSpeed = MOVESPD;
     game->r->rotSpeed = ROTSPD;
 }
 
+void    change_speed(t_game *game, float move, float rotate)
+{
+    game->r->moveSpeed *= move;
+    game->r->rotSpeed *= rotate;
+}
+
 void    move_player(t_game *game, float compX, float compY)
 {
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
+        change_speed(game, 1.5f, 1.5f);
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
+        change_speed(game, 0.66f, 0.66f);
     if (game->tab[(int)(game->r->posX + compX * game->r->moveSpeed)][(int)game->r->posY] == '0')
         game->r->posX += compX * game->r->moveSpeed;
     if (game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)] == '0')
@@ -175,6 +192,13 @@ void    move_player(t_game *game, float compX, float compY)
 
 void    rotate_cam(t_game *game, float rotSpeed)
 {
+
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
+        change_speed(game, 1.5f, 1.5f);
+    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
+        change_speed(game, 0.66f, 0.66f);
     game->r->oldDirX = game->r->dirX;
     game->r->dirX = game->r->dirX * cosf(rotSpeed) - game->r->dirY * sinf(rotSpeed);
     game->r->dirY = game->r->oldDirX * sinf(rotSpeed) + game->r->dirY * cosf(rotSpeed);
@@ -183,11 +207,6 @@ void    rotate_cam(t_game *game, float rotSpeed)
     game->r->planeY = game->r->oldPlaneX * sinf(rotSpeed) + game->r->planeY * cosf(rotSpeed);
 }
 
-void    change_speed(t_game *game, float move, float rotate)
-{
-    game->r->moveSpeed *= move;
-    game->r->rotSpeed *= rotate;
-}
 
 bool    need_refresh(t_game *game)
 {
@@ -203,14 +222,9 @@ bool    need_refresh(t_game *game)
 
 void    key_hook(t_game *game)
 {
+    refresh(game);
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
-    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT) ||
-        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
-        change_speed(game, 1.5f, 1.5f);
-    if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
-        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
-        change_speed(game, 0.66f, 0.66f);
     if (mlx_is_key_down(game->mlx, UP))
         move_player(game, game->r->dirX, game->r->dirY);
     if (mlx_is_key_down(game->mlx, DOWN))
@@ -223,8 +237,6 @@ void    key_hook(t_game *game)
         rotate_cam(game, -game->r->rotSpeed);
     if (mlx_is_key_down(game->mlx, LEFT_R))
         rotate_cam(game, game->r->rotSpeed);
-    if (need_refresh(game))
-        refresh(game);
 }
 
 void    cursor_hook(t_game *game)
@@ -236,7 +248,7 @@ void    cursor_hook(t_game *game)
 
     rot = ROTSPD;
     mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-    rot = rot * (x - game->mlx->width / 2) * 0.015;
+    rot = rot * (x - game->mlx->width / 2) * 0.025;
     mlx_get_mouse_pos(game->mlx, &x, &y);
     rotate_cam(game, -rot);
     mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
