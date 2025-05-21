@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 15:06:53 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:29:56 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,20 +222,28 @@ bool    need_refresh(t_game *game)
 
 void    key_hook(t_game *game)
 {
-    refresh(game);
+    if (!game->paused)
+		refresh(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_P))
+	{
+		if (game->paused)
+			game->paused = 0;
+		else if (!game->paused)
+			game->paused = 1;
+	}	
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
-    if (mlx_is_key_down(game->mlx, UP))
+    if (!game->paused && mlx_is_key_down(game->mlx, UP))
         move_player(game, game->r->dirX, game->r->dirY);
-    if (mlx_is_key_down(game->mlx, DOWN))
+    if (!game->paused && mlx_is_key_down(game->mlx, DOWN))
         move_player(game, -game->r->dirX, -game->r->dirY);
-    if (mlx_is_key_down(game->mlx, RIGHT))
+    if (!game->paused && mlx_is_key_down(game->mlx, RIGHT))
         move_player(game, game->r->planeX, game->r->planeY);
-    if (mlx_is_key_down(game->mlx, LEFT))
+    if (!game->paused && mlx_is_key_down(game->mlx, LEFT))
         move_player(game, -game->r->planeX, -game->r->planeY);
-    if (mlx_is_key_down(game->mlx, RIGHT_R))
+    if (!game->paused && mlx_is_key_down(game->mlx, RIGHT_R))
         rotate_cam(game, -game->r->rotSpeed);
-    if (mlx_is_key_down(game->mlx, LEFT_R))
+    if (!game->paused && mlx_is_key_down(game->mlx, LEFT_R))
         rotate_cam(game, game->r->rotSpeed);
 }
 
@@ -243,15 +251,17 @@ void    cursor_hook(t_game *game)
 {
     static int x = {WIDTH / 2};
     static int y = {HEIGHT / 2};
-    // int oldx;
     float rot;
 
-    rot = ROTSPD;
-    mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-    rot = rot * (x - game->mlx->width / 2) * 0.025;
-    mlx_get_mouse_pos(game->mlx, &x, &y);
-    rotate_cam(game, -rot);
-    mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
+	if (!game->paused)
+	{
+		rot = ROTSPD;
+		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
+		rot = rot * (x - game->mlx->width / 2) * 0.025;
+		mlx_get_mouse_pos(game->mlx, &x, &y);
+		rotate_cam(game, -rot);
+		mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
+	}
 }
 
 void game_init(t_game *game)
@@ -265,6 +275,7 @@ void game_init(t_game *game)
     game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
     game->textures->south = mlx_load_png(game->info->south);
     game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
+	game->paused = 0;
     mlx_resize_image(game->sprite->north, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->south, S_WIDTH, S_HEIGHT);
     if (game->info->pos == 'N')
