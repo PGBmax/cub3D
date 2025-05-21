@@ -6,7 +6,7 @@
 /*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:41:33 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 18:26:12 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:30:22 by maregnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int check_info(t_game *game)
 	
 	i = 0;
 	if (game->info->north && game->info->south && game->info->west
-		&& game->info->east && game->info->floor && game->info->ceiling)
+		&& game->info->east && game->info->floor && game->info->ceiling) // fix un segfault ici
 		{
 			tab1 = ft_split(game->info->floor, ',');
 			tab2 = ft_split(game->info->ceiling, ',');
