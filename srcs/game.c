@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/21 17:09:49 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:36:49 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ uint32_t get_color(mlx_image_t *img, int x, int y)
         (img->pixels[(y * S_WIDTH + x) * 4 + 3])));
 }
 
+uint32_t    print_wall(t_game *game, int texX, int texY)
+{
+    uint32_t color;
+
+    color = 0;
+    if (game->r->side == 0 && game->r->rayDirX <= 0) //Nord
+        color = get_color(game->sprite->north, texX, texY);
+    if (game->r->side == 0 && game->r->rayDirX >= 0) //Sud
+        color = get_color(game->sprite->south, texX, texY);
+    if (game->r->side == 1 && game->r->rayDirY <= 0) //Ouest
+        color = get_color(game->sprite->west, texX, texY);
+    if (game->r->side == 1 && game->r->rayDirY >= 0) //Est
+        color = get_color(game->sprite->east, texX, texY);
+    // if (game->r->side == 0 && game->r->rayDirX <= 0)
+    //     color = get_color(game->sprite->south, texX, texY);
+    // if (game->r->side == 0 && game->r->rayDirX > 0)
+    //     color = get_color(game->sprite->north, texX, texY);
+    return (color);
+}
+
 void    draw_line(t_game *game, int x)
 {
     float wallX;
@@ -78,13 +98,8 @@ void    draw_line(t_game *game, int x)
     {
         int texY = (int)texPos & (S_HEIGHT - 1);
         texPos += step;
-        uint32_t color = 0;
-        if (game->r->side == 1)
-            color = get_color(game->sprite->north, texX, texY);
-        else
-            color = get_color(game->sprite->south, texX, texY);
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y, color);
+            mlx_put_pixel(game->screen, x, y, print_wall(game, texX, texY));
     }
     y -= 1; 
     while (++y < HEIGHT)
@@ -207,6 +222,19 @@ void    rotate_cam(t_game *game, float rotSpeed)
     game->r->planeY = game->r->oldPlaneX * sinf(rotSpeed) + game->r->planeY * cosf(rotSpeed);
 }
 
+
+bool    need_refresh(t_game *game)
+{
+    if (mlx_is_key_down(game->mlx, UP) ||
+        mlx_is_key_down(game->mlx, DOWN) || 
+        mlx_is_key_down(game->mlx, RIGHT) || 
+        mlx_is_key_down(game->mlx, LEFT) || 
+        mlx_is_key_down(game->mlx, RIGHT_R) || 
+        mlx_is_key_down(game->mlx, LEFT_R))
+        return (true);
+    return (false);
+}
+
 void    key_hook(t_game *game)
 {
     if (!game->paused)
@@ -242,8 +270,6 @@ void    cursor_hook(t_game *game)
 		rotate_cam(game, -rot);
 		mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
 	}
-	else if (game->paused)
-		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 }
 
 void game_init(t_game *game)
@@ -257,9 +283,15 @@ void game_init(t_game *game)
     game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
     game->textures->south = mlx_load_png(game->info->south);
     game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
+    game->textures->west = mlx_load_png(game->info->west);
+    game->sprite->west = mlx_texture_to_image(game->mlx, game->textures->west);
+    game->textures->east = mlx_load_png(game->info->east);
+    game->sprite->east = mlx_texture_to_image(game->mlx, game->textures->east);
 	game->paused = 0;
     mlx_resize_image(game->sprite->north, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->south, S_WIDTH, S_HEIGHT);
+    mlx_resize_image(game->sprite->west, S_WIDTH, S_HEIGHT);
+    mlx_resize_image(game->sprite->east, S_WIDTH, S_HEIGHT);
     game->textures->pause = mlx_load_png("./textures/pause_screen.png");
     game->sprite->pause = mlx_texture_to_image(game->mlx, game->textures->pause);
     mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
