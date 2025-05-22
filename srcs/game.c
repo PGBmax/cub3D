@@ -272,7 +272,7 @@ void    cursor_hook(t_game *game)
 	}
 }
 
-void game_init(t_game *game)
+int game_init(t_game *game)
 {
     game->r = ft_calloc(sizeof(t_ray), 1);
     game->textures = ft_calloc(sizeof(t_textures), 1);
@@ -280,19 +280,21 @@ void game_init(t_game *game)
     game->r->posX = game->player->y + 0.5f;
     game->r->posY = game->player->x + 0.5f;
     game->textures->north = mlx_load_png(game->info->north);
-    game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
-    game->textures->south = mlx_load_png(game->info->south);
-    game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
-    game->textures->west = mlx_load_png(game->info->west);
-    game->sprite->west = mlx_texture_to_image(game->mlx, game->textures->west);
     game->textures->east = mlx_load_png(game->info->east);
+    game->textures->south = mlx_load_png(game->info->south);
+    game->textures->west = mlx_load_png(game->info->west);
+    game->textures->pause = mlx_load_png("./textures/pause_screen.png");
+    if (!game->textures->east || !game->textures->west || !game->textures->north || !game->textures->south || !game->textures->pause)
+        return (0);
+    game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
+    game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
+    game->sprite->west = mlx_texture_to_image(game->mlx, game->textures->west);
     game->sprite->east = mlx_texture_to_image(game->mlx, game->textures->east);
 	game->paused = 0;
     mlx_resize_image(game->sprite->north, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->south, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->west, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->east, S_WIDTH, S_HEIGHT);
-    game->textures->pause = mlx_load_png("./textures/pause_screen.png");
     game->sprite->pause = mlx_texture_to_image(game->mlx, game->textures->pause);
     mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
     if (game->info->pos == 'N')
@@ -323,6 +325,7 @@ void game_init(t_game *game)
         game->r->planeX = FOV;
         game->r->planeY = 0.f;
     }
+    return (1);
 }
 
 void	game_pause(mlx_key_data_t key_data, t_game *game)
@@ -345,7 +348,7 @@ void	game_pause(mlx_key_data_t key_data, t_game *game)
 }
 
 // Initialise le jeu et lance la boucle principale
-void ft_game(t_game *game)
+int ft_game(t_game *game)
 {
     mlx_image_t     *background;
 
@@ -371,7 +374,8 @@ void ft_game(t_game *game)
     mlx_image_to_window(game->mlx, game->screen, 0, 0);
     game->player = ft_calloc(sizeof(t_player), 1);
     draw_map(game);
-    game_init(game);
+    if (!game_init(game))
+        return (0);
     refresh(game);
     mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
     game->sprite->pause->enabled = false;
@@ -386,4 +390,5 @@ void ft_game(t_game *game)
 
     // Termine MLX42
     mlx_terminate(game->mlx);
+    return (1);
 }

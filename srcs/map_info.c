@@ -20,12 +20,12 @@ int check_info(t_game *game)
 	
 	i = 0;
 	if (game->info->north && game->info->south && game->info->west
-		&& game->info->east && game->info->floor && game->info->ceiling) // fix un segfault ici
+		&& game->info->east && game->info->floor && game->info->ceiling)
 		{
 			tab1 = ft_split(game->info->floor, ',');
 			tab2 = ft_split(game->info->ceiling, ',');
 			
-			while (i < RGBLEN)
+			while (i < RGBLEN && tab1[i] && tab2[i])
 			{
 				game->info->info[0][i] = ft_atoi(tab1[i]);
 				game->info->info[1][i] = ft_atoi(tab2[i]);

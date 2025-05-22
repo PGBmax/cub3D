@@ -142,5 +142,8 @@ int parse_tab(t_game *game, int i, int j, int _bool)
 		}
 		i++;
 	}
+	if (_bool != 1)
+		return (0);
 	return (1);
 }
+

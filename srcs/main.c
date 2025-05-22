@@ -43,9 +43,10 @@ int main(int ac, char **av)
 	if (!parse_tab(game, 0, 0, 0))
 	{
 		free(game->info);
-		error_msg(NOT_CLOSE, av[1]);
+		error_msg(NOT_CLOSE "or player pos not set properly", av[1]);
 	}
-	ft_game(game);
+	if (!ft_game(game))
+		mlx_terminate(game->mlx);
 	free_game(game);
 	free(game->player);
 	ft_lstclear(&game->map, free);

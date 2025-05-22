@@ -175,7 +175,7 @@ typedef struct s_game
 
 /*	Prototypes	*/
 //	game.c
-void	ft_game(t_game *game);
+int	ft_game(t_game *game);
 //	get_game.c
 void	set_tgame(t_game *info);
 t_game	*get_tgame(void);
