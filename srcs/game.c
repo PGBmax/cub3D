@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/22 20:20:32 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:23:56 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,8 @@ void    draw_line(t_game *game, int x)
     y = -1;
     while (++y < game->r->drawStart)
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , game.);
+            mlx_put_pixel(game->screen, x, y , game->info->ceiling_c);
     y -= 1;
-    step = 1.0f * S_HEIGHT / game->r->lineHeight;
-    texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineHeight / 2) * step;
     while (++y < game->r->drawEnd)
     {
         int texY = (int)texPos & (S_HEIGHT - 1);
@@ -99,16 +97,10 @@ void    draw_line(t_game *game, int x)
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y, print_wall(game, texX, texY));
     }
-    step = 1.0f * S_HEIGHT / game->r->lineHeight;
-    texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineHeight / 2) * step;
     y -= 1; 
     while (++y < HEIGHT)
-    {
-        int texY = (int)texPos & (S_HEIGHT - 1);
-        texPos += step;
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , (print_wall(game, texX, texY) >> 1) & 8355711);
-    }
+            mlx_put_pixel(game->screen, x, y , game->info->floor_c);
 }
 
 void    draw_ray(t_game *game)
