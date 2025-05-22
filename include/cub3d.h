@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/22 13:53:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:26:01 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define RADIANS 0.0174533f
 # define WIDTH 1600
 # define HEIGHT 900
-# define S_WIDTH 16
-# define S_HEIGHT 16
+# define S_WIDTH 512
+# define S_HEIGHT 512
 # define DENSITY 1
 # define FOV 0.9f
 
@@ -62,7 +62,7 @@
 # define MALLOC_ERROR "%s : Malloc failed\n"
 # define INVALID_NAME "%s : Invalid Map Name\n"
 # define CANNOT_OPEN "%s : %s : File doesn't exist\n"
-# define NOT_CLOSE "%s : %s : The Map is not hermetic\n"
+# define NOT_CLOSE "%s : %s : The Map is not hermetic or player pos not set properly\n"
 # define MLX_CANNOT_CREATE "%s : MLX cannot be created\n"
 # define FAIL_LOAD "%s : MLX has failed to load png\n"
 # define MAP_INFO_FAIL "%s : %s : Map info not properly set\n"
@@ -71,6 +71,7 @@
 
 typedef struct s_textures
 {
+	mlx_texture_t	*icon;
 	mlx_texture_t	*north;
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
@@ -130,7 +131,6 @@ typedef struct s_ray
 
 }	t_ray;
 
-
 typedef struct s_info
 {
 	char	*north;
@@ -143,6 +143,8 @@ typedef struct s_info
 	int 	start_index;
 	int		info[2][3];
 	char	pos;
+	uint32_t	floor_c;
+	uint32_t	ceiling_c;
 }	t_info;
 
 typedef	struct s_player

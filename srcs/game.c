@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/22 13:36:49 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:20:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,14 @@ uint32_t    print_wall(t_game *game, int texX, int texY)
     uint32_t color;
 
     color = 0;
-    if (game->r->side == 0 && game->r->rayDirX <= 0) //Nord
+    if (game->r->side == 0 && game->r->rayDirX <= 0)
         color = get_color(game->sprite->north, texX, texY);
-    if (game->r->side == 0 && game->r->rayDirX >= 0) //Sud
+    else if (game->r->side == 0 && game->r->rayDirX >= 0)
         color = get_color(game->sprite->south, texX, texY);
-    if (game->r->side == 1 && game->r->rayDirY <= 0) //Ouest
+    else if (game->r->side == 1 && game->r->rayDirY <= 0)
         color = get_color(game->sprite->west, texX, texY);
-    if (game->r->side == 1 && game->r->rayDirY >= 0) //Est
+    else if (game->r->side == 1 && game->r->rayDirY >= 0)
         color = get_color(game->sprite->east, texX, texY);
-    // if (game->r->side == 0 && game->r->rayDirX <= 0)
-    //     color = get_color(game->sprite->south, texX, texY);
-    // if (game->r->side == 0 && game->r->rayDirX > 0)
-    //     color = get_color(game->sprite->north, texX, texY);
     return (color);
 }
 
@@ -92,8 +88,10 @@ void    draw_line(t_game *game, int x)
     y = -1;
     while (++y < game->r->drawStart)
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , rgb_to_hex32(game->info->info[1]));
+            mlx_put_pixel(game->screen, x, y , game.);
     y -= 1;
+    step = 1.0f * S_HEIGHT / game->r->lineHeight;
+    texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineHeight / 2) * step;
     while (++y < game->r->drawEnd)
     {
         int texY = (int)texPos & (S_HEIGHT - 1);
@@ -101,10 +99,16 @@ void    draw_line(t_game *game, int x)
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y, print_wall(game, texX, texY));
     }
+    step = 1.0f * S_HEIGHT / game->r->lineHeight;
+    texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineHeight / 2) * step;
     y -= 1; 
     while (++y < HEIGHT)
+    {
+        int texY = (int)texPos & (S_HEIGHT - 1);
+        texPos += step;
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , rgb_to_hex32(game->info->info[0]));
+            mlx_put_pixel(game->screen, x, y , (print_wall(game, texX, texY) >> 1) & 8355711);
+    }
 }
 
 void    draw_ray(t_game *game)
@@ -199,6 +203,8 @@ void    move_player(t_game *game, float compX, float compY)
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
         change_speed(game, 0.66f, 0.66f);
+    if (!(int)(game->r->posX + compX * game->r->moveSpeed) && !game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)])
+        return;
     if (game->tab[(int)(game->r->posX + compX * game->r->moveSpeed)][(int)game->r->posY] == '0')
         game->r->posX += compX * game->r->moveSpeed;
     if (game->tab[(int)game->r->posX][(int)(game->r->posY + compY * game->r->moveSpeed)] == '0')
@@ -270,6 +276,8 @@ void    cursor_hook(t_game *game)
 		rotate_cam(game, -rot);
 		mlx_set_mouse_pos(game->mlx, game->mlx->width / 2, game->mlx->height / 2);
 	}
+    if (game->paused)
+		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 }
 
 int game_init(t_game *game)
@@ -283,8 +291,10 @@ int game_init(t_game *game)
     game->textures->east = mlx_load_png(game->info->east);
     game->textures->south = mlx_load_png(game->info->south);
     game->textures->west = mlx_load_png(game->info->west);
-    game->textures->pause = mlx_load_png("./textures/pause_screen.png");
-    if (!game->textures->east || !game->textures->west || !game->textures->north || !game->textures->south || !game->textures->pause)
+    game->textures->icon = mlx_load_png("./textures/icon.png");
+    game->textures->pause = mlx_load_png("./textures/utils/pause_screen.png");
+    if (!game->textures->east || !game->textures->west || !game->textures->north ||
+        !game->textures->south || !game->textures->pause || !game->textures->icon)
         return (0);
     game->sprite->north = mlx_texture_to_image(game->mlx, game->textures->north);
     game->sprite->south = mlx_texture_to_image(game->mlx, game->textures->south);
@@ -296,7 +306,10 @@ int game_init(t_game *game)
     mlx_resize_image(game->sprite->west, S_WIDTH, S_HEIGHT);
     mlx_resize_image(game->sprite->east, S_WIDTH, S_HEIGHT);
     game->sprite->pause = mlx_texture_to_image(game->mlx, game->textures->pause);
+    game->info->ceiling_c = rgb_to_hex32(game->info->info[1]);
+    game->info->floor_c = rgb_to_hex32(game->info->info[0]);
     mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
+    mlx_set_icon(game->mlx, game->textures->icon);
     if (game->info->pos == 'N')
     {
         game->r->dirX = -1.f;

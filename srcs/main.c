@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/06 14:09:17 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:30:11 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,11 @@ int main(int ac, char **av)
 		ft_lstclear(&game->map, free);
 		error_msg(MAP_INFO_FAIL, av[1]);
 	}
-	ft_printf("%d\n", game->info->start_index);
 	game->tab = get_map_as_tab(game->map, game->info->start_index - 1);
-	ft_tabprint(game->tab, 0);
 	if (!parse_tab(game, 0, 0, 0))
 	{
 		free(game->info);
-		error_msg(NOT_CLOSE "or player pos not set properly", av[1]);
+		error_msg(NOT_CLOSE, av[1]);
 	}
 	if (!ft_game(game))
 		mlx_terminate(game->mlx);

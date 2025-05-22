@@ -1,7 +1,7 @@
-NO ./textures/test2.png
-SO ./textures/test1.png
-WE ./textures/test1.png
-EA ./textures/test2.png
+NO ./textures/grass.png
+SO ./textures/grass.png
+WE ./textures/grass.png
+EA ./textures/grass.png
 
 F 41,68,53
 C 135,206,235
