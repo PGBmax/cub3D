@@ -20,15 +20,12 @@ void	free_game(t_game *game)
 	free_texture(game->textures->north);
 	free_texture(game->textures->south);
 	free_texture(game->textures->pause);
-	// if (game->sprite)
-	// {
-	// 	free_sprite(game->sprite->north, game);
-	// 	free_sprite(game->sprite->south, game);
-	// 	free_sprite(game->sprite->west, game);
-	// 	free_sprite(game->sprite->east, game);
-	// 	free_sprite(game->sprite->pause, game);
 	if (game->sprite)	
 		free(game->sprite);
 	if (game->textures)
 		free(game->textures);
+	if (game->info)
+		free(game->info);
+	if (game->r)
+		free(game->r);
 }

@@ -40,18 +40,23 @@ int check_info(t_game *game)
 
 }
 
-char	*dup_cutendl(char *str)
+char	*dup_cutendl(char *src, char *cpy)
 {
-	char *dup;
-	dup = ft_strdup(str);
-	dup[ft_strlen(dup) - 1] = '\0';
-	return (dup);
+	int i;
+
+	i = 0;
+	while (src[i] && src[i] != '\n')
+	{
+		cpy[i] = src[i];
+		i++;
+	}
+	cpy[i] = 0;
+	return (cpy);
 }
 
 int	get_map_info(t_game *game, int i)
 {
 	t_map	*tmp;
-
 	tmp = game->map;
 	game->info = ft_calloc(sizeof(t_info), 1);
 	if (!game->info)
@@ -59,13 +64,13 @@ int	get_map_info(t_game *game, int i)
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->content, "NO ", 3) && !game->info->north)
-			game->info->north = dup_cutendl(&tmp->content[3]);
+			game->info->north = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "SO ", 3) && !game->info->south)
-			game->info->south = dup_cutendl(&tmp->content[3]);
+			game->info->south = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "WE ", 3) && !game->info->west)
-			game->info->west = dup_cutendl(&tmp->content[3]);
+			game->info->west = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "EA ", 3) && !game->info->east)
-			game->info->east = dup_cutendl(&tmp->content[3]);
+			game->info->east = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "F ", 2) && !game->info->floor)
 			game->info->floor = &tmp->content[2];
 		else if (!ft_strncmp(tmp->content, "C ", 2) && !game->info->ceiling)

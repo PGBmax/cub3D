@@ -21,15 +21,15 @@ int main(int ac, char **av)
 		error_msg(CORRECT_USAGE, NULL);
 	if (!is_valid(av[1]))
 		error_msg(INVALID_TERM, av[1]);
-	fd = open(av[1], O_RDONLY) == -1;
+	fd = open(av[1], O_RDONLY);
 	if (fd == 1)
 		error_msg(CANNOT_OPEN, av[1]);
+	close(fd);
 	game = ft_calloc(sizeof(t_game), 1);
 	if (!game)
 		error_msg(MALLOC_ERROR, NULL);
 	set_tgame(game);
 	game->map = get_map_as_list(av[1]);
-	close(fd);
 	if (!get_map_info(game, 0))
 	{
 		if (game->info)
