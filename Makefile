@@ -92,6 +92,7 @@ libft :
 clean :
 	make clean -C ./3_LIBFT
 	@rm -rf $(OBJ_FOLDER)
+	@rm -rf $(OBJ_FOLDER_BONUS)
 	# @rm -rf ./MLX42
 	$(ALL_CLEAN)
 
@@ -99,6 +100,7 @@ fclean :
 	make fclean -C ./3_LIBFT
 	@rm -f $(NAME)
 	@rm -rf $(OBJ_FOLDER)
+	@rm -rf $(OBJ_FOLDER_BONUS)
 	# @rm -rf ./MLX42	
 	$(ALL_FCLEAN)
 
