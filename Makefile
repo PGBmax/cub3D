@@ -12,6 +12,11 @@ NAME				=	cub3D
 SRCS				= 	srcs/main.c \
 						srcs/output.c \
 						srcs/game.c \
+						srcs/hook.c \
+						srcs/move.c \
+						srcs/draw.c \
+						srcs/raycast.c \
+						srcs/game_init.c \
 						srcs/get_game.c \
 						srcs/parsing.c \
 						srcs/map_parsing.c \

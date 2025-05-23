@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/22 17:26:01 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:25:07 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct s_ray
 	int hit;
 	int side;
 
-	int lineHeight;
+	int lineH;
 	int drawStart;
 	int drawEnd;
 
@@ -128,6 +128,12 @@ typedef struct s_ray
 	float rotSpeed;
 	
 	uint32_t color;
+
+	float wallX;
+	float step;
+	float texPos;
+	int texX;
+	int texY;
 
 }	t_ray;
 
@@ -178,6 +184,10 @@ typedef struct s_game
 /*	Prototypes	*/
 //	game.c
 int	ft_game(t_game *game);
+uint32_t    rgb_to_hex32(int *rgb);
+void	refresh(t_game *game);
+//	draw.c
+void	draw_line(t_game *game, int x);
 //	get_game.c
 void	set_tgame(t_game *info);
 t_game	*get_tgame(void);
@@ -194,5 +204,16 @@ int		get_map_info(t_game *game, int i);
 int		place_textures(t_game *game);
 int		convert_textures(t_game *game);
 void	free_game(t_game *game);
+//	game_init.c
+int		game_init(t_game *game);
+//	hook.c
+void    key_hook(t_game *game);
+void    cursor_hook(t_game *game);
+void	game_pause(mlx_key_data_t key_data, t_game *game);
+//	move.c
+void    move_player(t_game *game, float x, float y);
+void    rotate_cam(t_game *game, float rotSpeed);
+//	raycast.c
+void    draw_ray(t_game *game);
 
 #endif
