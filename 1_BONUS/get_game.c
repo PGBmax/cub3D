@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:15:32 by pboucher          #+#    #+#             */
-/*   Updated: 2025/04/08 17:16:39 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static t_game	*tgame(t_game *info)
 {

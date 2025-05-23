@@ -6,11 +6,11 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:21:55 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 static void    has_touch(t_game *game)
 {

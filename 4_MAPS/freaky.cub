@@ -1,7 +1,7 @@
-NO ./textures/pboucher.png
-SO ./textures/mscheman.png
-WE ./textures/mbirou.png
-EA ./textures/tchartie.png
+NO ./5_TEXTURES/pboucher.png
+SO ./5_TEXTURES/mscheman.png
+WE ./5_TEXTURES/mbirou.png
+EA ./5_TEXTURES/tchartie.png
 
 F 185,180,171
 C 135,206,235

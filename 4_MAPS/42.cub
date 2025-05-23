@@ -1,7 +1,7 @@
-NO ./textures/pboucher.png
-SO ./textures/maregnie.png
-WE ./textures/mbirou.png
-EA ./textures/mbatty.png
+NO ./5_TEXTURES/pboucher.png
+SO ./5_TEXTURES/maregnie.png
+WE ./5_TEXTURES/mbirou.png
+EA ./5_TEXTURES/mbatty.png
 
 F 41,68,53
 C 135,206,235

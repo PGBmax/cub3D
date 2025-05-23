@@ -1,7 +1,7 @@
-NO ./textures/bankai2.png
-SO ./textures/fruit.png
-WE ./textures/gamble.png
-EA ./textures/masterwu.png
+NO ./5_TEXTURES/bankai2.png
+SO ./5_TEXTURES/fruit.png
+WE ./5_TEXTURES/gamble.png
+EA ./5_TEXTURES/masterwu.png
 
 F 128,128,128
 C 255,255,255

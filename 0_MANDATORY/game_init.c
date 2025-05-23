@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 14:42:50 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:15:39 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static int	load_image(t_game *game)
 	game->textures->east = mlx_load_png(game->info->east);
 	game->textures->south = mlx_load_png(game->info->south);
 	game->textures->west = mlx_load_png(game->info->west);
-	game->textures->icon = mlx_load_png("./textures/icon.png");
-	game->textures->pause = mlx_load_png("./textures/utils/pause_screen.png");
+	game->textures->icon = mlx_load_png("./5_TEXTURES/icon.png");
+	game->textures->pause = mlx_load_png("./5_TEXTURES/utils/pause_screen.png");
 	if (!game->textures->east || !game->textures->west 
 		|| !game->textures->north ||
 		!game->textures->south || !game->textures->pause 

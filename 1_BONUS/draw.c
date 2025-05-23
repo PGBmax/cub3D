@@ -6,11 +6,11 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:23:41 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 uint32_t get_color(mlx_image_t *img, int x, int y)
 {
@@ -73,7 +73,7 @@ void    draw_line(t_game *game, int x)
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y , game->info->ceiling_c);
     y = print_wall(game, x, y) - 1;
-    while (++y < HEIGHT)
+    while (++y <= HEIGHT)
         if (y % DENSITY == 0)
             mlx_put_pixel(game->screen, x, y , game->info->floor_c);
 }
