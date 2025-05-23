@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:25:07 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:36:18 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <fcntl.h>
 #include <math.h>
 
-/*	Macros	*/
+/*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
 # define WIDTH 1600
@@ -31,19 +31,15 @@
 # define S_HEIGHT 512
 # define DENSITY 1
 # define FOV 0.9f
-
 # define MOVESPD 0.05f
 # define ROTSPD 0.025f
-
 # define RGBLEN 3
-
 # define UP MLX_KEY_W
 # define DOWN MLX_KEY_S
 # define LEFT MLX_KEY_A
 # define RIGHT MLX_KEY_D
 # define LEFT_R MLX_KEY_LEFT
 # define RIGHT_R MLX_KEY_RIGHT
-
 
 /*	Colors	*/
 # define RST "\e[0m"

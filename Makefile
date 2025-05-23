@@ -9,27 +9,43 @@ LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 NAME				=	cub3D
 
 # Sources & Includes
-SRCS				= 	srcs/main.c \
-						srcs/output.c \
-						srcs/game.c \
-						srcs/hook.c \
-						srcs/move.c \
-						srcs/draw.c \
-						srcs/raycast.c \
-						srcs/game_init.c \
-						srcs/get_game.c \
-						srcs/parsing.c \
-						srcs/map_parsing.c \
-						srcs/map_info.c \
-						srcs/free.c
+SRCS	= 	0_MANDATORY/main.c \
+			0_MANDATORY/output.c \
+			0_MANDATORY/game.c \
+			0_MANDATORY/hook.c \
+			0_MANDATORY/move.c \
+			0_MANDATORY/draw.c \
+			0_MANDATORY/raycast.c \
+			0_MANDATORY/game_init.c \
+			0_MANDATORY/get_game.c \
+			0_MANDATORY/parsing.c \
+			0_MANDATORY/map_parsing.c \
+			0_MANDATORY/map_info.c \
+			0_MANDATORY/free.c
 
-OBJ_FOLDER			=	objs
-LIB           		=	libft/libft.a
-INCLUDES 			= 	-Iinclude/ -I$(LIBMLX)/include
+SRCSBONUS	= 	1_BONUS/main.c \
+				1_BONUS/output.c \
+				1_BONUS/game.c \
+				1_BONUS/hook.c \
+				1_BONUS/move.c \
+				1_BONUS/draw.c \
+				1_BONUS/raycast.c \
+				1_BONUS/game_init.c \
+				1_BONUS/get_game.c \
+				1_BONUS/parsing.c \
+				1_BONUS/map_parsing.c \
+				1_BONUS/map_info.c \
+				1_BONUS/free.c
+
+OBJ_FOLDER			=	6_OBJECTS
+LIB           		=	3_LIBFT/libft.a
+INCLUDES 			= 	-I2_INCLUDES/ -I$(LIBMLX)/includes
 
 # Objects
-OBJS				=	$(patsubst srcs/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.o))
-DEPS				=	$(patsubst srcs/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.d))
+OBJS				=	$(patsubst 0_MANDATORY/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.o))
+DEPS				=	$(patsubst 0_MANDATORY/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.d))
+OBJSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER)/%, $(SRCSBONUS:.c=.o))
+DEPSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER)/%, $(SRCSBONUS:.c=.d))
 
 # Custom Makefile Flags
 MAKEFLAGS			+=	--no-print-directory --silent
@@ -41,6 +57,7 @@ RESET				=	\033[0m
 
 # Custom messages
 EXE_DONE			=	@echo "$(PURPLE)🎉 $(NAME) compiled! 🎉$(RESET)\n"
+EXE_DONE_BONUS		=	@echo "$(PURPLE)🎉 $(NAME) (bonus) compiled! 🎉$(RESET)\n"
 ALL_CLEAN			=	@echo "🧹$(LIGHT_GREEN) Project's objects cleaned! 🧹$(RESET)\n"
 ALL_FCLEAN			=	@echo "🧹$(LIGHT_GREEN) Project's objects & Executables cleaned! 🧹$(RESET)\n"
 
@@ -62,28 +79,35 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIB) $(LIBS) -o $(NAME)
 	$(EXE_DONE)
 
-$(OBJ_FOLDER)/%.o: srcs/%.c
+$(OBJ_FOLDER)/%.o: 0_MANDATORY/%.c 1_BONUS/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 libft : 
 	@if [ ! -f $(LIB) ]; then \
-        make -C ./libft; \
+        make -C ./3_LIBFT; \
 	fi
 
 clean :
-	make clean -C ./libft
+	make clean -C ./3_LIBFT
 	@rm -rf $(OBJ_FOLDER)
+	@rm -rf ./MLX42
 	$(ALL_CLEAN)
 
 fclean :
-	make fclean -C ./libft
+	make fclean -C ./3_LIBFT
 	@rm -f $(NAME)
 	@rm -rf $(OBJ_FOLDER)
+	@rm -rf ./MLX42
 	$(ALL_FCLEAN)
 
 re : fclean all
 
+bonus : mlx libft $(OBJSBONUS)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIB) $(LIBS) -o $(NAME)
+	$(EXE_DONE_BONUS)
+
 .PHONY: all clean fclean re libft
 
 -include $(DEPS)
+-include $(DEPSBONUS)
