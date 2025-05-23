@@ -38,14 +38,15 @@ SRCSBONUS	= 	1_BONUS/main.c \
 				1_BONUS/free.c
 
 OBJ_FOLDER			=	6_OBJECTS
+OBJ_FOLDER_BONUS	=	7_OBJECTS_BONUS
 LIB           		=	3_LIBFT/libft.a
 INCLUDES 			= 	-I2_INCLUDES/ -I$(LIBMLX)/includes
 
 # Objects
 OBJS				=	$(patsubst 0_MANDATORY/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.o))
 DEPS				=	$(patsubst 0_MANDATORY/%, $(OBJ_FOLDER)/%, $(SRCS:.c=.d))
-OBJSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER)/%, $(SRCSBONUS:.c=.o))
-DEPSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER)/%, $(SRCSBONUS:.c=.d))
+OBJSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER_BONUS)/%, $(SRCSBONUS:.c=.o))
+DEPSBONUS			=	$(patsubst 1_BONUS/%, $(OBJ_FOLDER_BONUS)/%, $(SRCSBONUS:.c=.d))
 
 # Custom Makefile Flags
 MAKEFLAGS			+=	--no-print-directory --silent
@@ -79,11 +80,11 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIB) $(LIBS) -o $(NAME)
 	$(EXE_DONE)
 
-$(OBJ_FOLDER)/%.o: 0_MANDATORY/%.c 1_BONUS/%.c
+$(OBJ_FOLDER)/%.o: 0_MANDATORY/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-libft : 
+libft : 	
 	@if [ ! -f $(LIB) ]; then \
         make -C ./3_LIBFT; \
 	fi
@@ -91,21 +92,25 @@ libft :
 clean :
 	make clean -C ./3_LIBFT
 	@rm -rf $(OBJ_FOLDER)
-	@rm -rf ./MLX42
+	# @rm -rf ./MLX42
 	$(ALL_CLEAN)
 
 fclean :
 	make fclean -C ./3_LIBFT
 	@rm -f $(NAME)
 	@rm -rf $(OBJ_FOLDER)
-	@rm -rf ./MLX42
+	# @rm -rf ./MLX42	
 	$(ALL_FCLEAN)
 
 re : fclean all
 
 bonus : mlx libft $(OBJSBONUS)
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIB) $(LIBS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJSBONUS) $(LIB) $(LIBS) -o $(NAME)
 	$(EXE_DONE_BONUS)
+
+$(OBJ_FOLDER_BONUS)/%.o: 1_BONUS/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 .PHONY: all clean fclean re libft
 

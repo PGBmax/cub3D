@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:36:18 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:48:34 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*	Includes	*/
 #include "../MLX42/include/MLX42/MLX42.h"
-#include <../libft/libft.h>
+#include <../3_LIBFT/libft.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>

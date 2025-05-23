@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:47:01 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:19:00 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void    move_player(t_game *game, float x, float y)
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_SHIFT))
         change_speed(game, 1.5f, 1.5f);
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
-        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
+        mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))  
         change_speed(game, 0.66f, 0.66f);
     if (!(int)(game->r->posX + x * game->r->moveSpeed) &&
         !game->tab[(int)game->r->posX]
         [(int)(game->r->posY + y * game->r->moveSpeed)])
         return;
-    if (game->tab[(int)(game->r->posX + x * game->r->moveSpeed)]
+    if (game->tab[(int)(game->r->posX + x * game->r->moveSpeed * 2)]
         [(int)game->r->posY] == '0')
         game->r->posX += x * game->r->moveSpeed;
     if (game->tab[(int)game->r->posX]
-        [(int)(game->r->posY + y * game->r->moveSpeed)] == '0')
+        [(int)(game->r->posY + y * game->r->moveSpeed * 2)] == '0')
         game->r->posY += y * game->r->moveSpeed;
 }
 

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:54:38 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int print_wall(t_game *game, int x, int y)
 void    draw_line(t_game *game, int x)
 {
     int y;
+    uint32_t    color;
 
     game->r->wallX = game->r->posX + game->r->perpWallDist * game->r->rayDirX;
     if (game->r->side == 0)
@@ -71,9 +72,17 @@ void    draw_line(t_game *game, int x)
     y = -1;
     while (++y < game->r->drawStart)
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , game->info->ceiling_c);
+            mlx_put_pixel(game->screen, x, y , game->info-> ceiling_c);
     y = print_wall(game, x, y) - 1;
-    while (++y <= HEIGHT)
+    while (++y < HEIGHT)
+    {
+        game->r->texY = (int)game->r->texPos & (S_HEIGHT - 1);
+        game->r->texPos += game->r->step;
+        color = choose_wall(game, game->r->texX, game->r->texY);
         if (y % DENSITY == 0)
-            mlx_put_pixel(game->screen, x, y , game->info->floor_c);
+            mlx_put_pixel(game->screen, x, y, color);
+    }
+    // while (++y <= HEIGHT)
+    //     if (y % DENSITY == 0)
+    //         mlx_put_pixel(game->screen, x, y , game->info->floor_c);
 }
