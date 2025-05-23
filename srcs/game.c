@@ -364,7 +364,10 @@ int ft_game(t_game *game)
     mlx_set_setting(MLX_STRETCH_IMAGE, true);
     game->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
     if (!game->mlx)
-    error_msg(MLX_CANNOT_CREATE, NULL);
+    {
+        free(game->info);
+        error_msg(MLX_CANNOT_CREATE, NULL);
+    }
     
     // Crée un fond d'écran avec les couleurs du plafond et du sol
     background = mlx_new_image(game->mlx, 1, 1);
