@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 17:11:30 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:30:25 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void refresh(t_game *game)
     ++i;
     i = i % 44;
     game->sprite->frames[i]->enabled = true;
-    draw_ray(game);
+    if (!game->paused)
+        draw_ray(game);
     game->r->moveSpeed = MOVESPD;
     game->r->rotSpeed = ROTSPD;
 }

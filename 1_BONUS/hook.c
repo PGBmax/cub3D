@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:35:40 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 17:58:21 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:30:02 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void    key_hook(t_game *game)
 {
-    if (!game->paused)
-		refresh(game);
+    refresh(game);
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
     if (!game->paused && mlx_is_key_down(game->mlx, UP))
