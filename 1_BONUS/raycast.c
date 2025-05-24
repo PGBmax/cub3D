@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:33:05 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,53 @@ static void    update_step(t_ray *ray)
     }
 }
 
+void    draw_floor_ceilling(t_game *game)
+{
+    int x;
+    int y;
+
+    y = -1;
+    while (++y < HEIGHT)
+    {
+        x = -1;
+        float rayDirX0 = game->r->dirX - game->r->planeX;
+        float rayDirY0 = game->r->dirY - game->r->planeY;
+        float rayDirX1 = game->r->dirX + game->r->planeX;
+        float rayDirY1 = game->r->dirY + game->r->planeY;
+
+        int p = y - HEIGHT / 2;
+        float posZ = 0.5 * HEIGHT;
+        float rowDistance = posZ / p;
+        float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / WIDTH;
+        float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / WIDTH;
+        float floorX = game->r->posX + rowDistance * rayDirX0;
+        float floorY = game->r->posY + rowDistance * rayDirY0;
+        while (++x < WIDTH)
+        {
+            int cellX = (int)floorX;
+            int cellY = (int)floorY;
+
+            int tx = (int)(S_WIDTH * (floorX - cellX)) & (S_WIDTH - 1);
+            int ty = (int)(S_HEIGHT * (floorY - cellY)) & (S_HEIGHT - 1);
+            
+            floorX += floorStepX;
+            floorY += floorStepY;
+            uint32_t color;
+
+            color = get_color(game->sprite->floor, tx, ty);
+            mlx_put_pixel(game->screen, x, y, color);
+
+            color = get_color(game->sprite->ceilling, tx, ty);
+            mlx_put_pixel(game->screen, x, HEIGHT - y - 1, color);
+        }
+    }
+}
+
 void    draw_ray(t_game *game)
 {
     int x;
     
+    draw_floor_ceilling(game);
     x = -1;
     while (++x < WIDTH) 
     {
@@ -90,7 +133,6 @@ void    draw_ray(t_game *game)
         game->r->drawEnd = game->r->lineH / 2 + HEIGHT / 2;
         if (game->r->drawEnd >= HEIGHT)
             game->r->drawEnd = HEIGHT - 1;
-        if (x % DENSITY == 0)
-            draw_line(game, x);
+        draw_wall(game, x);
     }
 }

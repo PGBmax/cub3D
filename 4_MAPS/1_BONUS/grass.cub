@@ -2,9 +2,8 @@ NO ./5_TEXTURES/grass.png
 SO ./5_TEXTURES/grass.png
 WE ./5_TEXTURES/grass.png
 EA ./5_TEXTURES/grass.png
-
-F 41,68,53
-C 135,206,235
+FL ./5_TEXTURES/grass_top.png
+CE ./5_TEXTURES/grass_bottom.png
 
         1111111111111111111111111
         1000000000110000000000001

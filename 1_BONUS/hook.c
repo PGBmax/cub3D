@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:35:40 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:58:21 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void    cursor_hook(t_game *game)
 	{
 		rot = ROTSPD;
 		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-		rot = rot * (x - game->mlx->width / 2) * 0.025;
+		rot = rot * (x - game->mlx->width / 2) * 0.025f;
 		mlx_get_mouse_pos(game->mlx, &x, &y);
         w = game->mlx->width;
         h = game->mlx->height;
-		rotate_cam(game, -rot);
+        rotate_cam(game, -rot);
 		mlx_set_mouse_pos(game->mlx, w / 2, h / 2);
 	}
     if (game->paused)

@@ -28,7 +28,7 @@ SRCSBONUS	= 	1_BONUS/main.c \
 				1_BONUS/game.c \
 				1_BONUS/hook.c \
 				1_BONUS/move.c \
-				1_BONUS/draw.c \
+				1_BONUS/wall.c \
 				1_BONUS/raycast.c \
 				1_BONUS/game_init.c \
 				1_BONUS/get_game.c \

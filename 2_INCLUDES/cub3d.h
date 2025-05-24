@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:59:50 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:48:42 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
-	int		fc[6];
 	int 	start_index;
 	int		info[2][3];
 	char	pos;
@@ -153,13 +152,6 @@ typedef	struct s_player
 {
 	float	x;
 	float	y;
-	float 	dx;
-	float 	dy;
-	float	px;
-	float	py;
-	float	time;
-	float	oldtime;
-	float 	a;
 }	t_player;
 
 typedef struct s_game

@@ -2,9 +2,9 @@ NO ./5_TEXTURES/pboucher.png
 SO ./5_TEXTURES/maregnie.png
 WE ./5_TEXTURES/mbirou.png
 EA ./5_TEXTURES/mbatty.png
+FL ./5_TEXTURES/jurollin.png
+CE ./5_TEXTURES/nbonard.png
 
-F 41,68,53
-C 135,206,235
 
 111111111111111111111
 100000000000000000001

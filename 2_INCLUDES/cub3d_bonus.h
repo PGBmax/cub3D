@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 17:48:34 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:54:30 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1600
-# define HEIGHT 900
-# define S_WIDTH 512
-# define S_HEIGHT 512
-# define DENSITY 1
+# define WIDTH 800
+# define HEIGHT 450
+# define S_WIDTH 256
+# define S_HEIGHT 256
 # define FOV 0.9f
-# define MOVESPD 0.05f
-# define ROTSPD 0.025f
+# define MOVESPD 0.035f
+# define ROTSPD 0.035f
 # define RGBLEN 3
 # define UP MLX_KEY_W
 # define DOWN MLX_KEY_S
@@ -72,6 +71,9 @@ typedef struct s_textures
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
+	mlx_texture_t	*floor;
+	mlx_texture_t	*ceilling;
+	mlx_texture_t	*frames[44];
 	mlx_texture_t	*pause;
 }					t_textures;
 
@@ -81,6 +83,9 @@ typedef struct s_sprite
 	mlx_image_t	*south;
 	mlx_image_t	*west;
 	mlx_image_t	*east;
+	mlx_image_t	*floor;
+	mlx_image_t	*ceilling;
+	mlx_image_t	*frames[44];
 	mlx_image_t	*pause;
 }				t_sprite;
 
@@ -141,25 +146,15 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
-	int		fc[6];
 	int 	start_index;
 	int		info[2][3];
 	char	pos;
-	uint32_t	floor_c;
-	uint32_t	ceiling_c;
 }	t_info;
 
 typedef	struct s_player
 {
 	float	x;
 	float	y;
-	float 	dx;
-	float 	dy;
-	float	px;
-	float	py;
-	float	time;
-	float	oldtime;
-	float 	a;
 }	t_player;
 
 typedef struct s_game
@@ -182,8 +177,9 @@ typedef struct s_game
 int	ft_game(t_game *game);
 uint32_t    rgb_to_hex32(int *rgb);
 void	refresh(t_game *game);
-//	draw.c
-void	draw_line(t_game *game, int x);
+//	wall.c
+uint32_t get_color(mlx_image_t *img, int x, int y);
+void	draw_wall(t_game *game, int x);
 //	get_game.c
 void	set_tgame(t_game *info);
 t_game	*get_tgame(void);

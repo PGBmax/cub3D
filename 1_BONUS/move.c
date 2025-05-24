@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:47:01 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 18:19:00 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:59:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void    move_player(t_game *game, float x, float y)
         !game->tab[(int)game->r->posX]
         [(int)(game->r->posY + y * game->r->moveSpeed)])
         return;
-    if (game->tab[(int)(game->r->posX + x * game->r->moveSpeed * 2)]
+    if (game->tab[(int)(game->r->posX + x * game->r->moveSpeed)]
         [(int)game->r->posY] == '0')
         game->r->posX += x * game->r->moveSpeed;
     if (game->tab[(int)game->r->posX]
-        [(int)(game->r->posY + y * game->r->moveSpeed * 2)] == '0')
+        [(int)(game->r->posY + y * game->r->moveSpeed)] == '0')
         game->r->posY += y * game->r->moveSpeed;
 }
 

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:41:33 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:51:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	get_map_info(t_game *game, int i)
 			game->info->west = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (!ft_strncmp(tmp->content, "EA ", 3) && !game->info->east)
 			game->info->east = dup_cutendl(&tmp->content[3], &tmp->content[3]);
-		else if (!ft_strncmp(tmp->content, "F ", 2) && !game->info->floor)
-			game->info->floor = &tmp->content[2];
-		else if (!ft_strncmp(tmp->content, "C ", 2) && !game->info->ceiling)
-			game->info->ceiling = &tmp->content[2];
+		else if (!ft_strncmp(tmp->content, "FL ", 2) && !game->info->floor)
+			game->info->floor = dup_cutendl(&tmp->content[3], &tmp->content[3]);
+		else if (!ft_strncmp(tmp->content, "CE ", 2) && !game->info->ceiling)
+			game->info->ceiling = dup_cutendl(&tmp->content[3], &tmp->content[3]);
 		else if (tmp->content[0] != '\n')
 				break ;
 		tmp = tmp->next;

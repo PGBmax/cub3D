@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:11:30 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@ void draw_map(t_game *game)
 
 void refresh(t_game *game)
 {
+    static int i = -1;
+
+    int j;
+
+    j = -1;
+    while (++j < 44)
+        game->sprite->frames[j]->enabled = false;
+    ++i;
+    i = i % 44;
+    game->sprite->frames[i]->enabled = true;
     draw_ray(game);
     game->r->moveSpeed = MOVESPD;
     game->r->rotSpeed = ROTSPD;
