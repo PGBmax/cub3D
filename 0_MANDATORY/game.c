@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 15:24:31 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:30:06 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int ft_game(t_game *game)
         return (0);
     mlx_key_hook(game->mlx, (void (*))game_pause, (void *)game);
     mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
-    mlx_cursor_hook(game->mlx, (void (*))cursor_hook, (void *)game);
     mlx_loop(game->mlx);
     mlx_terminate(game->mlx);
     return (1);

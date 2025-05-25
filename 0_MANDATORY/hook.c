@@ -6,16 +6,26 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:35:40 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 14:47:22 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:33:13 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int     need_refresh(t_game *game)
+{
+    if (mlx_is_key_down(game->mlx, UP) ||
+        mlx_is_key_down(game->mlx, DOWN) ||
+        mlx_is_key_down(game->mlx, LEFT) ||
+        mlx_is_key_down(game->mlx, RIGHT) ||
+        mlx_is_key_down(game->mlx, LEFT_R) ||
+        mlx_is_key_down(game->mlx, RIGHT_R))
+        return (1);
+    return (0);
+}
+
 void    key_hook(t_game *game)
 {
-    if (!game->paused)
-		refresh(game);
     if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
         mlx_close_window(game->mlx);
     if (!game->paused && mlx_is_key_down(game->mlx, UP))
@@ -30,29 +40,8 @@ void    key_hook(t_game *game)
         rotate_cam(game, -game->r->rotSpeed);
     if (!game->paused && mlx_is_key_down(game->mlx, LEFT_R))
         rotate_cam(game, game->r->rotSpeed);
-}
-
-void    cursor_hook(t_game *game)
-{
-    static int x = {WIDTH / 2};
-    static int y = {HEIGHT / 2};
-    int w;
-    int h;
-    float rot;
-
-	if (!game->paused)
-	{
-		rot = ROTSPD;
-		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-		rot = rot * (x - game->mlx->width / 2) * 0.025;
-		mlx_get_mouse_pos(game->mlx, &x, &y);
-        w = game->mlx->width;
-        h = game->mlx->height;
-		rotate_cam(game, -rot);
-		mlx_set_mouse_pos(game->mlx, w / 2, h / 2);
-	}
-    if (game->paused)
-		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
+    if (need_refresh(game))
+        refresh(game);
 }
 
 void	game_pause(mlx_key_data_t key_data, t_game *game)

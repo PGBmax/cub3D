@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 17:23:19 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:16:26 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static mlx_image_t	*convert_and_resize(mlx_texture_t *tex, bool size)
 	game = get_tgame();
 	img = mlx_texture_to_image(game->mlx, tex);
 	if (size)
-		mlx_resize_image(img, S_WIDTH, S_HEIGHT);
+		mlx_resize_image(img, game->s_width, game->s_height);
 	else
 		mlx_resize_image(img, WIDTH, HEIGHT);
 	return (img);
@@ -123,6 +123,8 @@ int game_init(t_game *game)
 	game->sprite = ft_calloc(sizeof(t_sprite), 1);
 	game->r->posX = game->player->y + 0.5f;
 	game->r->posY = game->player->x + 0.5f;
+	game->s_height = S_HEIGHT;
+	game->s_width = S_WIDTH;
 	game->paused = 0;
 	if (!load_image(game) || !load_frames(game))
 		return (0);

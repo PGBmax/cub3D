@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 14:48:42 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:29:52 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ void	free_game(t_game *game);
 int		game_init(t_game *game);
 //	hook.c
 void    key_hook(t_game *game);
-void    cursor_hook(t_game *game);
 void	game_pause(mlx_key_data_t key_data, t_game *game);
 //	move.c
 void    move_player(t_game *game, float x, float y);

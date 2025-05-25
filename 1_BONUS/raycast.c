@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 15:33:05 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 15:51:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void    draw_floor_ceilling(t_game *game)
             int cellX = (int)floorX;
             int cellY = (int)floorY;
 
-            int tx = (int)(S_WIDTH * (floorX - cellX)) & (S_WIDTH - 1);
-            int ty = (int)(S_HEIGHT * (floorY - cellY)) & (S_HEIGHT - 1);
+            int tx = (int)(game->s_width * (floorX - cellX)) & (game->s_width - 1);
+            int ty = (int)(game->s_height * (floorY - cellY)) & (game->s_height - 1);
             
             floorX += floorStepX;
             floorY += floorStepY;

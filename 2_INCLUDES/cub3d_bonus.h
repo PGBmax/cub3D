@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 17:54:30 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:16:15 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 800
-# define HEIGHT 450
-# define S_WIDTH 256
-# define S_HEIGHT 256
+# define WIDTH 960
+# define HEIGHT 540
+# define S_WIDTH 512
+# define S_HEIGHT 512
 # define FOV 0.9f
 # define MOVESPD 0.035f
 # define ROTSPD 0.035f
@@ -170,6 +170,8 @@ typedef struct s_game
 	mlx_t		*mlx;
 	int			mapsize[2];
 	int			paused;
+	int			s_width;
+	int			s_height;
 }	t_game;
 
 /*	Prototypes	*/
