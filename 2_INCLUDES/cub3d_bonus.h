@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 16:16:15 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:50:46 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 # define S_WIDTH 512
 # define S_HEIGHT 512
 # define FOV 0.9f
-# define MOVESPD 0.035f
-# define ROTSPD 0.035f
+# define MOVESPD 0.05f
+# define ROTSPD 0.05f
 # define RGBLEN 3
 # define UP MLX_KEY_W
 # define DOWN MLX_KEY_S
@@ -75,6 +75,7 @@ typedef struct s_textures
 	mlx_texture_t	*ceilling;
 	mlx_texture_t	*frames[44];
 	mlx_texture_t	*pause;
+	mlx_texture_t	*door;
 }					t_textures;
 
 typedef struct s_sprite
@@ -87,6 +88,7 @@ typedef struct s_sprite
 	mlx_image_t	*ceilling;
 	mlx_image_t	*frames[44];
 	mlx_image_t	*pause;
+	mlx_image_t	*door;
 }				t_sprite;
 
 typedef struct s_ray
@@ -127,6 +129,9 @@ typedef struct s_ray
 	
 	float moveSpeed;
 	float rotSpeed;
+	float dim;
+
+	int	x;
 	
 	uint32_t color;
 
@@ -146,6 +151,7 @@ typedef struct s_info
 	char	*west;
 	char	*floor;
 	char	*ceiling;
+	char	*door;
 	int 	start_index;
 	int		info[2][3];
 	char	pos;
@@ -209,5 +215,6 @@ void    move_player(t_game *game, float x, float y);
 void    rotate_cam(t_game *game, float rotSpeed);
 //	raycast.c
 void    draw_ray(t_game *game);
+void    detect_door(t_game *game);
 
 #endif

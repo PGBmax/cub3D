@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 15:51:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:29:21 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void    has_touch(t_game *game)
             game->r->mapY += game->r->stepY;
             game->r->side = 1;
         }
-        if (game->tab[game->r->mapX][game->r->mapY] == '1')
+        if (game->tab[game->r->mapX][game->r->mapY] != '0')
             game->r->hit = 1;
     }
 }
@@ -113,13 +113,11 @@ void    draw_floor_ceilling(t_game *game)
 
 void    draw_ray(t_game *game)
 {
-    int x;
-    
     draw_floor_ceilling(game);
-    x = -1;
-    while (++x < WIDTH) 
+    game->r->x = -1;
+    while (++game->r->x < WIDTH)
     {
-        init_ray(game, x);
+        init_ray(game, game->r->x);
         update_step(game->r);
         has_touch(game);
         if (game->r->side == 0)
@@ -133,6 +131,28 @@ void    draw_ray(t_game *game)
         game->r->drawEnd = game->r->lineH / 2 + HEIGHT / 2;
         if (game->r->drawEnd >= HEIGHT)
             game->r->drawEnd = HEIGHT - 1;
-        draw_wall(game, x);
+        draw_wall(game, game->r->x);
+    }
+}
+
+void    detect_door(t_game *game)
+{
+    int x;
+
+    x = WIDTH / 2;
+    init_ray(game, x);
+    update_step(game->r);
+    has_touch(game);
+    if (game->tab[game->r->mapX][game->r->mapY] == '2')
+    {
+        if ((game->r->sideDistX - game->r->deltaDistX) < 3
+        && (game->r->sideDistY - game->r->deltaDistY) < 3)
+            game->tab[game->r->mapX][game->r->mapY] = '3'; 
+    }
+    else if (game->tab[game->r->mapX][game->r->mapY] == '3')
+    {
+        if ((game->r->sideDistX - game->r->deltaDistX) < 3
+        && (game->r->sideDistY - game->r->deltaDistY) < 3)
+            game->tab[game->r->mapX][game->r->mapY] = '2';
     }
 }

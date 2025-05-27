@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 16:16:26 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:05:26 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ static int	load_image(t_game *game)
 	game->textures->west = mlx_load_png(game->info->west);
 	game->textures->floor = mlx_load_png(game->info->floor);
 	game->textures->ceilling = mlx_load_png(game->info->ceiling);
+	game->textures->door = mlx_load_png(game->info->door);
 	game->textures->icon = mlx_load_png("./5_TEXTURES/0_UTILS/icon.png");
 	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/pause_screen.png");
 	if (!game->textures->east || !game->textures->west 
-		|| !game->textures->north ||
+		|| !game->textures->north || !game->textures->door ||
 		!game->textures->south || !game->textures->pause ||
 		!game->textures->floor || !game->textures->ceilling
 		|| !game->textures->icon)
@@ -50,6 +51,7 @@ static int	load_image(t_game *game)
 	game->sprite->pause = convert_and_resize(game->textures->pause, false);
 	game->sprite->floor = convert_and_resize(game->textures->floor, true);
 	game->sprite->ceilling = convert_and_resize(game->textures->ceilling, true);
+	game->sprite->door = convert_and_resize(game->textures->door, true);
 	mlx_set_icon(game->mlx, game->textures->icon);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:35:40 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 16:27:33 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:13:03 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,7 @@ void	game_pause(mlx_key_data_t key_data, t_game *game)
             game->sprite->pause->enabled = true;
             game->paused = 1;
         }
-	}
+    }
+    if (key_data.key == MLX_KEY_E)
+        detect_door(game);
 }

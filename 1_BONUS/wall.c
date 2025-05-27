@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 15:54:17 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:37:55 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,55 @@ uint32_t get_color(mlx_image_t *img, int x, int y)
         (img->pixels[(y * game->s_width + x) * 4 + 3])));
 }
 
+uint32_t get_color2(mlx_image_t *img, int x, int y)
+{
+    t_game  *game;
+
+    game = get_tgame();
+    game->r->hit = 0;
+    return ((uint32_t)((img->pixels[(y * game->s_width + x) * 4] << 24) |
+        ((img->pixels[(y * game->s_width + x) * 4 + 1]) << 16) |
+        ((img->pixels[(y * game->s_width + x) * 4 + 2]) << 8) |
+        (img->pixels[(y * game->s_width + x) * 4 + 3]) / 2));
+}
+
 uint32_t    choose_wall(t_game *game, int texX, int texY)
 {
     uint32_t color;
 
     color = 0;
+    if (game->tab[game->r->mapX][game->r->mapY] == '2')
+    {
+        color = get_color(game->sprite->door, texX, texY);
+        return (color);
+    }
+    if (game->tab[game->r->mapX][game->r->mapY] == '3')
+    {
+        color = get_color2(game->sprite->door, texX, texY);
+        return (color);
+    }
     if (game->r->side == 0 && game->r->rayDirX <= 0)
         color = get_color(game->sprite->north, texX, texY);
     else if (game->r->side == 0 && game->r->rayDirX >= 0)
         color = get_color(game->sprite->south, texX, texY);
     else if (game->r->side == 1 && game->r->rayDirY <= 0)
-        color = get_color(game->sprite->west, texX, texY);
+        color = get_color2(game->sprite->west, texX, texY);
     else if (game->r->side == 1 && game->r->rayDirY >= 0)
-        color = get_color(game->sprite->east, texX, texY);
+        color = get_color2(game->sprite->east, texX, texY);
     return (color);
 }
 
-void    print_wall(t_game *game, int x, int y)
+void    print_wall(t_game *game, int x)
 {
     uint32_t color;
 
-    y -= 1;
-    while (++y <= game->r->drawEnd)
+    game->r->drawStart -= 1;
+    while (++game->r->drawStart <= game->r->drawEnd)
     {
         game->r->texY = (int)game->r->texPos & (game->s_height - 1);
         game->r->texPos += game->r->step;
         color = choose_wall(game, game->r->texX, game->r->texY);
-        mlx_put_pixel(game->screen, x, y, color);
+        mlx_put_pixel(game->screen, x, game->r->drawStart, color);
     }
 }
 
@@ -65,7 +87,6 @@ void    draw_wall(t_game *game, int x)
     (game->r->side == 1 && game->r->rayDirY < 0))
         game->r->texX = game->s_width - game->r->texX - 1;
     game->r->step = 1.0f * game->s_height / game->r->lineH;
-    game->r->texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineH / 2)
-        * game->r->step;
-    print_wall(game, x, game->r->drawStart);
+    game->r->texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineH / 2) * game->r->step;
+    print_wall(game, x);
 }
