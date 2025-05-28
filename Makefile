@@ -24,6 +24,7 @@ SRCS	= 	0_MANDATORY/main.c \
 			0_MANDATORY/free.c
 
 SRCSBONUS	= 	1_BONUS/main.c \
+				1_BONUS/fc.c \
 				1_BONUS/output.c \
 				1_BONUS/game.c \
 				1_BONUS/hook.c \

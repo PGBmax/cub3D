@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maregnie <maregnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:26:07 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/06 14:04:28 by maregnie         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:57:22 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_valid(char *path)
 {
 	int	i;
-	int fd;
+	int	fd;
 
 	i = ft_strlen(path);
 	if (i < 4)
@@ -25,7 +25,7 @@ bool	is_valid(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (false);
-	close (fd);	
+	close(fd);
 	return (true);
 }
 
@@ -39,6 +39,6 @@ char	*void_changer(char *str)
 		if (str[i] == ' ' || str[i] == '\t')
 			str[i] = '1';
 		i++;
-	}	
+	}
 	return (str);
 }

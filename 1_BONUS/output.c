@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:02:53 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:47:30 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_msg(char *str, char *detail)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = get_tgame();
 	ft_printf(RED "ERROR!\n" GRN);

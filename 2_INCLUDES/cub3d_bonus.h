@@ -6,12 +6,12 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/27 14:50:46 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:53:02 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 /*	Includes	*/
 #include "../MLX42/include/MLX42/MLX42.h"
@@ -90,6 +90,29 @@ typedef struct s_sprite
 	mlx_image_t	*pause;
 	mlx_image_t	*door;
 }				t_sprite;
+
+typedef	struct s_fc
+{
+	float		rayDirX0;
+	float		rayDirY0;
+	float		rayDirX1;
+	float		rayDirY1;
+	int			p;
+	float		posZ;
+	float		rowDistance;
+	float		floorStepX;
+	float		floorStepY;
+	float		floorX;
+	float		floorY;
+	int			cellX;
+	int			cellY;
+	int			tx;
+	int			ty;
+	uint32_t	color;
+	int			x;
+	int			y;
+}	t_fc;
+
 
 typedef struct s_ray
 {
@@ -182,39 +205,43 @@ typedef struct s_game
 
 /*	Prototypes	*/
 //	game.c
-int	ft_game(t_game *game);
+int			ft_game(t_game *game);
 uint32_t    rgb_to_hex32(int *rgb);
-void	refresh(t_game *game);
+void		refresh(t_game *game);
 //	wall.c
-uint32_t get_color(mlx_image_t *img, int x, int y);
-void	draw_wall(t_game *game, int x);
+uint32_t	get_color(mlx_image_t *img, int x, int y);
+void		draw_wall(t_game *game, int x);
 //	get_game.c
-void	set_tgame(t_game *info);
-t_game	*get_tgame(void);
+void		set_tgame(t_game *info);
+t_game		*get_tgame(void);
 //	output.c
-void	error_msg(char *str, char *detail);
+void		error_msg(char *str, char *detail);
 //	parsing.c
-bool	is_valid(char *path);
-t_map	*get_map_as_list(char *argv);
-char	**get_map_as_tab(t_map *lstmap, int index);
-int		line_length(char *str);
-char	*void_changer(char *str);
-int		parse_tab(t_game *game, int i, int j, int _bool);
-int		get_map_info(t_game *game, int i);
-int		place_textures(t_game *game);
-int		convert_textures(t_game *game);
-void	free_game(t_game *game);
+bool		is_valid(char *path);
+t_map		*get_map_as_list(char *argv);
+char		**get_map_as_tab(t_map *lstmap, int index);
+int			line_length(char *str);
+char		*void_changer(char *str);
+int			parse_tab(t_game *game, int i, int j, int _bool);
+int			get_map_info(t_game *game, int i);
+int			place_textures(t_game *game);
+int			convert_textures(t_game *game);
+void		free_game(t_game *game);
 //	game_init.c
-int		game_init(t_game *game);
+int			game_init(t_game *game);
 //	hook.c
-void    key_hook(t_game *game);
-void    cursor_hook(t_game *game);
-void	game_pause(mlx_key_data_t key_data, t_game *game);
+void		key_hook(t_game *game);
+void		cursor_hook(t_game *game);
+void		game_pause(mlx_key_data_t key_data, t_game *game);
 //	move.c
-void    move_player(t_game *game, float x, float y);
-void    rotate_cam(t_game *game, float rotSpeed);
+void    	move_player(t_game *game, float x, float y);
+void    	rotate_cam(t_game *game, float rotSpeed);
 //	raycast.c
-void    draw_ray(t_game *game);
-void    detect_door(t_game *game);
+void    	draw_ray(t_game *game);
+void    	detect_door(t_game *game);
+//	fc.c
+void		draw_floor_ceilling(t_game *game);
+//	frames.c
+int			load_frames(t_game *game);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 16:05:39 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:07:53 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static mlx_image_t	*convert_and_resize(mlx_texture_t *tex, bool size)
 {
-	t_game *game;
-	mlx_image_t *img;
+	t_game		*game;
+	mlx_image_t	*img;
 
 	game = get_tgame();
 	img = mlx_texture_to_image(game->mlx, tex);
@@ -33,10 +33,9 @@ static int	load_image(t_game *game)
 	game->textures->south = mlx_load_png(game->info->south);
 	game->textures->west = mlx_load_png(game->info->west);
 	game->textures->icon = mlx_load_png("./5_TEXTURES/0_UTILS/icon.png");
-	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/pause_screen.png");
-	if (!game->textures->east || !game->textures->west 
-		|| !game->textures->north ||
-		!game->textures->south || !game->textures->pause 
+	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/p_screen.png");
+	if (!game->textures->east || !game->textures->west || !game->textures->north
+		|| !game->textures->south || !game->textures->pause
 		|| !game->textures->icon)
 		return (0);
 	game->sprite->north = convert_and_resize(game->textures->north, true);
@@ -77,7 +76,7 @@ static void	init_player(t_game *game)
 	}
 }
 
-int game_init(t_game *game)
+int	game_init(t_game *game)
 {
 	game->r = ft_calloc(sizeof(t_ray), 1);
 	game->textures = ft_calloc(sizeof(t_textures), 1);
@@ -91,7 +90,7 @@ int game_init(t_game *game)
 		return (0);
 	init_player(game);
 	refresh(game);
-    mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
-    game->sprite->pause->enabled = false;
+	mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
+	game->sprite->pause->enabled = false;
 	return (1);
 }
