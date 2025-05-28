@@ -6,71 +6,71 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:52:02 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/28 14:49:46 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-t_map	*get_map_as_list(char *argv)
+t_map    *get_map_as_list(char *argv)
 {
-	t_map	*map;
-	char	*tmp;
-	int		fd;
+    t_map		*map;
+    char		*tmp;
+    int			fd;
 
-	fd = open(argv, O_RDONLY);
-	if (fd < 0)
-	{
+    fd = open(argv, O_RDONLY);
+    if (fd < 0)
+    {    
 		error_msg(INVALID_NAME, argv);
 		return (NULL);
 	}
-	map = NULL;
-	while (!map || tmp)
-	{
-		tmp = get_next_line(fd);
-		if (!tmp)
-			break ;
-		if (!map)
-			map = ft_lstnew(tmp);
-		else
-			ft_lstadd_back(&map, ft_lstnew(tmp));
-	}
-	free(tmp);
-	close(fd);
-	return (map);
+    map = NULL;
+    while (!map || tmp)
+    {
+        tmp = get_next_line(fd);
+        if (!tmp)
+            break ;
+        if (!map)
+            map = ft_lstnew(tmp);
+        else
+            ft_lstadd_back(&map, ft_lstnew(tmp));
+    }
+    free(tmp);
+    close(fd);
+    return (map);
 }
 
-char	**get_map_as_tab(t_map *lstmap, int index)
+char    **get_map_as_tab(t_map *lstmap, int index)
 {
-	t_map	*tmp;
-	int		i;
-	char	**map;
+    t_map	*tmp;
+    int		i;
+    char	**map;
 
-	tmp = lstmap;
-	i = -1;
+    tmp = lstmap;
+    i = -1;
 	while (++i <= index)
 		lstmap = lstmap->next;
-	map = malloc(sizeof(char *) * (ft_lstsize(lstmap) + 1));
-	if (!map)
-	{
-		ft_lstclear(&tmp, free);
-		error_msg(MALLOC_ERROR, NULL);
-	}
+    map = malloc(sizeof(char *) * (ft_lstsize(lstmap) + 1));
+    if (!map)
+    {
+        ft_lstclear(&tmp, free);
+        error_msg(MALLOC_ERROR, NULL);
+    }
 	i = 0;
-	while (lstmap)
-	{
-		map[i] = ft_strdup(lstmap->content);
-		lstmap = lstmap->next;
+    while (lstmap)
+    {
+        map[i] = ft_strdup(lstmap->content);
+        lstmap = lstmap->next;
 		i++;
-	}
+    }
 	map[i] = 0;
-	return (map);
+    return (map);
 }
 
-int	check_hole(char **tab, int i, int j)
+int check_hole(char **tab, int i, int j)
 {
-	int	len_tab;
-	int	len_str;
+	int len_tab;
+	int len_str;
 
 	len_tab = ft_tablen(tab) - 1;
 	len_str = ft_strlen(tab[i]) - 1;
@@ -89,11 +89,11 @@ int	check_hole(char **tab, int i, int j)
 	if (j != len_str)
 		if (!tab[i][j - 1] || tab[i][j + 1] == ' ' || tab[i][j + 1] == '\t'
 			|| tab[i][j + 1] == '\n' || tab[i][j + 1] == '\0')
-			return (0);
+				return (0);
 	return (1);
 }
 
-int	edge_parsing(char **tab)
+int edge_parsing(char **tab)
 {
 	int	i;
 
@@ -116,20 +116,20 @@ int	edge_parsing(char **tab)
 	return (1);
 }
 
-int	parse_tab(t_game *game, int i, int j, int _bool)
+int parse_tab(t_game *game, int i, int j, int _bool)
 {
 	if (!edge_parsing(game->tab))
 		return (0);
-	while (game->tab[++i])
+	while (game->tab[i])
 	{
-		while (game->tab[i][++j])
+		j = 0;
+		while (game->tab[i][j])
 		{
-			if (game->tab[i][j] != '1' && game->tab[i][j] != ' '
-				&& game->tab[i][j] != '\t'
+			if (game->tab[i][j] != '1' && game->tab[i][j] != ' ' && game->tab[i][j] != '\t'
 				&& game->tab[i][j] != '\n' && game->tab[i][j] != '\0')
-				if (!check_hole(game->tab, i, j))
-					return (0);
-			if (game->tab[i][j] == 'S' || game->tab[i][j] == 'W'
+			if (!check_hole(game->tab, i, j))
+				return (0);
+			if (game->tab[i][j] == 'S' || game->tab[i][j] == 'W' 
 				|| game->tab[i][j] == 'N' || game->tab[i][j] == 'E')
 			{
 				if (_bool == 1)
@@ -137,9 +137,12 @@ int	parse_tab(t_game *game, int i, int j, int _bool)
 				_bool = 1;
 				game->info->pos = game->tab[i][j];
 			}
+			j++;
 		}
+		i++;
 	}
 	if (_bool != 1)
 		return (0);
 	return (1);
 }
+

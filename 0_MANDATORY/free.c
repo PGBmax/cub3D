@@ -1,16 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 14:05:36 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/28 14:05:36 by pboucher         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
+
+
+// void	free_sprite(mlx_image_t	*sprite, t_game *game)
+// {
+// 	if (sprite)
+// 		mlx_delete_image(game->mlx, sprite);
+// }
 
 void	free_texture(mlx_texture_t *texture)
 {
@@ -26,7 +21,7 @@ void	free_game(t_game *game)
 	free_texture(game->textures->south);
 	free_texture(game->textures->pause);
 	free_texture(game->textures->icon);
-	if (game->sprite)
+	if (game->sprite)	
 		free(game->sprite);
 	if (game->textures)
 		free(game->textures);

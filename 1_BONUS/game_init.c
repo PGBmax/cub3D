@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/28 14:45:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:05:26 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 static mlx_image_t	*convert_and_resize(mlx_texture_t *tex, bool size)
 {
-	t_game		*game;
-	mlx_image_t	*img;
+	t_game *game;
+	mlx_image_t *img;
 
 	game = get_tgame();
 	img = mlx_texture_to_image(game->mlx, tex);
@@ -37,11 +37,11 @@ static int	load_image(t_game *game)
 	game->textures->ceilling = mlx_load_png(game->info->ceiling);
 	game->textures->door = mlx_load_png(game->info->door);
 	game->textures->icon = mlx_load_png("./5_TEXTURES/0_UTILS/icon.png");
-	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/p_screen.png");
-	if (!game->textures->east || !game->textures->west
-		|| !game->textures->north || !game->textures->door
-		|| !game->textures->south || !game->textures->pause
-		|| !game->textures->floor || !game->textures->ceilling
+	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/pause_screen.png");
+	if (!game->textures->east || !game->textures->west 
+		|| !game->textures->north || !game->textures->door ||
+		!game->textures->south || !game->textures->pause ||
+		!game->textures->floor || !game->textures->ceilling
 		|| !game->textures->icon)
 		return (0);
 	game->sprite->north = convert_and_resize(game->textures->north, true);
@@ -85,7 +85,40 @@ static void	init_player(t_game *game)
 	}
 }
 
-int	game_init(t_game *game)
+int	load_frames(t_game *game)
+{
+    char    *path;
+    char    *modif;
+    char    *modif2;
+    int     i;
+
+    i = -1;
+    path = ft_strdup("./5_TEXTURES/1_FRAMES/Frame");
+    while (++i < 44)
+    {
+        modif = ft_strdup(path);
+        modif2 = ft_strjoin(modif, ft_itoa(i + 1));
+        free(modif);
+        modif = ft_strdup(modif2);
+        free(modif2);
+        modif2 = ft_strjoin(modif, ".png");
+        free(modif);
+        game->textures->frames[i] = mlx_load_png(modif2);
+		if (!game->textures->frames[i])
+		{
+			free(modif2);
+			return (0);
+		}
+        game->sprite->frames[i] = mlx_texture_to_image(game->mlx, game->textures->frames[i]);
+        mlx_resize_image(game->sprite->frames[i], (int)(WIDTH / 3.368421053f), (int)(HEIGHT / 1.2f));
+        mlx_image_to_window(game->mlx, game->sprite->frames[i], 0, (int)(HEIGHT / 4));
+        game->sprite->frames[i]->enabled = false;
+		free(modif2);
+    }
+	return (1);
+}
+
+int game_init(t_game *game)
 {
 	game->r = ft_calloc(sizeof(t_ray), 1);
 	game->textures = ft_calloc(sizeof(t_textures), 1);
@@ -99,7 +132,7 @@ int	game_init(t_game *game)
 		return (0);
 	init_player(game);
 	refresh(game);
-	mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
-	game->sprite->pause->enabled = false;
+    mlx_image_to_window(game->mlx, game->sprite->pause, 0, 0);
+    game->sprite->pause->enabled = false;
 	return (1);
 }
