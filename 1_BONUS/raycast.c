@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/27 15:29:21 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:41:18 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,14 @@ void    draw_ray(t_game *game)
             game->r->perpWallDist = (game->r->sideDistX - game->r->deltaDistX);
         else
             game->r->perpWallDist = (game->r->sideDistY - game->r->deltaDistY);
+        if (game->tab[game->r->mapX][game->r->mapY] == '2'
+            || game->tab[game->r->mapX][game->r->mapY] == '3')
+        {
+            if (game->r->side == 0)
+                game->r->perpWallDist = (game->r->sideDistX + 1 - game->r->deltaDistX);
+            else
+                game->r->perpWallDist = (game->r->sideDistY + 1 - game->r->deltaDistY);
+        }
         game->r->lineH = (int)(HEIGHT / game->r->perpWallDist);
         game->r->drawStart = -game->r->lineH / 2 + HEIGHT / 2;
         if (game->r->drawStart < 0)
