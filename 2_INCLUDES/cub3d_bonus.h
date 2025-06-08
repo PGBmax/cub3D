@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/27 14:50:46 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 11:00:46 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,9 @@ typedef struct s_game
 	int			paused;
 	int			s_width;
 	int			s_height;
+	int         fps;
+	double      last_time;
+	int         frame_count;
 }	t_game;
 
 /*	Prototypes	*/

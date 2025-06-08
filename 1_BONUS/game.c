@@ -6,12 +6,13 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/24 18:30:25 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 11:01:09 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 #include <stdio.h>
+#include <time.h>
 
 uint32_t    rgb_to_hex32(int *rgb)
 {
@@ -44,9 +45,12 @@ void draw_map(t_game *game)
 void refresh(t_game *game)
 {
     static int i = -1;
+    static mlx_image_t *fps_img = NULL;
+    char fps_str[32];
+    double current_time;
+    double delta;
 
     int j;
-
     j = -1;
     while (++j < 44)
         game->sprite->frames[j]->enabled = false;
@@ -57,6 +61,22 @@ void refresh(t_game *game)
         draw_ray(game);
     game->r->moveSpeed = MOVESPD;
     game->r->rotSpeed = ROTSPD;
+
+    // FPS counter
+    current_time = mlx_get_time();
+    game->frame_count++;
+    delta = current_time - game->last_time;
+    if (delta >= 1.0)
+    {
+        game->fps = game->frame_count / delta;
+        game->frame_count = 0;
+        game->last_time = current_time;
+    }
+    // Affichage du FPS
+    snprintf(fps_str, sizeof(fps_str), "FPS: %d", game->fps);
+    if (fps_img)
+        mlx_delete_image(game->mlx, fps_img);
+    fps_img = mlx_put_string(game->mlx, fps_str, WIDTH - 100, 10);
 }
 
 int ft_game(t_game *game)
