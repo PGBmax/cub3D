@@ -6,13 +6,12 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 11:01:09 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:38:17 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 #include <stdio.h>
-#include <time.h>
 
 uint32_t    rgb_to_hex32(int *rgb)
 {
@@ -77,6 +76,7 @@ void refresh(t_game *game)
     if (fps_img)
         mlx_delete_image(game->mlx, fps_img);
     fps_img = mlx_put_string(game->mlx, fps_str, WIDTH - 100, 10);
+    // usleep(1);
 }
 
 int ft_game(t_game *game)

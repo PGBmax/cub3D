@@ -2,8 +2,8 @@ NO ./5_TEXTURES/walls.png
 SO ./5_TEXTURES/walls.png
 WE ./5_TEXTURES/walls.png
 EA ./5_TEXTURES/walls.png
-FL ./5_TEXTURES/wolf_wall4.png
-CE ./5_TEXTURES/wolf_wall6.png
+FL ./5_TEXTURES/backfloor.png
+CE ./5_TEXTURES/backceil.png
 DO ./5_TEXTURES/walls.png
 
 111111111111111

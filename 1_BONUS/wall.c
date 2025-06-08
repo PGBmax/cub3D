@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/27 15:37:55 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:29:37 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,7 @@ uint32_t get_color(mlx_image_t *img, int x, int y)
         (img->pixels[(y * game->s_width + x) * 4 + 3])));
 }
 
-uint32_t get_color2(mlx_image_t *img, int x, int y)
-{
-    t_game  *game;
 
-    game = get_tgame();
-    game->r->hit = 0;
-    return ((uint32_t)((img->pixels[(y * game->s_width + x) * 4] << 24) |
-        ((img->pixels[(y * game->s_width + x) * 4 + 1]) << 16) |
-        ((img->pixels[(y * game->s_width + x) * 4 + 2]) << 8) |
-        (img->pixels[(y * game->s_width + x) * 4 + 3]) / 2));
-}
 
 uint32_t    choose_wall(t_game *game, int texX, int texY)
 {
@@ -42,22 +32,22 @@ uint32_t    choose_wall(t_game *game, int texX, int texY)
     color = 0;
     if (game->tab[game->r->mapX][game->r->mapY] == '2')
     {
-        color = get_color(game->sprite->door, texX, texY);
+        color = game->matrice->door[texX][texY];
         return (color);
     }
     if (game->tab[game->r->mapX][game->r->mapY] == '3')
     {
-        color = get_color2(game->sprite->door, texX, texY);
+        color = game->matrice->door[texX][texY] - 128;
         return (color);
     }
     if (game->r->side == 0 && game->r->rayDirX <= 0)
-        color = get_color(game->sprite->north, texX, texY);
+        color = game->matrice->north[texX][texY];
     else if (game->r->side == 0 && game->r->rayDirX >= 0)
-        color = get_color(game->sprite->south, texX, texY);
+        color = game->matrice->south[texX][texY];
     else if (game->r->side == 1 && game->r->rayDirY <= 0)
-        color = get_color2(game->sprite->west, texX, texY);
+        color = game->matrice->west[texX][texY];
     else if (game->r->side == 1 && game->r->rayDirY >= 0)
-        color = get_color2(game->sprite->east, texX, texY);
+        color = game->matrice->east[texX][texY];
     return (color);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/27 14:05:26 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:33:15 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,42 @@ static mlx_image_t	*convert_and_resize(mlx_texture_t *tex, bool size)
 	else
 		mlx_resize_image(img, WIDTH, HEIGHT);
 	return (img);
+}
+
+static uint32_t	**convert_into_matrice(mlx_image_t *img)
+{
+	uint32_t **matrice;
+	int	i;
+	int	j;
+
+	i = 0;
+	matrice = ft_calloc(sizeof(uint32_t *), S_HEIGHT + 1);
+	matrice[S_HEIGHT] = NULL;
+	while (i < S_HEIGHT)
+	{
+		matrice[i] = ft_calloc(sizeof(uint32_t), S_WIDTH + 1);
+		matrice[i][S_WIDTH] = 0;
+		j = 0;
+		while (j < S_WIDTH)
+		{
+			matrice[i][j] = get_color(img, i, j);
+			j++;
+		}
+		i++;
+	}
+	return (matrice);
+}
+
+static int	load_matrice(t_game *game)
+{
+	game->matrice->north = convert_into_matrice(game->sprite->north);
+	game->matrice->south = convert_into_matrice(game->sprite->south);
+	game->matrice->west = convert_into_matrice(game->sprite->west);
+	game->matrice->east = convert_into_matrice(game->sprite->east);
+	game->matrice->floor = convert_into_matrice(game->sprite->floor);
+	game->matrice->ceilling = convert_into_matrice(game->sprite->ceilling);
+	game->matrice->door = convert_into_matrice(game->sprite->door);
+	return (1);
 }
 
 static int	load_image(t_game *game)
@@ -123,12 +159,13 @@ int game_init(t_game *game)
 	game->r = ft_calloc(sizeof(t_ray), 1);
 	game->textures = ft_calloc(sizeof(t_textures), 1);
 	game->sprite = ft_calloc(sizeof(t_sprite), 1);
+	game->matrice = ft_calloc(sizeof(t_matrice), 1);
 	game->r->posX = game->player->y + 0.5f;
 	game->r->posY = game->player->x + 0.5f;
 	game->s_height = S_HEIGHT;
 	game->s_width = S_WIDTH;
 	game->paused = 0;
-	if (!load_image(game) || !load_frames(game))
+	if (!load_image(game) || !load_frames(game) || !load_matrice(game))
 		return (0);
 	init_player(game);
 	refresh(game);

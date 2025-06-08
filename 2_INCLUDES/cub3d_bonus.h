@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 11:00:46 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 18:03:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 960
-# define HEIGHT 540
+# define WIDTH 1600
+# define HEIGHT 900
 # define S_WIDTH 512
 # define S_HEIGHT 512
 # define FOV 0.9f
@@ -143,6 +143,17 @@ typedef struct s_ray
 
 }	t_ray;
 
+typedef struct s_matrice
+{
+	uint32_t	**north;
+	uint32_t	**south;
+	uint32_t	**west;
+	uint32_t	**east;
+	uint32_t	**floor;
+	uint32_t	**ceilling;
+	uint32_t	**door;
+}				t_matrice;
+
 typedef struct s_info
 {
 	char	*north;
@@ -172,6 +183,7 @@ typedef struct s_game
 	mlx_image_t	*screen;
 	t_sprite	*sprite;
 	t_textures	*textures;
+	t_matrice	*matrice;
 	t_ray		*r;
 	mlx_t		*mlx;
 	int			mapsize[2];

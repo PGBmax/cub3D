@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:57:43 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 11:00:34 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:28:12 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ void    draw_floor_ceilling(t_game *game)
             floorY += floorStepY;
             uint32_t color;
 
-            color = get_color(game->sprite->floor, tx, ty);
+            color = game->matrice->floor[tx][ty];
             mlx_put_pixel(game->screen, x, y, color);
 
-            color = get_color(game->sprite->ceilling, tx, ty);
+            color = game->matrice->ceilling[tx][ty];
             mlx_put_pixel(game->screen, x, HEIGHT - y - 1, color);
         }
     }
