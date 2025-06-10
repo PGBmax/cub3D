@@ -47,7 +47,7 @@ int main(int ac, char **av)
 		mlx_terminate(game->mlx);
 	free_game(game);
 	ft_lstclear(&game->map, free);
-	ft_tabfree(game->tab, ft_tablen(game->tab));
+	ft_tabfree(game->tab, ft_tablen(game->tab) - 3);
 	free(game);
 	close(fd);
 }

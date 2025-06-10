@@ -11,6 +11,18 @@
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+#include "stdio.h"
+char	**longest_line(char **tab, int i, int j)
+{
+	(void) j;
+	while (i < 3)
+	{
+		tab[i] = "11111111111111111";
+		i++;
+	}
+	tab[i] = 0;
+	return (tab);
+}
 
 t_map    *get_map_as_list(char *argv)
 {
@@ -50,7 +62,7 @@ char    **get_map_as_tab(t_map *lstmap, int index)
     i = -1;
 	while (++i <= index)
 		lstmap = lstmap->next;
-    map = malloc(sizeof(char *) * (ft_lstsize(lstmap) + 1));
+    map = malloc(sizeof(char *) * (ft_lstsize(lstmap) + 4));
     if (!map)
     {
         ft_lstclear(&tmp, free);
@@ -63,7 +75,7 @@ char    **get_map_as_tab(t_map *lstmap, int index)
         lstmap = lstmap->next;
 		i++;
     }
-	map[i] = 0;
+	longest_line(&map[i], 0, 0);
     return (map);
 }
 
@@ -145,4 +157,3 @@ int parse_tab(t_game *game, int i, int j, int _bool)
 		return (0);
 	return (1);
 }
-

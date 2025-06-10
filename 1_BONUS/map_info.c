@@ -92,3 +92,16 @@ int	get_map_info(t_game *game, int i)
 	game->info->start_index = i;
 	return (1);
 }
+
+int	line_length(char *str)
+{
+	int i;
+
+	i = 0;
+
+	if (!str)
+		return (0);
+	while (str[i] != '\n' || str[i] != 0)
+		i++;
+	return (i);
+}
