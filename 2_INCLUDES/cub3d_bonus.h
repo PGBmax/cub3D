@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 18:03:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:53:41 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1600
-# define HEIGHT 900
-# define S_WIDTH 512
-# define S_HEIGHT 512
+# define WIDTH 960
+# define HEIGHT 540
+# define S_BOX 512
 # define FOV 0.9f
 # define MOVESPD 0.05f
 # define ROTSPD 0.05f
@@ -74,8 +73,10 @@ typedef struct s_textures
 	mlx_texture_t	*floor;
 	mlx_texture_t	*ceilling;
 	mlx_texture_t	*frames[44];
-	mlx_texture_t	*pause;
 	mlx_texture_t	*door;
+	mlx_texture_t	*mapground;
+	mlx_texture_t	*mapwall;
+	mlx_texture_t	*mapplayer;
 }					t_textures;
 
 typedef struct s_sprite
@@ -89,6 +90,9 @@ typedef struct s_sprite
 	mlx_image_t	*frames[44];
 	mlx_image_t	*pause;
 	mlx_image_t	*door;
+	mlx_image_t	*mapground;
+	mlx_image_t	*mapwall;
+	mlx_image_t	*mapplayer;
 }				t_sprite;
 
 typedef struct s_ray
@@ -143,7 +147,7 @@ typedef struct s_ray
 
 }	t_ray;
 
-typedef struct s_matrice
+typedef struct s_matrix
 {
 	uint32_t	**north;
 	uint32_t	**south;
@@ -152,7 +156,7 @@ typedef struct s_matrice
 	uint32_t	**floor;
 	uint32_t	**ceilling;
 	uint32_t	**door;
-}				t_matrice;
+}				t_matrix;
 
 typedef struct s_info
 {
@@ -168,31 +172,44 @@ typedef struct s_info
 	char	pos;
 }	t_info;
 
+typedef int	t_byte;
+
+typedef	struct s_color
+{
+	t_byte			red;
+	t_byte			green;
+	t_byte			blue;
+	t_byte			opacity;
+	unsigned int	color;
+}	t_color;
+
 typedef	struct s_player
 {
 	float	x;
 	float	y;
 }	t_player;
 
+typedef	struct s_pos
+{
+	float x;
+	float y;
+} 				t_pos;
+
 typedef struct s_game
 {
 	t_player	*player;
+	t_pos		*pos;
 	t_map		*map;
 	t_info		*info;
 	char		**tab;
 	mlx_image_t	*screen;
 	t_sprite	*sprite;
 	t_textures	*textures;
-	t_matrice	*matrice;
-	t_ray		*r;
+	t_matrix	*matrix;
+	t_ray		*ray;
 	mlx_t		*mlx;
 	int			mapsize[2];
 	int			paused;
-	int			s_width;
-	int			s_height;
-	int         fps;
-	double      last_time;
-	int         frame_count;
 }	t_game;
 
 /*	Prototypes	*/
@@ -231,5 +248,11 @@ void    rotate_cam(t_game *game, float rotSpeed);
 //	raycast.c
 void    draw_ray(t_game *game);
 void    detect_door(t_game *game);
+// minimap
+uint32_t	minimap(t_game *game, t_pos pos);
+void	refresh_minimap(t_game *game);
+t_pos	adding_pos(t_pos a, t_pos b);
+int		in_circle(t_pos player, t_pos center, float radius);
+t_pos	newpos(float x, float y);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 16:30:06 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:45:24 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void draw_map(t_game *game)
 void refresh(t_game *game)
 {
     draw_ray(game);
-    game->r->moveSpeed = MOVESPD;
-    game->r->rotSpeed = ROTSPD;
+    game->ray->moveSpeed = MOVESPD;
+    game->ray->rotSpeed = ROTSPD;
 }
 
 int ft_game(t_game *game)
@@ -68,8 +68,8 @@ int ft_game(t_game *game)
     game->player = ft_calloc(sizeof(t_player), 1);
     draw_map(game);
     if (!game_init(game))
-        return (0);
-    mlx_key_hook(game->mlx, (void (*))game_pause, (void *)game);
+    return (0);
+    mlx_set_window_size(game->mlx, 1920, 1080);
     mlx_loop_hook(game->mlx, (void (*))key_hook, (void *)game);
     mlx_loop(game->mlx);
     mlx_terminate(game->mlx);

@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 17:29:37 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:49:39 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ uint32_t get_color(mlx_image_t *img, int x, int y)
     t_game  *game;
 
     game = get_tgame();
-    return ((uint32_t)((img->pixels[(y * game->s_width + x) * 4] << 24) |
-        ((img->pixels[(y * game->s_width + x) * 4 + 1]) << 16) |
-        ((img->pixels[(y * game->s_width + x) * 4 + 2]) << 8) |
-        (img->pixels[(y * game->s_width + x) * 4 + 3])));
+    return ((uint32_t)((img->pixels[(y * S_BOX + x) * 4] << 24) |
+        ((img->pixels[(y * S_BOX + x) * 4 + 1]) << 16) |
+        ((img->pixels[(y * S_BOX + x) * 4 + 2]) << 8) |
+        (img->pixels[(y * S_BOX + x) * 4 + 3])));
 }
 
 
@@ -30,24 +30,24 @@ uint32_t    choose_wall(t_game *game, int texX, int texY)
     uint32_t color;
 
     color = 0;
-    if (game->tab[game->r->mapX][game->r->mapY] == '2')
+    if (game->tab[game->ray->mapX][game->ray->mapY] == '2')
     {
-        color = game->matrice->door[texX][texY];
+        color = game->matrix->door[texX][texY];
         return (color);
     }
-    if (game->tab[game->r->mapX][game->r->mapY] == '3')
+    if (game->tab[game->ray->mapX][game->ray->mapY] == '3')
     {
-        color = game->matrice->door[texX][texY] - 128;
+        color = game->matrix->door[texX][texY] - 128;
         return (color);
     }
-    if (game->r->side == 0 && game->r->rayDirX <= 0)
-        color = game->matrice->north[texX][texY];
-    else if (game->r->side == 0 && game->r->rayDirX >= 0)
-        color = game->matrice->south[texX][texY];
-    else if (game->r->side == 1 && game->r->rayDirY <= 0)
-        color = game->matrice->west[texX][texY];
-    else if (game->r->side == 1 && game->r->rayDirY >= 0)
-        color = game->matrice->east[texX][texY];
+    if (game->ray->side == 0 && game->ray->rayDirX <= 0)
+        color = game->matrix->north[texX][texY];
+    else if (game->ray->side == 0 && game->ray->rayDirX >= 0)
+        color = game->matrix->south[texX][texY];
+    else if (game->ray->side == 1 && game->ray->rayDirY <= 0)
+        color = game->matrix->west[texX][texY];
+    else if (game->ray->side == 1 && game->ray->rayDirY >= 0)
+        color = game->matrix->east[texX][texY];
     return (color);
 }
 
@@ -55,28 +55,28 @@ void    print_wall(t_game *game, int x)
 {
     uint32_t color;
 
-    game->r->drawStart -= 1;
-    while (++game->r->drawStart <= game->r->drawEnd)
+    game->ray->drawStart -= 1;
+    while (++game->ray->drawStart <= game->ray->drawEnd)
     {
-        game->r->texY = (int)game->r->texPos & (game->s_height - 1);
-        game->r->texPos += game->r->step;
-        color = choose_wall(game, game->r->texX, game->r->texY);
-        mlx_put_pixel(game->screen, x, game->r->drawStart, color);
+        game->ray->texY = (int)game->ray->texPos & (S_BOX - 1);
+        game->ray->texPos += game->ray->step;
+        color = choose_wall(game, game->ray->texX, game->ray->texY);
+        mlx_put_pixel(game->screen, x, game->ray->drawStart, color);
     }
 }
 
 void    draw_wall(t_game *game, int x)
 {
-    game->r->wallX = game->r->posX + game->r->perpWallDist * game->r->rayDirX;
-    if (game->r->side == 0)
-        game->r->wallX = game->r->posY + game->r->perpWallDist 
-        * game->r->rayDirY;
-    game->r->wallX -= floor(game->r->wallX);
-    game->r->texX = (int)(game->r->wallX * (float)game->s_width);
-    if ((game->r->side == 0 && game->r->rayDirX > 0) ||
-    (game->r->side == 1 && game->r->rayDirY < 0))
-        game->r->texX = game->s_width - game->r->texX - 1;
-    game->r->step = 1.0f * game->s_height / game->r->lineH;
-    game->r->texPos = (game->r->drawStart - HEIGHT / 2 + game->r->lineH / 2) * game->r->step;
+    game->ray->wallX = game->ray->posX + game->ray->perpWallDist * game->ray->rayDirX;
+    if (game->ray->side == 0)
+        game->ray->wallX = game->ray->posY + game->ray->perpWallDist 
+        * game->ray->rayDirY;
+    game->ray->wallX -= floor(game->ray->wallX);
+    game->ray->texX = (int)(game->ray->wallX * (float)S_BOX);
+    if ((game->ray->side == 0 && game->ray->rayDirX > 0) ||
+    (game->ray->side == 1 && game->ray->rayDirY < 0))
+        game->ray->texX = S_BOX - game->ray->texX - 1;
+    game->ray->step = 1.0f * S_BOX / game->ray->lineH;
+    game->ray->texPos = (game->ray->drawStart - HEIGHT / 2 + game->ray->lineH / 2) * game->ray->step;
     print_wall(game, x);
 }

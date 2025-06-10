@@ -35,6 +35,8 @@ SRCSBONUS	= 	1_BONUS/main.c \
 				1_BONUS/parsing.c \
 				1_BONUS/map_parsing.c \
 				1_BONUS/map_info.c \
+				1_BONUS/maths.c \
+				1_BONUS/minimap.c \
 				1_BONUS/free.c
 
 OBJ_FOLDER			=	6_OBJECTS

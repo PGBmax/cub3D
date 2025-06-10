@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/25 16:29:52 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:42:05 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
 # define RADIANS 0.0174533f
-# define WIDTH 1600
-# define HEIGHT 900
-# define S_WIDTH 512
-# define S_HEIGHT 512
+# define WIDTH 960
+# define HEIGHT 540
+# define S_BOX 512
 # define DENSITY 1
 # define FOV 0.9f
 # define MOVESPD 0.05f
@@ -72,7 +71,6 @@ typedef struct s_textures
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
-	mlx_texture_t	*pause;
 }					t_textures;
 
 typedef struct s_sprite
@@ -81,7 +79,6 @@ typedef struct s_sprite
 	mlx_image_t	*south;
 	mlx_image_t	*west;
 	mlx_image_t	*east;
-	mlx_image_t	*pause;
 }				t_sprite;
 
 typedef struct s_ray
@@ -163,7 +160,7 @@ typedef struct s_game
 	mlx_image_t	*screen;
 	t_sprite	*sprite;
 	t_textures	*textures;
-	t_ray		*r;
+	t_ray		*ray;
 	mlx_t		*mlx;
 	int			mapsize[2];
 	int			paused;

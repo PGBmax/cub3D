@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:47:01 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 14:56:22 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:42:02 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void    change_speed(t_game *game, float move, float rotate)
 {
-    game->r->moveSpeed *= move;
-    game->r->rotSpeed *= rotate;
+    game->ray->moveSpeed *= move;
+    game->ray->rotSpeed *= rotate;
 }
 
 static float   resultX(float comp1, float comp2, float rotSpeed)
@@ -36,16 +36,16 @@ void    move_player(t_game *game, float x, float y)
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
         change_speed(game, 0.66f, 0.66f);
-    if (!(int)(game->r->posX + x * game->r->moveSpeed) &&
-        !game->tab[(int)game->r->posX]
-        [(int)(game->r->posY + y * game->r->moveSpeed)])
+    if (!(int)(game->ray->posX + x * game->ray->moveSpeed) &&
+        !game->tab[(int)game->ray->posX]
+        [(int)(game->ray->posY + y * game->ray->moveSpeed)])
         return;
-    if (game->tab[(int)(game->r->posX + x * game->r->moveSpeed)]
-        [(int)game->r->posY] == '0')
-        game->r->posX += x * game->r->moveSpeed;
-    if (game->tab[(int)game->r->posX]
-        [(int)(game->r->posY + y * game->r->moveSpeed)] == '0')
-        game->r->posY += y * game->r->moveSpeed;
+    if (game->tab[(int)(game->ray->posX + x * game->ray->moveSpeed)]
+        [(int)game->ray->posY] == '0')
+        game->ray->posX += x * game->ray->moveSpeed;
+    if (game->tab[(int)game->ray->posX]
+        [(int)(game->ray->posY + y * game->ray->moveSpeed)] == '0')
+        game->ray->posY += y * game->ray->moveSpeed;
 }
 
 void    rotate_cam(t_game *game, float rotSpeed)
@@ -56,10 +56,10 @@ void    rotate_cam(t_game *game, float rotSpeed)
     if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) ||
         mlx_is_key_down(game->mlx, MLX_KEY_RIGHT_CONTROL))
         change_speed(game, 0.66f, 0.66f);
-    game->r->oldDirX = game->r->dirX;
-    game->r->dirX = resultX(game->r->dirX, game->r->dirY, rotSpeed);
-    game->r->dirY = resultY(game->r->oldDirX, game->r->dirY, rotSpeed);
-    game->r->oldPlaneX = game->r->planeX;
-    game->r->planeX = resultX(game->r->planeX, game->r->planeY, rotSpeed);
-    game->r->planeY = resultY(game->r->oldPlaneX, game->r->planeY, rotSpeed);
+    game->ray->oldDirX = game->ray->dirX;
+    game->ray->dirX = resultX(game->ray->dirX, game->ray->dirY, rotSpeed);
+    game->ray->dirY = resultY(game->ray->oldDirX, game->ray->dirY, rotSpeed);
+    game->ray->oldPlaneX = game->ray->planeX;
+    game->ray->planeX = resultX(game->ray->planeX, game->ray->planeY, rotSpeed);
+    game->ray->planeY = resultY(game->ray->oldPlaneX, game->ray->planeY, rotSpeed);
 }

@@ -6,60 +6,57 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/08 17:33:15 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:17:28 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 #include <stdio.h>
 
-static mlx_image_t	*convert_and_resize(mlx_texture_t *tex, bool size)
+static mlx_image_t	*convert_and_resize(mlx_texture_t *tex)
 {
 	t_game *game;
 	mlx_image_t *img;
 
 	game = get_tgame();
 	img = mlx_texture_to_image(game->mlx, tex);
-	if (size)
-		mlx_resize_image(img, game->s_width, game->s_height);
-	else
-		mlx_resize_image(img, WIDTH, HEIGHT);
+	mlx_resize_image(img, S_BOX, S_BOX);
 	return (img);
 }
 
-static uint32_t	**convert_into_matrice(mlx_image_t *img)
+static uint32_t	**convert_into_matrix(mlx_image_t *img)
 {
-	uint32_t **matrice;
+	uint32_t **matrix;
 	int	i;
 	int	j;
 
 	i = 0;
-	matrice = ft_calloc(sizeof(uint32_t *), S_HEIGHT + 1);
-	matrice[S_HEIGHT] = NULL;
-	while (i < S_HEIGHT)
+	matrix = ft_calloc(sizeof(uint32_t *), S_BOX + 1);
+	matrix[S_BOX] = NULL;
+	while (i < S_BOX)
 	{
-		matrice[i] = ft_calloc(sizeof(uint32_t), S_WIDTH + 1);
-		matrice[i][S_WIDTH] = 0;
+		matrix[i] = ft_calloc(sizeof(uint32_t), S_BOX + 1);
+		matrix[i][S_BOX] = 0;
 		j = 0;
-		while (j < S_WIDTH)
+		while (j < S_BOX)
 		{
-			matrice[i][j] = get_color(img, i, j);
+			matrix[i][j] = get_color(img, i, j);
 			j++;
 		}
 		i++;
 	}
-	return (matrice);
+	return (matrix);
 }
 
-static int	load_matrice(t_game *game)
+static int	load_matrix(t_game *game)
 {
-	game->matrice->north = convert_into_matrice(game->sprite->north);
-	game->matrice->south = convert_into_matrice(game->sprite->south);
-	game->matrice->west = convert_into_matrice(game->sprite->west);
-	game->matrice->east = convert_into_matrice(game->sprite->east);
-	game->matrice->floor = convert_into_matrice(game->sprite->floor);
-	game->matrice->ceilling = convert_into_matrice(game->sprite->ceilling);
-	game->matrice->door = convert_into_matrice(game->sprite->door);
+	game->matrix->north = convert_into_matrix(game->sprite->north);
+	game->matrix->south = convert_into_matrix(game->sprite->south);
+	game->matrix->west = convert_into_matrix(game->sprite->west);
+	game->matrix->east = convert_into_matrix(game->sprite->east);
+	game->matrix->floor = convert_into_matrix(game->sprite->floor);
+	game->matrix->ceilling = convert_into_matrix(game->sprite->ceilling);
+	game->matrix->door = convert_into_matrix(game->sprite->door);
 	return (1);
 }
 
@@ -73,51 +70,52 @@ static int	load_image(t_game *game)
 	game->textures->ceilling = mlx_load_png(game->info->ceiling);
 	game->textures->door = mlx_load_png(game->info->door);
 	game->textures->icon = mlx_load_png("./5_TEXTURES/0_UTILS/icon.png");
-	game->textures->pause = mlx_load_png("./5_TEXTURES/0_UTILS/pause_screen.png");
 	if (!game->textures->east || !game->textures->west 
 		|| !game->textures->north || !game->textures->door ||
-		!game->textures->south || !game->textures->pause ||
+		!game->textures->south || 
 		!game->textures->floor || !game->textures->ceilling
 		|| !game->textures->icon)
 		return (0);
-	game->sprite->north = convert_and_resize(game->textures->north, true);
-	game->sprite->south = convert_and_resize(game->textures->south, true);
-	game->sprite->east = convert_and_resize(game->textures->east, true);
-	game->sprite->west = convert_and_resize(game->textures->west, true);
-	game->sprite->pause = convert_and_resize(game->textures->pause, false);
-	game->sprite->floor = convert_and_resize(game->textures->floor, true);
-	game->sprite->ceilling = convert_and_resize(game->textures->ceilling, true);
-	game->sprite->door = convert_and_resize(game->textures->door, true);
+	game->sprite->north = convert_and_resize(game->textures->north);
+	game->sprite->south = convert_and_resize(game->textures->south);
+	game->sprite->east = convert_and_resize(game->textures->east);
+	game->sprite->west = convert_and_resize(game->textures->west);
+	game->sprite->pause = mlx_new_image(game->mlx, 1, 1);
+	mlx_put_pixel(game->sprite->pause, 0, 0, 0x000000FF - 128);
+	mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
+	game->sprite->floor = convert_and_resize(game->textures->floor);
+	game->sprite->ceilling = convert_and_resize(game->textures->ceilling);
+	game->sprite->door = convert_and_resize(game->textures->door);
 	mlx_set_icon(game->mlx, game->textures->icon);
 	return (1);
 }
 
 static void	init_player(t_game *game)
 {
-	game->r->dirX = -1.f;
-	game->r->dirY = 0.f;
-	game->r->planeX = 0.f;
-	game->r->planeY = FOV;
+	game->ray->dirX = -1.f;
+	game->ray->dirY = 0.f;
+	game->ray->planeX = 0.f;
+	game->ray->planeY = FOV;
 	if (game->info->pos == 'W')
 	{
-		game->r->dirX = 0.f;
-		game->r->dirY = -1.f;
-		game->r->planeX = -FOV;
-		game->r->planeY = 0.f;
+		game->ray->dirX = 0.f;
+		game->ray->dirY = -1.f;
+		game->ray->planeX = -FOV;
+		game->ray->planeY = 0.f;
 	}
 	if (game->info->pos == 'S')
 	{
-		game->r->dirX = 1.f;
-		game->r->dirY = 0.f;
-		game->r->planeX = 0.f;
-		game->r->planeY = -FOV;
+		game->ray->dirX = 1.f;
+		game->ray->dirY = 0.f;
+		game->ray->planeX = 0.f;
+		game->ray->planeY = -FOV;
 	}
 	if (game->info->pos == 'E')
 	{
-		game->r->dirX = 0.f;
-		game->r->dirY = 1.f;
-		game->r->planeX = FOV;
-		game->r->planeY = 0.f;
+		game->ray->dirX = 0.f;
+		game->ray->dirY = 1.f;
+		game->ray->planeX = FOV;
+		game->ray->planeY = 0.f;
 	}
 }
 
@@ -126,6 +124,7 @@ int	load_frames(t_game *game)
     char    *path;
     char    *modif;
     char    *modif2;
+	char	*num;
     int     i;
 
     i = -1;
@@ -133,7 +132,9 @@ int	load_frames(t_game *game)
     while (++i < 44)
     {
         modif = ft_strdup(path);
-        modif2 = ft_strjoin(modif, ft_itoa(i + 1));
+		num = ft_itoa(i + 1);
+        modif2 = ft_strjoin(modif, num);
+		free(num);
         free(modif);
         modif = ft_strdup(modif2);
         free(modif2);
@@ -143,6 +144,7 @@ int	load_frames(t_game *game)
 		if (!game->textures->frames[i])
 		{
 			free(modif2);
+			free(path);
 			return (0);
 		}
         game->sprite->frames[i] = mlx_texture_to_image(game->mlx, game->textures->frames[i]);
@@ -151,21 +153,20 @@ int	load_frames(t_game *game)
         game->sprite->frames[i]->enabled = false;
 		free(modif2);
     }
+	free(path);
 	return (1);
 }
 
 int game_init(t_game *game)
 {
-	game->r = ft_calloc(sizeof(t_ray), 1);
+	game->ray = ft_calloc(sizeof(t_ray), 1);
 	game->textures = ft_calloc(sizeof(t_textures), 1);
 	game->sprite = ft_calloc(sizeof(t_sprite), 1);
-	game->matrice = ft_calloc(sizeof(t_matrice), 1);
-	game->r->posX = game->player->y + 0.5f;
-	game->r->posY = game->player->x + 0.5f;
-	game->s_height = S_HEIGHT;
-	game->s_width = S_WIDTH;
+	game->matrix = ft_calloc(sizeof(t_matrix), 1);
+	game->ray->posX = game->player->y + 0.5f;
+	game->ray->posY = game->player->x + 0.5f;
 	game->paused = 0;
-	if (!load_image(game) || !load_frames(game) || !load_matrice(game))
+	if (!load_image(game) || !load_frames(game) || !load_matrix(game))
 		return (0);
 	init_player(game);
 	refresh(game);

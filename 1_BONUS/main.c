@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:13:23 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int main(int ac, char **av)
 	if (!ft_game(game))
 		mlx_terminate(game->mlx);
 	free_game(game);
-	free(game->player);
 	ft_lstclear(&game->map, free);
 	ft_tabfree(game->tab, ft_tablen(game->tab));
 	free(game);
