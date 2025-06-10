@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:39:23 by maregnie          #+#    #+#             */
-/*   Updated: 2025/06/10 13:45:01 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:37:52 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,15 @@ uint32_t minimap(t_game *game, t_pos pos)
 
 	py = game->ray->posX;
 	px = game->ray->posY;
-	y = clamp((py + pos.y / 11), 0, game->screen->height);
+	y = clamp((py + pos.y / 16.5f), 0, game->screen->height);
 	if (y < 0)
 		y = 0;
 	if (y > game->screen->height)
 		y = game->screen->height;
-	x = clamp((px + pos.x / 20), 0, ft_strlen(game->tab[(int)y]));
+	x = clamp((px + pos.x / 15), 0, ft_strlen(game->tab[(int)y]));
 	if (game->tab && game->tab[(int)y] && game->tab[(int)y][(int)x]
 		&& (game->tab[(int)y][(int)x] == '0'
+		|| game->tab[(int)y][(int)x] == '3'
 		|| game->tab[(int)y][(int)x] == 'N'
 		|| game->tab[(int)y][(int)x] == 'S'
 		|| game->tab[(int)y][(int)x] == 'E'
