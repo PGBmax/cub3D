@@ -236,6 +236,7 @@ int		get_map_info(t_game *game, int i);
 int		place_textures(t_game *game);
 int		convert_textures(t_game *game);
 void	free_game(t_game *game);
+int		mapverif(char **map, int i, int j);
 //	game_init.c
 int		game_init(t_game *game);
 //	hook.c

@@ -38,6 +38,13 @@ int main(int ac, char **av)
 		error_msg(MAP_INFO_FAIL, av[1]);
 	}
 	game->tab = get_map_as_tab(game->map, game->info->start_index - 1);
+	if (!game->tab)
+	{
+		ft_lstclear(&game->map, free);
+		free(game->info);
+		free(game);
+		return (0);
+	}
 	if (!parse_tab(game, 0, 0, 0))
 	{
 		free(game->info);

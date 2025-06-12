@@ -11,13 +11,12 @@
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-#include "stdio.h"
-char	**longest_line(char **tab, int i, int j)
+
+char	**longest_line(char **tab, int i)
 {
-	(void) j;
 	while (i < 3)
 	{
-		tab[i] = "11111111111111111";
+		tab[i] = "1";
 		i++;
 	}
 	tab[i] = 0;
@@ -75,7 +74,9 @@ char    **get_map_as_tab(t_map *lstmap, int index)
         lstmap = lstmap->next;
 		i++;
     }
-	longest_line(&map[i], 0, 0);
+	longest_line(&map[i], 0);
+	if (!mapverif(map, 0, 0))
+		return (NULL);
     return (map);
 }
 

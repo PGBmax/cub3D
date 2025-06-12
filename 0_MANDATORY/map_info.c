@@ -82,6 +82,8 @@ int	get_map_info(t_game *game, int i)
 	}
 	if (!check_info(game))
 		return (0);
+	if (!tmp)
+		return (0);
 	while (tmp->content[0] != '1' && tmp->content[0] != ' ')
 	{
 		tmp = tmp->next;

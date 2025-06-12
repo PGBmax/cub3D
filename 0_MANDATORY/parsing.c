@@ -42,3 +42,26 @@ char	*void_changer(char *str)
 	}	
 	return (str);
 }
+int	mapverif(char **map, int i, int j)
+{
+	while (map[j])
+	{
+		i = 0;
+		while (map[j][i])
+		{
+			if (map[j][i] != '0' 
+				&& map[j][i] != '1'
+				&& map[j][i] != 'N'
+				&& map[j][i] != 'S'
+				&& map[j][i] != 'E'
+				&& map[j][i] != 'W'
+				&& map[j][i] != ' '
+				&& map[j][i] != '\n'
+				&& map[j][i] != '\0')
+					return (0);
+				i++;
+		}
+		j++;
+	}
+	return (1);
+}

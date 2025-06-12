@@ -64,6 +64,11 @@ char    **get_map_as_tab(t_map *lstmap, int index)
 		i++;
     }
 	map[i] = 0;
+	if (!mapverif(map, 0, 0))
+	{
+		ft_tabfree(map, ft_tablen(map));
+		return (NULL);
+	}
     return (map);
 }
 
