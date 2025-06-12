@@ -76,7 +76,10 @@ char    **get_map_as_tab(t_map *lstmap, int index)
     }
 	longest_line(&map[i], 0);
 	if (!mapverif(map, 0, 0))
+	{
+		ft_tabfree(map, ft_tablen(map) - 3);
 		return (NULL);
+	}
     return (map);
 }
 

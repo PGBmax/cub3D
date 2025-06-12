@@ -40,7 +40,9 @@ int main(int ac, char **av)
 	game->tab = get_map_as_tab(game->map, game->info->start_index - 1);
 	if (!game->tab)
 	{
-		// free()
+		ft_lstclear(&game->map, free);
+		free(game->info);
+		free(game);
 		return (0);
 	}
 	if (!parse_tab(game, 0, 0, 0))

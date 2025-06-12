@@ -32,10 +32,14 @@ static uint32_t	**convert_into_matrix(mlx_image_t *img)
 
 	i = 0;
 	matrix = ft_calloc(sizeof(uint32_t *), S_BOX + 1);
+	if (!matrix)
+		return (0);
 	matrix[S_BOX] = NULL;
 	while (i < S_BOX)
 	{
 		matrix[i] = ft_calloc(sizeof(uint32_t), S_BOX + 1);
+		if (!matrix[i])
+			free_matrix(matrix);
 		matrix[i][S_BOX] = 0;
 		j = 0;
 		while (j < S_BOX)
@@ -160,9 +164,26 @@ int	load_frames(t_game *game)
 int game_init(t_game *game)
 {
 	game->ray = ft_calloc(sizeof(t_ray), 1);
+	if (!game->ray)
+		return (0);
 	game->textures = ft_calloc(sizeof(t_textures), 1);
+	if (!game->textures)
+		return (0);
 	game->sprite = ft_calloc(sizeof(t_sprite), 1);
+	if (!game->sprite)
+	{
+		free(game->textures);
+		free(game->ray);
+		return (0);
+	}
 	game->matrix = ft_calloc(sizeof(t_matrix), 1);
+	if (!game->matrix)
+	{
+		free(game->sprite);
+		free(game->textures);
+		free(game->ray);
+		return (0);
+	}
 	game->ray->posX = game->player->y + 0.5f;
 	game->ray->posY = game->player->x + 0.5f;
 	game->paused = 0;

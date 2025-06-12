@@ -77,8 +77,18 @@ static void	init_player(t_game *game)
 int game_init(t_game *game)
 {
 	game->ray = ft_calloc(sizeof(t_ray), 1);
+	if (!game->ray)
+		return 0;
 	game->textures = ft_calloc(sizeof(t_textures), 1);
+	if (game->textures)
+		return (0);
 	game->sprite = ft_calloc(sizeof(t_sprite), 1);
+	if (game->sprite)
+	{
+		free(game->textures);
+		free(game->ray);
+		return (0);
+	}
 	game->ray->posX = game->player->y + 0.5f;
 	game->ray->posY = game->player->x + 0.5f;
 	game->info->ceiling_c = rgb_to_hex32(game->info->info[1]);

@@ -26,7 +26,7 @@ void	error_msg(char *str, char *detail)
 	if (game)
 	{
 		if (game->tab)
-			ft_tabfree(game->tab, ft_tablen(game->tab));
+			ft_tabfree(game->tab, ft_tablen(game->tab) - 3);
 		if (game->map)
 			ft_lstclear(&game->map, free);
 		free(game);

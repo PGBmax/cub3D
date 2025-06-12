@@ -77,6 +77,8 @@ int ft_game(t_game *game)
     game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);
     mlx_image_to_window(game->mlx, game->screen, 0, 0);
     game->player = ft_calloc(sizeof(t_player), 1);
+    if (!game->player)
+        return (0);
     draw_map(game);
     if (!game_init(game))
         return (0);

@@ -16,10 +16,13 @@ void	free_matrix(uint32_t **matrix)
 {
 	int i;
 
+	if (!matrix)
+		return ;
 	i = 0;
 	while (i < S_BOX)
 	{
-		free(matrix[i]);
+		if (matrix[i])	
+			free(matrix[i]);
 		i++;
 	}
 	free(matrix);

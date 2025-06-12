@@ -62,8 +62,11 @@ int	mapverif(char **map, int i, int j)
 				&& map[j][i] != '\0')
 					return (0);
 				i++;
+
 		}
 		j++;
 	}
+	if (i > 999 || j > 999)
+		return (0);
 	return (1);
 }
