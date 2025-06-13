@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:28:10 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/10 14:15:37 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:48:46 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	free_matrix(uint32_t **matrix)
 {
-	int i;
+	int	i;
 
 	if (!matrix)
 		return ;
 	i = 0;
 	while (i < S_BOX)
 	{
-		if (matrix[i])	
+		if (matrix[i])
 			free(matrix[i]);
 		i++;
 	}
@@ -34,9 +34,19 @@ void	free_texture(mlx_texture_t *texture)
 		mlx_delete_texture(texture);
 }
 
+void	free_game2(t_game *game)
+{
+	free(game->sprite);
+	free(game->textures);
+	free(game->matrix);
+	free(game->player);
+	free(game->ray);
+	free(game->info);
+}
+
 void	free_game(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	free_texture(game->textures->east);
@@ -59,10 +69,5 @@ void	free_game(t_game *game)
 		free_texture(game->textures->frames[i]);
 		i++;
 	}
-	free(game->sprite);
-	free(game->textures);
-	free(game->matrix);
-	free(game->player);
-	free(game->ray);
-	free(game->info);
+	free_game2(game);
 }

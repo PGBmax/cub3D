@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 14:49:23 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:53:41 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,7 @@ typedef struct s_game
 int	ft_game(t_game *game);
 uint32_t    rgb_to_hex32(int *rgb);
 void	refresh(t_game *game);
+void	draw_map(t_game *game);
 //	wall.c
 uint32_t get_color(mlx_image_t *img, int x, int y);
 void	draw_wall(t_game *game, int x);

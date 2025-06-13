@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/10 14:17:28 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:52:46 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,10 @@ int	load_frames(t_game *game)
 
 int game_init(t_game *game)
 {
+	game->player = ft_calloc(sizeof(t_player), 1);
+	if (!game->player)
+		return (0);
+	draw_map(game);
 	game->ray = ft_calloc(sizeof(t_ray), 1);
 	if (!game->ray)
 		return (0);
