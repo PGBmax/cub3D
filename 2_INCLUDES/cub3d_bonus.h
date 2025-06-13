@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/10 13:53:41 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:49:23 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,14 +136,28 @@ typedef struct s_ray
 	float dim;
 
 	int	x;
-	
-	uint32_t color;
 
 	float wallX;
 	float step;
 	float texPos;
 	int texX;
 	int texY;
+
+	float rayDirX0;
+	float rayDirY0;
+	float rayDirX1;
+	float rayDirY1;
+	int p;
+	float posZ;
+	float rowDistance;
+	float floorStepX;
+	float floorStepY;
+	float floorX;
+	float floorY;
+	int cellX;
+	int cellY;
+	int tx;
+	int ty;
 
 }	t_ray;
 
@@ -256,5 +270,8 @@ void	refresh_minimap(t_game *game);
 t_pos	adding_pos(t_pos a, t_pos b);
 int		in_circle(t_pos player, t_pos center, float radius);
 t_pos	newpos(float x, float y);
+t_color	set_color(t_byte r, t_byte g, t_byte b, t_byte a);
+t_color	pick_color(t_game *game, t_pos loop);
+void	draw_minimap(t_game *game, t_color color, t_pos pos);
 
 #endif

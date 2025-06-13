@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/10 13:53:25 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:25:58 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,29 @@ void draw_map(t_game *game)
         }
         y++;
     }
+}
+
+void	refresh_minimap(t_game *game)
+{
+	t_pos	loop;
+	t_pos	center;
+	t_pos	sum;
+	t_color	color;
+
+	loop = newpos(-50, -50);
+	center = newpos(60, 60);
+	while (loop.y < 50)
+	{
+		loop.x = -50;
+		while (loop.x < 50)
+		{
+			color = pick_color(game, loop);
+			sum = adding_pos(loop, center);
+			draw_minimap(game, color, sum);
+			loop.x++;
+		}
+		loop.y++;
+	}
 }
 
 void refresh(t_game *game)

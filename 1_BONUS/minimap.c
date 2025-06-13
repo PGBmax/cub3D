@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:39:23 by maregnie          #+#    #+#             */
-/*   Updated: 2025/06/10 18:37:52 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:26:02 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_color	set_color(t_byte r, t_byte g, t_byte b, t_byte a)
 
 t_color	pick_color(t_game *game, t_pos loop)
 {
-	t_color color;
-	
+	t_color	color;
+
 	color = set_color(0, 0, 0, 0);
 	if (in_circle(loop, newpos(0, 0), 2))
 		color = set_color(255, 0, 0, 255);
@@ -67,35 +67,12 @@ void	draw_minimap(t_game *game, t_color color, t_pos pos)
 	mlx_put_pixel(game->screen, pos.x, pos.y, color.color);
 }
 
-void	refresh_minimap(t_game *game)
-{
-	t_pos	loop;
-	t_pos	center;
-	t_pos 	sum;
-	t_color	color;
-
-	loop = newpos(-50, -50);
-	center = newpos(60, 60);
-	while (loop.y < 50)
-	{
-		loop.x = -50;
-		while (loop.x < 50)
-		{
-			color = pick_color(game, loop);
-			sum = adding_pos(loop, center);
-			draw_minimap(game, color, sum);
-			loop.x++;
-		}
-		loop.y++;
-	}
-}
-
-uint32_t minimap(t_game *game, t_pos pos)
+uint32_t	minimap(t_game *game, t_pos pos)
 {
 	double	x;
 	double	y;
-	double px;
-	double py;
+	double	px;
+	double	py;
 
 	py = game->ray->posX;
 	px = game->ray->posY;

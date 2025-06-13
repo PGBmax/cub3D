@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 17:26:07 by pboucher          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:38:18 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	is_valid(char *path)
 {
 	int	i;
-	int fd;
+	int	fd;
 
 	i = ft_strlen(path);
 	if (i < 4)
@@ -25,7 +25,7 @@ bool	is_valid(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (false);
-	close (fd);	
+	close(fd);
 	return (true);
 }
 
@@ -39,9 +39,10 @@ char	*void_changer(char *str)
 		if (str[i] == ' ' || str[i] == '\t')
 			str[i] = '1';
 		i++;
-	}	
+	}
 	return (str);
 }
+
 int	mapverif(char **map, int i, int j)
 {
 	while (map[j])
@@ -49,7 +50,7 @@ int	mapverif(char **map, int i, int j)
 		i = 0;
 		while (map[j][i])
 		{
-			if (map[j][i] != '0' 
+			if (map[j][i] != '0'
 				&& map[j][i] != '1'
 				&& map[j][i] != '2'
 				&& map[j][i] != '3'
@@ -60,9 +61,8 @@ int	mapverif(char **map, int i, int j)
 				&& map[j][i] != ' '
 				&& map[j][i] != '\n'
 				&& map[j][i] != '\0')
-					return (0);
-				i++;
-
+				return (0);
+			i++;
 		}
 		j++;
 	}
