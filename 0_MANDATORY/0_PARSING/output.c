@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freesplit.c                                     :+:      :+:    :+:   */
+/*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 18:18:24 by maregnie          #+#    #+#             */
-/*   Updated: 2025/06/15 16:49:06 by pboucher         ###   ########.fr       */
+/*   Created: 2025/04/01 17:02:53 by pboucher          #+#    #+#             */
+/*   Updated: 2025/06/15 17:13:14 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_freesplit(char **tab)
+void	error_msg(char *str, char *detail)
 {
-	int	i;
+	t_game	*game;
 
-	i = 0;
-	while (tab[i] != NULL)
+	game = get_tgame();
+	ft_printf(RED "ERROR!\n" GRN);
+	if (!detail)
+		ft_printf(str, PROG_NAME);
+	else
+		ft_printf(str, PROG_NAME, detail);
+	ft_printf(RST);
+	if (game)
 	{
-		free(tab[i]);
-		i++;
+		if (game->tab)
+			ft_tabfree(game->tab, ft_tablen(game->tab));
+		if (game->map)
+			ft_lstclear(&game->map, free);
+		free(game);
 	}
-	free(tab);
+	exit(EXIT_FAILURE);
 }

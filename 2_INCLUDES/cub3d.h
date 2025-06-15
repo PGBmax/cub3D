@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/09 16:42:05 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:50:28 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_textures
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
-}					t_textures;
+}				t_textures;
 
 typedef struct s_sprite
 {
@@ -83,50 +83,38 @@ typedef struct s_sprite
 
 typedef struct s_ray
 {
-	float posX;
-	float posY;
-	float dirX;
-	float dirY;
-	float planeX;
-	float planeY;
-
-	float cameraX;
-	float rayDirX;
-	float rayDirY;
-
-	int mapX;
-	int mapY;
-
-	float sideDistX;
-	float sideDistY;
-
-	float deltaDistX;
-	float deltaDistY;
-	float perpWallDist;
-
-	int stepX;
-	int stepY;
-
-	int hit;
-	int side;
-
-	int lineH;
-	int drawStart;
-	int drawEnd;
-
-	float oldDirX;
-	float oldPlaneX;
-	
-	float moveSpeed;
-	float rotSpeed;
-	
-	uint32_t color;
-
-	float wallX;
-	float step;
-	float texPos;
-	int texX;
-	int texY;
+	float	posX;
+	float	posY;
+	float	dirX;
+	float	dirY;
+	float	planeX;
+	float	planeY;
+	float	cameraX;
+	float	rayDirX;
+	float	rayDirY;
+	float	sideDistX;
+	float	sideDistY;
+	float	deltaDistX;
+	float	deltaDistY;
+	float	perpWallDist;
+	float	oldDirX;
+	float	oldPlaneX;
+	float	moveSpeed;
+	float	rotSpeed;
+	float	wallX;
+	float	step;
+	float	texPos;
+	int		mapX;
+	int		mapY;
+	int		stepX;
+	int		stepY;
+	int		hit;
+	int		side;
+	int		lineH;
+	int		drawStart;
+	int		drawEnd;
+	int		texX;
+	int		texY;
 
 }	t_ray;
 

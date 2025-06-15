@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 17:53:41 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:32:05 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_textures
 	mlx_texture_t	*floor;
 	mlx_texture_t	*ceilling;
 	mlx_texture_t	*frames[44];
+	mlx_texture_t	*pause;
 	mlx_texture_t	*door;
 	mlx_texture_t	*mapground;
 	mlx_texture_t	*mapwall;
@@ -227,52 +228,79 @@ typedef struct s_game
 }	t_game;
 
 /*	Prototypes	*/
-//	game.c
-int	ft_game(t_game *game);
-uint32_t    rgb_to_hex32(int *rgb);
-void	refresh(t_game *game);
-void	draw_map(t_game *game);
-//	wall.c
-uint32_t get_color(mlx_image_t *img, int x, int y);
-void	draw_wall(t_game *game, int x);
-//	get_game.c
-void	set_tgame(t_game *info);
-t_game	*get_tgame(void);
+/*			0_PARSING			*/
+//	free.c
+void		free_matrix(uint32_t **matrix);
+void		free_texture(mlx_texture_t *texture);
+void		free_game2(t_game *game);
+void		free_game(t_game *game);
+//	get_map.c
+char		**longest_line(char **tab, int i);
+t_map		*get_map_as_list(char *argv);
+char		**alloc_map(t_map *lstmap, t_map **tmp);
+char		**get_map_as_tab(t_map *lstmap, int index);
+//	load.c
+int			assign_frame(t_game *game, char **modif2, char **path, int i);
+int			load_frames(t_game *game);
+int			load_image(t_game *game);
+int			load_matrix(t_game *game);
+//	map_info.c
+int			check_info(t_game *game);
+char		*dup_cutendl(char *src, char *cpy);
+void		get_str_info(t_map *tmp, t_game *game, int *i);
+int			get_map_info(t_game *game, int i);
+int			line_length(char *str);
+//	map_parsing.c
+int			check_hole(char **tab, int i, int j);
+int			edge_parsing(char **tab);
+int			parse_tab(t_game *game, int i, int j, int _bool);
 //	output.c
-void	error_msg(char *str, char *detail);
+void		error_msg(char *str, char *detail);
 //	parsing.c
-bool	is_valid(char *path);
-t_map	*get_map_as_list(char *argv);
-char	**get_map_as_tab(t_map *lstmap, int index);
-int		line_length(char *str);
-char	*void_changer(char *str);
-int		parse_tab(t_game *game, int i, int j, int _bool);
-int		get_map_info(t_game *game, int i);
-int		place_textures(t_game *game);
-int		convert_textures(t_game *game);
-void	free_game(t_game *game);
-int		mapverif(char **map, int i, int j);
-void	free_matrix(uint32_t **matrix);
-//	game_init.c
-int		game_init(t_game *game);
-//	hook.c
-void    key_hook(t_game *game);
-void    cursor_hook(t_game *game);
-void	game_pause(mlx_key_data_t key_data, t_game *game);
-//	move.c
-void    move_player(t_game *game, float x, float y);
-void    rotate_cam(t_game *game, float rotSpeed);
+bool		is_valid(char *path);
+char		*void_changer(char *str);
+int			mapverif(char **map, int i, int j);
+/*			1_RAYCAST			*/
+//	floor_ceil.c
+void		calculate_floor_ceilling(t_game *game, int y);
+void		draw_floor_ceilling(t_game *game);
+//	maths.c
+t_pos		adding_pos(t_pos a, t_pos b);
+float		calc_len(t_pos pos);
+float		calc_dist(t_pos a, t_pos b);
+int			in_circle(t_pos player, t_pos center, float radius);
+t_pos		newpos(float x, float y);
 //	raycast.c
-void    draw_ray(t_game *game);
-void    detect_door(t_game *game);
-// minimap
+void	draw_ray(t_game *game);
+void	detect_door(t_game *game);
+//	wall.c
+uint32_t	get_color(mlx_image_t *img, int x, int y);
+uint32_t	choose_wall(t_game *game, int texX, int texY);
+void		print_wall(t_game *game, int x);
+void		draw_wall(t_game *game, int x);
+/*			2_GAME				*/
+//	game_init.c
+mlx_image_t	*convert_and_resize(mlx_texture_t *tex);
+uint32_t	**convert_into_matrix(mlx_image_t *img);
+int			game_init(t_game *game);
+//	game.c
+void		draw_map(t_game *game);
+void		refresh_minimap(t_game *game);
+void		refresh(t_game *game);
+int			ft_game(t_game *game);
+//	get_game.c
+void		set_tgame(t_game *info);
+t_game		*get_tgame(void);
+//	hook.c
+void		key_hook(t_game *game);
+void		cursor_hook(t_game *game);
+void		game_pause(mlx_key_data_t key_data, t_game *game);
+//	minimap.c
+t_color		set_color(t_byte r, t_byte g, t_byte b, t_byte a);
+t_color		pick_color(t_game *game, t_pos loop);
+void		draw_minimap(t_game *game, t_color color, t_pos pos);
 uint32_t	minimap(t_game *game, t_pos pos);
-void	refresh_minimap(t_game *game);
-t_pos	adding_pos(t_pos a, t_pos b);
-int		in_circle(t_pos player, t_pos center, float radius);
-t_pos	newpos(float x, float y);
-t_color	set_color(t_byte r, t_byte g, t_byte b, t_byte a);
-t_color	pick_color(t_game *game, t_pos loop);
-void	draw_minimap(t_game *game, t_color color, t_pos pos);
-
+//	move.c
+void		move_player(t_game *game, float x, float y);
+void		rotate_cam(t_game *game, float rotSpeed);
 #endif

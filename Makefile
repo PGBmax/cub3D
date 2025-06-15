@@ -7,37 +7,43 @@ LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 # Names
 NAME				=	cub3D
+NAMEBONUS			=	cub3D_bonus
 
 # Sources & Includes
-SRCS	= 	0_MANDATORY/main.c \
-			0_MANDATORY/output.c \
-			0_MANDATORY/game.c \
-			0_MANDATORY/hook.c \
-			0_MANDATORY/move.c \
-			0_MANDATORY/draw.c \
-			0_MANDATORY/raycast.c \
-			0_MANDATORY/game_init.c \
-			0_MANDATORY/get_game.c \
-			0_MANDATORY/parsing.c \
-			0_MANDATORY/map_parsing.c \
-			0_MANDATORY/map_info.c \
-			0_MANDATORY/free.c
+SRCS		= 	0_MANDATORY/0_PARSING/free.c \
+				0_MANDATORY/0_PARSING/get_map.c \
+				0_MANDATORY/0_PARSING/map_info.c \
+				0_MANDATORY/0_PARSING/map_parsing.c \
+				0_MANDATORY/0_PARSING/output.c \
+				0_MANDATORY/0_PARSING/parsing.c \
+				0_MANDATORY/1_RAYCAST/draw.c \
+				0_MANDATORY/1_RAYCAST/raycast.c \
+				0_MANDATORY/2_GAME/game_init.c \
+				0_MANDATORY/2_GAME/game.c \
+				0_MANDATORY/2_GAME/get_game.c \
+				0_MANDATORY/2_GAME/hook.c \
+				0_MANDATORY/2_GAME/move.c \
+				0_MANDATORY/main.c
 
-SRCSBONUS	= 	1_BONUS/main.c \
-				1_BONUS/output.c \
-				1_BONUS/game.c \
-				1_BONUS/hook.c \
-				1_BONUS/move.c \
-				1_BONUS/wall.c \
-				1_BONUS/raycast.c \
-				1_BONUS/game_init.c \
-				1_BONUS/get_game.c \
-				1_BONUS/parsing.c \
-				1_BONUS/map_parsing.c \
-				1_BONUS/map_info.c \
-				1_BONUS/maths.c \
-				1_BONUS/minimap.c \
-				1_BONUS/free.c
+SRCSBONUS	= 	1_BONUS/0_PARSING/free.c \
+				1_BONUS/0_PARSING/get_map.c \
+				1_BONUS/0_PARSING/load.c \
+				1_BONUS/0_PARSING/map_info.c \
+				1_BONUS/0_PARSING/map_parsing.c \
+				1_BONUS/0_PARSING/output.c \
+				1_BONUS/0_PARSING/parsing.c \
+				1_BONUS/1_RAYCAST/floor_ceil.c \
+				1_BONUS/1_RAYCAST/maths.c \
+				1_BONUS/1_RAYCAST/raycast.c \
+				1_BONUS/1_RAYCAST/wall.c \
+				1_BONUS/2_GAME/game_init.c \
+				1_BONUS/2_GAME/game.c \
+				1_BONUS/2_GAME/get_game.c \
+				1_BONUS/2_GAME/hook.c \
+				1_BONUS/2_GAME/minimap.c \
+				1_BONUS/2_GAME/move.c \
+				1_BONUS/main.c
+				
 
 OBJ_FOLDER			=	6_OBJECTS
 OBJ_FOLDER_BONUS	=	7_OBJECTS_BONUS
@@ -95,21 +101,22 @@ clean :
 	make clean -C ./3_LIBFT
 	@rm -rf $(OBJ_FOLDER)
 	@rm -rf $(OBJ_FOLDER_BONUS)
-	# @rm -rf ./MLX42
+	@rm -rf ./MLX42
 	$(ALL_CLEAN)
 
 fclean :
 	make fclean -C ./3_LIBFT
 	@rm -f $(NAME)
+	@rm -f $(NAMEBONUS)
 	@rm -rf $(OBJ_FOLDER)
 	@rm -rf $(OBJ_FOLDER_BONUS)
-	# @rm -rf ./MLX42	
+	@rm -rf ./MLX42	
 	$(ALL_FCLEAN)
 
 re : fclean all
 
 bonus : mlx libft $(OBJSBONUS)
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJSBONUS) $(LIB) $(LIBS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJSBONUS) $(LIB) $(LIBS) -o $(NAMEBONUS)
 	$(EXE_DONE_BONUS)
 
 $(OBJ_FOLDER_BONUS)/%.o: 1_BONUS/%.c
