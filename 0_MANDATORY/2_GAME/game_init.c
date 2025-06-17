@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:12:58 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:40:15 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ static int	load_image(t_game *game)
 	if (!game->textures->east || !game->textures->west
 		|| !game->textures->north || !game->textures->south
 		|| !game->textures->icon)
+	{
+		ft_printf(RED"ERROR!\n"GRN"At least one image has not loaded\n"RST);
 		return (0);
+	}
 	game->sprite->north = convert_and_resize(game->textures->north, true);
 	game->sprite->south = convert_and_resize(game->textures->south, true);
 	game->sprite->east = convert_and_resize(game->textures->east, true);

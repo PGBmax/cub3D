@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 15:57:59 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:36:03 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:30:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,20 @@ int	load_frames(t_game *game)
 	return (1);
 }
 
+void	convert_image(t_game *game)
+{
+	game->sprite->north = convert_and_resize(game->textures->north);
+	game->sprite->south = convert_and_resize(game->textures->south);
+	game->sprite->east = convert_and_resize(game->textures->east);
+	game->sprite->west = convert_and_resize(game->textures->west);
+	game->sprite->pause = mlx_texture_to_image(game->mlx,
+			game->textures->pause);
+	mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
+	game->sprite->floor = convert_and_resize(game->textures->floor);
+	game->sprite->ceilling = convert_and_resize(game->textures->ceilling);
+	game->sprite->door = convert_and_resize(game->textures->door);
+}
+
 int	load_image(t_game *game)
 {
 	game->textures->north = mlx_load_png(game->info->north);
@@ -75,17 +89,11 @@ int	load_image(t_game *game)
 		|| !game->textures->north || !game->textures->door
 		|| !game->textures->south || !game->textures->floor
 		|| !game->textures->ceilling || !game->textures->icon)
+	{
+		ft_printf(RED"ERROR!\n"GRN"At least one image has not loaded\n"RST);
 		return (0);
-	game->sprite->north = convert_and_resize(game->textures->north);
-	game->sprite->south = convert_and_resize(game->textures->south);
-	game->sprite->east = convert_and_resize(game->textures->east);
-	game->sprite->west = convert_and_resize(game->textures->west);
-	game->sprite->pause = mlx_texture_to_image(game->mlx,
-			game->textures->pause);
-	mlx_resize_image(game->sprite->pause, WIDTH, HEIGHT);
-	game->sprite->floor = convert_and_resize(game->textures->floor);
-	game->sprite->ceilling = convert_and_resize(game->textures->ceilling);
-	game->sprite->door = convert_and_resize(game->textures->door);
+	}
+	convert_image(game);
 	return (1);
 }
 
