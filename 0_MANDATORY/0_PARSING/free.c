@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 16:27:59 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:12:27 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 10:35:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,6 @@ void	free_game(t_game *game)
 		free(game->info);
 	if (game->ray)
 		free(game->ray);
+	if (game->player)
+		free(game->player);
 }

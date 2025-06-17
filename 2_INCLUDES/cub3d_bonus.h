@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:32:05 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 10:55:08 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define CUB3D_H
 
 /*	Includes	*/
-#include "../MLX42/include/MLX42/MLX42.h"
-#include <../3_LIBFT/libft.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <fcntl.h>
-#include <math.h>
+# include "../MLX42/include/MLX42/MLX42.h"
+# include <../3_LIBFT/libft.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <fcntl.h>
+# include <math.h>
 
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI

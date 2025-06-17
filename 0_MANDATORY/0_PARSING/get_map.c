@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:17:39 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:17:57 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 10:34:57 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**get_map_as_tab(t_map *lstmap, int index)
 	}
 	if (!mapverif(map, 0, 0))
 	{
-		ft_tabfree(map, ft_tablen(map) - 3);
+		ft_tabfree(map, ft_tablen(map));
 		return (NULL);
 	}
 	return (map);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:15:30 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 10:36:49 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int ac, char **av)
 		mlx_terminate(game->mlx);
 	free_game(game);
 	ft_lstclear(&game->map, free);
-	ft_tabfree(game->tab, ft_tablen(game->tab) - 3);
+	ft_tabfree(game->tab, ft_tablen(game->tab));
 	free(game);
 	close(fd);
 }
