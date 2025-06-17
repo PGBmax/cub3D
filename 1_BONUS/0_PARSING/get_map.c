@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:15:18 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 16:20:13 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:09:34 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	**get_map_as_tab(t_map *lstmap, int index)
 	longest_line(&map[i], 0);
 	if (!mapverif(map, 0, 0))
 	{
+		ft_printf(RED"Error!\n"GRN"cub3D : Map is too big for the");
+		ft_printf(" program (higher than 1000 on Width or Height)\n"RST);
 		ft_tabfree(map, ft_tablen(map) - 3);
 		return (NULL);
 	}
