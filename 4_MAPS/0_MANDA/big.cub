@@ -1,7 +1,7 @@
-NO ./5_TEXTURES/pboucher.png
-SO ./5_TEXTURES/pboucher.png
-WE ./5_TEXTURES/pboucher.png
-EA ./5_TEXTURES/pboucher.png
+NO ./5_TEXTURES/backrooms.png
+SO ./5_TEXTURES/backrooms.png
+WE ./5_TEXTURES/backrooms.png
+EA ./5_TEXTURES/backrooms.png
 
 F 113,104,19
 C 147,138,35

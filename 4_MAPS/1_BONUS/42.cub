@@ -1,10 +1,10 @@
-NO ./5_TEXTURES/pboucher.png
-SO ./5_TEXTURES/maregnie.png
-WE ./5_TEXTURES/mbirou.png
-EA ./5_TEXTURES/mbatty.png
-FL ./5_TEXTURES/mscheman.png
-CE ./5_TEXTURES/tchartie.png
-DO ./5_TEXTURES/mscheman.png
+NO ./5_TEXTURES/1.png
+SO ./5_TEXTURES/2.png
+WE ./5_TEXTURES/3.png
+EA ./5_TEXTURES/togomez.png
+FL ./5_TEXTURES/ccouton.png
+CE ./5_TEXTURES/amairia.png
+DO ./5_TEXTURES/togomez.png
 
 
 111111111111111111111

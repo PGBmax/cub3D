@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:18:28 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 16:11:34 by pboucher         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:32:35 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	gen_map(t_game *game, char **av)
 		free(game);
 		return (0);
 	}
-	if (!parse_tab(game, -1, -1, 0))
+	if (!parse_tab(game, 0, 0, 0))
 	{
 		free(game->info);
 		error_msg(NOT_CLOSE, av[1]);
