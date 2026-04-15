@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:39:23 by maregnie          #+#    #+#             */
-/*   Updated: 2025/06/13 14:26:02 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:58:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,24 @@ t_color	set_color(t_byte r, t_byte g, t_byte b, t_byte a)
 t_color	pick_color(t_game *game, t_pos loop)
 {
 	t_color	color;
+	float	dot;
+	float	llen;
+	float	ang;
 
 	color = set_color(0, 0, 0, 0);
 	if (in_circle(loop, newpos(0, 0), 2))
 		color = set_color(255, 0, 0, 255);
 	else if (in_circle(loop, newpos(0, 0), 50 - 2))
 	{
+		llen = calc_len(loop);
+		if (llen > 0.001f)
+		{
+			dot = (loop.y * game->ray->dirX + loop.x * game->ray->dirY)
+				/ llen;
+			ang = acosf(dot < -1.0f ? -1.0f : (dot > 1.0f ? 1.0f : dot));
+			if (ang < 0.45f && llen < 18.0f)
+				return (set_color(100, 200, 255, 160));
+		}
 		if (minimap(game, loop))
 			color = set_color(0, 0, 0, 255);
 		else if (!minimap(game, loop))

@@ -6,51 +6,84 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:35:40 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 14:33:36 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:58:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
+static void	update_fov(t_game *game)
+{
+	float	len;
+	float	ratio;
+
+	game->cur_fov += (game->target_fov - game->cur_fov) * FOV_LERP;
+	len = sqrtf(game->ray->planeX * game->ray->planeX
+			+ game->ray->planeY * game->ray->planeY);
+	if (len < 0.001f)
+		return ;
+	ratio = game->cur_fov / len;
+	game->ray->planeX *= ratio;
+	game->ray->planeY *= ratio;
+}
+
 void	key_hook(t_game *game)
 {
 	refresh(game);
+	game->is_moving = 0;
+	game->target_fov = FOV;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 	if (!game->paused && mlx_is_key_down(game->mlx, UP))
+	{
 		move_player(game, game->ray->dirX, game->ray->dirY);
+		game->is_moving = 1;
+	}
 	if (!game->paused && mlx_is_key_down(game->mlx, DOWN))
+	{
 		move_player(game, -game->ray->dirX, -game->ray->dirY);
+		game->is_moving = 1;
+	}
 	if (!game->paused && mlx_is_key_down(game->mlx, RIGHT))
+	{
 		move_player(game, game->ray->planeX, game->ray->planeY);
+		game->is_moving = 1;
+	}
 	if (!game->paused && mlx_is_key_down(game->mlx, LEFT))
+	{
 		move_player(game, -game->ray->planeX, -game->ray->planeY);
+		game->is_moving = 1;
+	}
 	if (!game->paused && mlx_is_key_down(game->mlx, RIGHT_R))
 		rotate_cam(game, -game->ray->rotSpeed);
 	if (!game->paused && mlx_is_key_down(game->mlx, LEFT_R))
 		rotate_cam(game, game->ray->rotSpeed);
+	if (!game->paused && mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT)
+		&& game->is_moving)
+		game->target_fov = FOV + SPRINT_FOV_ADD;
+	update_fov(game);
 }
 
 void	cursor_hook(t_game *game)
 {
-	static int	x = {WIDTH / 2};
-	static int	y = {HEIGHT / 2};
-	int			w;
-	int			h;
-	float		rot;
+	int		x;
+	int		y;
+	int		w;
+	int		h;
+	float	raw;
 
 	if (!game->paused)
 	{
-		rot = ROTSPD;
 		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-		rot = rot * (x - game->mlx->width / 2) * 0.01f;
 		mlx_get_mouse_pos(game->mlx, &x, &y);
 		w = game->mlx->width;
 		h = game->mlx->height;
-		rotate_cam(game, -rot);
+		raw = (float)(x - w / 2) * MOUSE_SENS;
+		game->smooth_rot += (raw - game->smooth_rot) * MOUSE_SMOOTH;
+		rotate_cam(game, -game->smooth_rot);
 		mlx_set_mouse_pos(game->mlx, w / 2, h / 2);
 	}
-	if (game->paused)
+	else
 		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 }
 

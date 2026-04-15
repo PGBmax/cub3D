@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pboucher <pboucher@42student.fr>           +#+  +:+       +#+        */
+/*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:19:25 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/17 11:04:13 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 15:09:27 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <math.h>
+# include <pthread.h>
 
 /*	Macros	DONT TOUCH	*/
 # define PI M_PI
@@ -38,6 +39,27 @@
 # define RIGHT MLX_KEY_D
 # define LEFT_R MLX_KEY_LEFT
 # define RIGHT_R MLX_KEY_RIGHT
+
+/*	Perf / Rendering	*/
+# define NUM_THREADS 4
+# define FOG_MAX 8.0f
+# define ANIM_FPS 24.0f
+# define FPS_FONT_W 10
+# define FPS_FONT_H 20
+# define FPS_PAD 4
+# define FPS_X (WIDTH - 100)
+# define FPS_Y 10
+# define MOUSE_SENS 0.0012f
+# define MOUSE_SMOOTH 0.4f
+# define BOB_SPEED 10.0f
+# define BOB_AMOUNT 4.0f
+# define CROSS_SIZE 6
+# define VIGNETTE_START 0.55f
+# define VIGNETTE_END 1.1f
+# define VIGNETTE_STRENGTH 0.6f
+# define SPRINT_FOV_ADD 0.15f
+# define FOV_LERP 0.08f
+# define WALL_MARGIN 0.25f
 
 /*	Colors	*/
 # define RST "\e[0m"
@@ -162,6 +184,15 @@ typedef struct s_ray
 
 }	t_ray;
 
+typedef struct s_thread_data
+{
+	struct s_game	*game;
+	t_ray			ray;
+	int				x_start;
+	int				x_end;
+	float			bob;
+}	t_thread_data;
+
 typedef struct s_matrix
 {
 	uint32_t	**north;
@@ -218,6 +249,7 @@ typedef struct s_game
 	t_info		*info;
 	char		**tab;
 	mlx_image_t	*screen;
+	mlx_image_t	*fps_img;
 	t_sprite	*sprite;
 	t_textures	*textures;
 	t_matrix	*matrix;
@@ -225,6 +257,13 @@ typedef struct s_game
 	mlx_t		*mlx;
 	int			mapsize[2];
 	int			paused;
+	double		delta_time;
+	double		last_time;
+	int			fps;
+	float		smooth_rot;
+	int			is_moving;
+	float		cur_fov;
+	float		target_fov;
 }	t_game;
 
 /*	Prototypes	*/
@@ -273,8 +312,11 @@ t_pos		newpos(float x, float y);
 //	raycast.c
 void	draw_ray(t_game *game);
 void	detect_door(t_game *game);
+//	thread.c
+void	draw_ray_threaded(t_game *game);
 //	wall.c
 uint32_t	get_color(mlx_image_t *img, int x, int y);
+uint32_t	fog_color(uint32_t color, float dist);
 uint32_t	choose_wall(t_game *game, int texX, int texY);
 void		print_wall(t_game *game, int x);
 void		draw_wall(t_game *game, int x);
@@ -287,6 +329,7 @@ int			game_init(t_game *game);
 void		draw_map(t_game *game);
 void		refresh_minimap(t_game *game);
 void		refresh(t_game *game);
+void		update_fps(t_game *game);
 int			ft_game(t_game *game);
 //	get_game.c
 void		set_tgame(t_game *info);
@@ -295,6 +338,10 @@ t_game		*get_tgame(void);
 void		key_hook(t_game *game);
 void		cursor_hook(t_game *game);
 void		game_pause(mlx_key_data_t key_data, t_game *game);
+//	effects.c
+void		draw_crosshair(t_game *game);
+void		draw_vignette(t_game *game);
+float		get_head_bob(t_game *game);
 //	minimap.c
 t_color		set_color(t_byte r, t_byte g, t_byte b, t_byte a);
 t_color		pick_color(t_game *game, t_pos loop);

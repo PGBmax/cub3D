@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:06:57 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/15 17:35:46 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:58:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,9 @@ int	game_init(t_game *game)
 	game->ray->posX = game->player->y + 0.5f;
 	game->ray->posY = game->player->x + 0.5f;
 	game->paused = 0;
+	game->is_moving = 0;
+	game->cur_fov = FOV;
+	game->target_fov = FOV;
 	if (!load_image(game) || !load_frames(game) || !load_matrix(game))
 		return (0);
 	mlx_set_icon(game->mlx, game->textures->icon);

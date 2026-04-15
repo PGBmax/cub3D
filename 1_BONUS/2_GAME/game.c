@@ -6,11 +6,12 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:40:15 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 17:52:56 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:58:32 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+#include <stdio.h>
 
 void	draw_map(t_game *game)
 {
@@ -58,22 +59,87 @@ void	refresh_minimap(t_game *game)
 	}
 }
 
+/*
+** Met à jour le delta_time (secondes écoulées depuis la frame précédente)
+** et calcule le FPS courant.
+*/
+static void	update_delta_time(t_game *game)
+{
+	double	now;
+
+	now = mlx_get_time();
+	game->delta_time = now - game->last_time;
+	if (game->delta_time > 0.0)
+		game->fps = (int)(1.0 / game->delta_time);
+	game->last_time = now;
+}
+
+/*
+** Retourne le frame d'animation courant basé sur le temps absolu
+** et ANIM_FPS pour ne pas dépendre des perfs machine.
+*/
+static int	get_anim_frame(void)
+{
+	double	t;
+
+	t = mlx_get_time();
+	return ((int)(t * ANIM_FPS) % 44);
+}
+
+/*
+** Dessine le compteur FPS dans un encadré en haut à droite.
+** Boîte dimensionnée pour la police MLX42 (10x20 par char).
+*/
+static void	draw_fps_box(t_game *game, int box_w, int box_h)
+{
+	int	x;
+	int	y;
+
+	y = FPS_Y - FPS_PAD - 1;
+	while (++y < FPS_Y + box_h + FPS_PAD)
+	{
+		x = FPS_X - FPS_PAD - 1;
+		while (++x < FPS_X + box_w + FPS_PAD)
+		{
+			if (y == FPS_Y - FPS_PAD || y == FPS_Y + box_h + FPS_PAD - 1
+				|| x == FPS_X - FPS_PAD || x == FPS_X + box_w + FPS_PAD - 1)
+				mlx_put_pixel(game->screen, x, y, 0xFFFFFFFF);
+			else
+				mlx_put_pixel(game->screen, x, y, 0x000000BB);
+		}
+	}
+}
+
+void	update_fps(t_game *game)
+{
+	char	buf[16];
+
+	snprintf(buf, sizeof(buf), "FPS: %d", game->fps);
+	draw_fps_box(game, (int)ft_strlen(buf) * FPS_FONT_W, FPS_FONT_H);
+	if (game->fps_img)
+		mlx_delete_image(game->mlx, game->fps_img);
+	game->fps_img = mlx_put_string(game->mlx, buf, FPS_X, FPS_Y);
+}
+
 void	refresh(t_game *game)
 {
-	static int	i = -1;
-	int			j;
+	int	frame;
+	int	j;
 
+	update_delta_time(game);
+	frame = get_anim_frame();
 	j = -1;
 	while (++j < 44)
 		game->sprite->frames[j]->enabled = false;
-	++i;
-	i = i % 44;
-	game->sprite->frames[i]->enabled = true;
+	game->sprite->frames[frame]->enabled = true;
 	if (!game->paused)
-		draw_ray(game);
+		draw_ray_threaded(game);
 	game->ray->moveSpeed = MOVESPD;
 	game->ray->rotSpeed = ROTSPD;
+	draw_vignette(game);
+	draw_crosshair(game);
 	refresh_minimap(game);
+	update_fps(game);
 }
 
 int	ft_game(t_game *game)
@@ -93,6 +159,8 @@ int	ft_game(t_game *game)
 	mlx_image_to_window(game->mlx, background, 0, 0);
 	game->screen = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(game->mlx, game->screen, 0, 0);
+	game->fps_img = NULL;
+	game->last_time = mlx_get_time();
 	if (!game_init(game))
 		return (0);
 	mlx_key_hook(game->mlx, (void (*))game_pause, (void *)game);
@@ -103,3 +171,4 @@ int	ft_game(t_game *game)
 	mlx_terminate(game->mlx);
 	return (1);
 }
+

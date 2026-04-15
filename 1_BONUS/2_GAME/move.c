@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:47:01 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 14:36:49 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 15:09:27 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,32 @@ static float	result_y(float comp1, float comp2, float rotSpeed)
 	return ((float)(comp1 * sinf(rotSpeed) + comp2 * cosf(rotSpeed)));
 }
 
+static int	is_walkable(char c)
+{
+	return (c == '0' || c == '3');
+}
+
 void	move_player(t_game *game, float x, float y)
 {
+	float	spd;
+	float	nx;
+	float	ny;
+	float	m;
+
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT))
 		change_speed(game, 1.25f, 1.25f);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL))
 		change_speed(game, 0.8f, 0.8f);
-	if (!(int)(game->ray->posX + x * game->ray->moveSpeed) &&
-		!game->tab[(int)game->ray->posX]
-		[(int)(game->ray->posY + y * game->ray->moveSpeed)])
-		return ;
-	if (game->tab[(int)(game->ray->posX + x * game->ray->moveSpeed)]
-		[(int)game->ray->posY] == '0')
-		game->ray->posX += x * game->ray->moveSpeed;
-	if (game->tab[(int)game->ray->posX]
-		[(int)(game->ray->posY + y * game->ray->moveSpeed)] == '0')
-		game->ray->posY += y * game->ray->moveSpeed;
-	if (game->tab[(int)(game->ray->posX + x * game->ray->moveSpeed)]
-		[(int)game->ray->posY] == '3')
-		game->ray->posX += x * game->ray->moveSpeed;
-	if (game->tab[(int)game->ray->posX]
-		[(int)(game->ray->posY + y * game->ray->moveSpeed)] == '3')
-		game->ray->posY += y * game->ray->moveSpeed;
+	spd = game->ray->moveSpeed;
+	m = WALL_MARGIN;
+	nx = game->ray->posX + x * spd;
+	ny = game->ray->posY + y * spd;
+	if (is_walkable(game->tab[(int)(nx + m)][(int)game->ray->posY])
+		&& is_walkable(game->tab[(int)(nx - m)][(int)game->ray->posY]))
+		game->ray->posX = nx;
+	if (is_walkable(game->tab[(int)game->ray->posX][(int)(ny + m)])
+		&& is_walkable(game->tab[(int)game->ray->posX][(int)(ny - m)]))
+		game->ray->posY = ny;
 }
 
 void	rotate_cam(t_game *game, float rotSpeed)

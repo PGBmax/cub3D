@@ -35,11 +35,13 @@ SRCSBONUS	= 	1_BONUS/0_PARSING/free.c \
 				1_BONUS/1_RAYCAST/floor_ceil.c \
 				1_BONUS/1_RAYCAST/maths.c \
 				1_BONUS/1_RAYCAST/raycast.c \
+				1_BONUS/1_RAYCAST/thread.c \
 				1_BONUS/1_RAYCAST/wall.c \
 				1_BONUS/2_GAME/game_init.c \
 				1_BONUS/2_GAME/game.c \
 				1_BONUS/2_GAME/get_game.c \
 				1_BONUS/2_GAME/hook.c \
+				1_BONUS/2_GAME/effects.c \
 				1_BONUS/2_GAME/minimap.c \
 				1_BONUS/2_GAME/move.c \
 				1_BONUS/main.c

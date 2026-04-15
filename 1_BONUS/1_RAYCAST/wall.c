@@ -6,7 +6,7 @@
 /*   By: pboucher <pboucher@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:14:23 by pboucher          #+#    #+#             */
-/*   Updated: 2025/06/13 14:20:23 by pboucher         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:10:56 by pboucher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,28 @@ uint32_t	get_color(mlx_image_t *img, int x, int y)
 		| ((img->pixels[(y * S_BOX + x) * 4 + 1]) << 16)
 		| ((img->pixels[(y * S_BOX + x) * 4 + 2]) << 8)
 		| (img->pixels[(y * S_BOX + x) * 4 + 3])));
+}
+
+/*
+** Applique le fog : assombrit la couleur en fonction de la distance.
+** Partagé avec thread.c via le header.
+*/
+uint32_t	fog_color(uint32_t color, float dist)
+{
+	float	t;
+	int		r;
+	int		g;
+	int		b;
+	int		a;
+
+	t = dist / FOG_MAX;
+	if (t > 1.0f)
+		t = 1.0f;
+	r = (int)((float)((color >> 24) & 0xFF) * (1.0f - t));
+	g = (int)((float)((color >> 16) & 0xFF) * (1.0f - t));
+	b = (int)((float)((color >> 8) & 0xFF) * (1.0f - t));
+	a = color & 0xFF;
+	return ((uint32_t)(r << 24 | g << 16 | b << 8 | a));
 }
 
 uint32_t	choose_wall(t_game *game, int texX, int texY)
@@ -56,6 +78,7 @@ void	print_wall(t_game *game, int x)
 		game->ray->texY = (int)game->ray->texPos & (S_BOX - 1);
 		game->ray->texPos += game->ray->step;
 		color = choose_wall(game, game->ray->texX, game->ray->texY);
+		color = fog_color(color, game->ray->perpWallDist);
 		mlx_put_pixel(game->screen, x, game->ray->drawStart, color);
 	}
 }
@@ -77,3 +100,4 @@ void	draw_wall(t_game *game, int x)
 			+ game->ray->lineH / 2) * game->ray->step;
 	print_wall(game, x);
 }
+
